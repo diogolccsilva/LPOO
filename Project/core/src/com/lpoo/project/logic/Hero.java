@@ -2,8 +2,10 @@ package com.lpoo.project.logic;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.TimeUtils;
+import com.lpoo.project.animations.Animator;
 
 import java.util.LinkedList;
 
@@ -13,10 +15,11 @@ import java.util.LinkedList;
 public class Hero extends Character {
 
     //private Animation heroFire, heroStill;
-    private LinkedList<TextureRegion> heroFire, heroStill;
+    private LinkedList<Sprite> heroFire, heroStill;
     private int selectedImg;
     private long timeSelected;
     private boolean imgFire;
+    private Animator animation;
 
     /**
      * @brief Constructor for the class Hero
@@ -35,23 +38,42 @@ public class Hero extends Character {
 
         timeSelected = TimeUtils.nanoTime();
 
-        heroFire = new LinkedList<TextureRegion>();
-        heroStill = new LinkedList<TextureRegion>();
+        heroFire = new LinkedList<Sprite>();
+        heroStill = new LinkedList<Sprite>();
 
-        heroFire.add( new TextureRegion( new Texture("Hero\\Fire\\Hero-Fire0.png") ) );
-        heroFire.add( new TextureRegion( new Texture("Hero\\Fire\\Hero-Fire1.png") ) );
-        heroFire.add( new TextureRegion( new Texture("Hero\\Fire\\Hero-Fire2.png") ) );
-        heroFire.add( new TextureRegion( new Texture("Hero\\Fire\\Hero-Fire3.png") ) );
-        heroFire.add( new TextureRegion( new Texture("Hero\\Fire\\Hero-Fire4.png") ) );
-        heroFire.add( new TextureRegion( new Texture("Hero\\Fire\\Hero-Fire5.png") ) );
-        heroFire.add( new TextureRegion( new Texture("Hero\\Fire\\Hero-Fire6.png") ) );
+        Sprite tmp = new Sprite( new Texture("Hero\\Fire\\Hero-Fire0.png") );
+        tmp.scale( 2 );
+        heroFire.add( tmp );
+        tmp = new Sprite( new Texture("Hero\\Fire\\Hero-Fire1.png") );
+        tmp.scale( 2 );
+        heroFire.add( tmp );
+        tmp = new Sprite( new Texture("Hero\\Fire\\Hero-Fire2.png") );
+        tmp.scale( 2 );
+        heroFire.add( tmp );
+        tmp = new Sprite( new Texture("Hero\\Fire\\Hero-Fire3.png") );
+        tmp.scale( 2 );
+        heroFire.add( tmp );
+        tmp = new Sprite( new Texture("Hero\\Fire\\Hero-Fire4.png") );
+        tmp.scale( 2 );
+        heroFire.add( tmp );
+        tmp = new Sprite( new Texture("Hero\\Fire\\Hero-Fire5.png") );
+        tmp.scale( 2 );
+        heroFire.add( tmp );
+        tmp = new Sprite( new Texture("Hero\\Fire\\Hero-Fire6.png") );
+        tmp.scale( 2 );
+        heroFire.add( tmp );
 
-        heroStill.add( new TextureRegion( new Texture("Hero\\Still\\Hero-Still1.png") ) );
-        heroStill.add( new TextureRegion( new Texture("Hero\\Still\\Hero-Still2.png") ) );
+        tmp = new Sprite( new Texture("Hero\\Still\\Hero-Still1.png") );
+        tmp.scale( 2 );
+        heroStill.add( tmp );
+        tmp = new Sprite( new Texture("Hero\\Still\\Hero-Still2.png") );
+        tmp.scale( 2 );
+        heroStill.add( tmp );
+
 
     }
 
-    public TextureRegion SelectImg( boolean fire ) {
+    public Sprite SelectImg( boolean fire ) {
 
         if (imgFire && selectedImg == heroFire.size()) {
 

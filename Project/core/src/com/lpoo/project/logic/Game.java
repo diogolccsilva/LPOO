@@ -1,5 +1,6 @@
 package com.lpoo.project.logic;
 
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
@@ -15,7 +16,7 @@ public class Game {
 
     public Game() {
 
-        hero = new Hero( 2, 1, 100, 10, 25 );
+        hero = new Hero( 0, 0, 100, 10, 25 );
 
         fire = false;
     }
@@ -23,7 +24,9 @@ public class Game {
     public void render(SpriteBatch batch) {
 
         Vector2 hPos = hero.getPosition();
-        batch.draw( hero.SelectImg( fire ), hPos.x, hPos.y );
+        Sprite s = hero.SelectImg( fire );
+        s.setPosition( hPos.x, hPos.y );
+        hero.SelectImg( fire ).draw( batch );
     }
 
     public void touchDown(int screenX, int screenY) {
