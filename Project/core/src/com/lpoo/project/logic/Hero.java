@@ -14,12 +14,14 @@ import java.util.LinkedList;
  */
 public class Hero extends Character {
 
+    private static final double maxVel = 0.2;
     //private Animation heroFire, heroStill;
     private LinkedList<Sprite> heroFire, heroStill;
     private int selectedImg;
     private long timeSelected;
     private boolean imgFire;
     private Animator animation;
+    private double vel;
 
     /**
      * @brief Constructor for the class Hero
@@ -42,35 +44,26 @@ public class Hero extends Character {
         heroStill = new LinkedList<Sprite>();
 
         Sprite tmp = new Sprite( new Texture("Hero\\Fire\\Hero-Fire0.png") );
-        tmp.scale( 2 );
         heroFire.add( tmp );
         tmp = new Sprite( new Texture("Hero\\Fire\\Hero-Fire1.png") );
-        tmp.scale( 2 );
         heroFire.add( tmp );
         tmp = new Sprite( new Texture("Hero\\Fire\\Hero-Fire2.png") );
-        tmp.scale( 2 );
         heroFire.add( tmp );
         tmp = new Sprite( new Texture("Hero\\Fire\\Hero-Fire3.png") );
-        tmp.scale( 2 );
         heroFire.add( tmp );
         tmp = new Sprite( new Texture("Hero\\Fire\\Hero-Fire4.png") );
-        tmp.scale( 2 );
         heroFire.add( tmp );
         tmp = new Sprite( new Texture("Hero\\Fire\\Hero-Fire5.png") );
-        tmp.scale( 2 );
         heroFire.add( tmp );
         tmp = new Sprite( new Texture("Hero\\Fire\\Hero-Fire6.png") );
-        tmp.scale( 2 );
         heroFire.add( tmp );
 
         tmp = new Sprite( new Texture("Hero\\Still\\Hero-Still1.png") );
-        tmp.scale( 2 );
         heroStill.add( tmp );
         tmp = new Sprite( new Texture("Hero\\Still\\Hero-Still2.png") );
-        tmp.scale( 2 );
         heroStill.add( tmp );
 
-
+        vel = 0;
     }
 
     public Sprite SelectImg( boolean fire ) {
@@ -111,6 +104,11 @@ public class Hero extends Character {
 
             return heroStill.get(selectedImg - 1);
         }
+    }
+
+    public void walk ( int dir ) {
+
+        vel = dir * maxVel;
     }
 
 }
