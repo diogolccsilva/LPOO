@@ -4,7 +4,10 @@ package com.lpoo.project.screens;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.lpoo.project.MyGame;
 
 /**
  * Created by Vasco on 11/05/2016.
@@ -12,10 +15,13 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 public class Menu implements Screen, InputProcessor {
 
     //private Texture background;
+    private MyGame game;
+    private Button play, exit;
     private Texture playBtn, exitBtn;
 
-    public Menu( ) {
+    public Menu( MyGame game ) {
 
+        this.game = game;
     }
 
     @Override

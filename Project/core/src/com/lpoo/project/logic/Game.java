@@ -15,11 +15,12 @@ public class Game {
 
     private Hero hero;
     private boolean fire;
+    private GameStatus state;
 
     public Game() {
 
-        hero = new Hero( 0, 0, 100, 10, 25 );/**/
-
+        hero = new Hero( 0, 0, 100, 10, 25 );
+        state = GameStatus.PLAYING;
         fire = false;
     }
 
@@ -33,28 +34,21 @@ public class Game {
         return fire;
     }
 
-    public void render(SpriteBatch batch, OrthographicCamera camera) {
-
-        Vector2 hPos = hero.getPosition();
-        camera.position.set( hPos.x, hPos.y, 0 );
-        camera.update();
-        hero.SelectImg( fire ).draw( batch );
-    }
-
-    public void touchDown(int screenX, int screenY) {
+    public void touchDown( int screenX, int screenY ) {
 
         int width = Gdx.graphics.getWidth();
         if( screenX < width / 8 )
-            hero.walk( -1 );
+            hero.setDir( -1 );
         else if ( screenX > width - width / 8 )
-            hero.walk( 1 );
+            hero.setDir( 1 );
         else
             fire = true;
     }
 
-    public void touchUp(int screenX, int screenY) {
+    public void touchUp( ) {
 
         fire = false;
+        hero.setDir( 0 );
     }
 
     public void touchDragged(int screenX, int screenY) {

@@ -1,8 +1,8 @@
 package com.lpoo.project.animations;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 /**
@@ -10,43 +10,54 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
  */
 public class Animator {
 
-   // private Animation animation;
-    private Sprite[] sprites;
-    private int animationSpeed;
+    private Animation attack, move;
+    private TextureAtlas attackTextures, moveTextures;
     private float stateTime;
 
-    public Animator( Texture text, int texWidth, int texHeight, int nImg, int speed ) {
+    /**
+     * @brief Constructor for the Animator class
+     * @param attackPath
+     * @param movePath
+     * @param attackSpeed
+     * @param moveSpeed
+     */
+    public Animator( String attackPath, String movePath, float attackSpeed, float moveSpeed ) {
 
-        animationSpeed = speed;
-        stateTime = 0f;
+        stateTime = 0;
 
-        sprites = new Sprite[nImg];
+        attackTextures = new TextureAtlas( Gdx.files.internal( attackPath ) );
+        attack = new Animation( attackSpeed, attackTextures.getRegions() );
 
-        TextureRegion[][] tmp = TextureRegion.split( text, texWidth, texHeight );
-
-        int nLine = text.getHeight() / ( texHeight + 2 );
-        int nCol = text.getWidth() / ( texWidth + 2 );
-
-        for ( int l = 0; l < nLine; l++ ) {
-
-            for ( int c = 0; c < nCol; c++ ) {
-
-                if ( l + c >= nImg )
-                //No need to break in the other for () because if there are no more images then there are no more lines
-                    break;
-
-                sprites[ l + c ] = new Sprite( tmp[l][c] );
-            }
-        }
+        moveTextures = new TextureAtlas( Gdx.files.internal( movePath ) );
+        move = new Animation( moveSpeed, moveTextures.getRegions() );
     }
 
-    public Sprite getImg ( ) {
+    /**
+     * @biref Sets the speed of the attack animation
+     * @param speed
+     */
+    public void setAttackSpeed ( float speed ) {
 
-        stateTime += Gdx.graphics.getDeltaTime();
-
-        int index = (int) (animationSpeed / stateTime);
-
-        return sprites[index];
+        attack.setFrameDuration( speed );
     }
 
+    /**
+     * @biref Sets the speed of the attack animation
+     * @param speed
+     */
+    public void setMoveSpeed ( float speed ) {
+
+        move.setFrameDuration( speed );
+    }
+
+    /**
+     * @brief Getter for the current texture of the animation
+     * @param delta
+     * @return TextureRegion to be drawn on the screen
+     */
+    public TextureRegion getTexture ( float delta ) {
+
+        stateTime += delta;
+        return attack.getKeyFrame( stateTime, true );
+    }
 }
