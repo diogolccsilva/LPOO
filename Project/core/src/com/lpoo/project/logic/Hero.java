@@ -18,15 +18,16 @@ public class Hero extends Character {
 
     /**
      * @brief Constructor for the class Hero
+     * @param name
      * @param x
      * @param y
      * @param health
      * @param resistance
      * @param strength
      */
-    public Hero( int x, int y, int health, int resistance, int strength )  {
+    public Hero(String name, int x, int y, int health, int resistance, int strength )  {
 
-        super( x, y, health, resistance, strength );
+        super(name, x, y, health, resistance, strength );
     }
 
     public void setDir( int dir ) {

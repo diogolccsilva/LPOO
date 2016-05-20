@@ -19,7 +19,7 @@ public class Game {
 
     public Game() {
 
-        hero = new Hero( 0, 0, 100, 10, 25 );
+        hero = new Hero("hero1", 0, 0, 100, 10, 25 );
         state = GameStatus.PLAYING;
         fire = false;
     }

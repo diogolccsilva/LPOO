@@ -12,15 +12,18 @@ public class Entity {
     Nao sei se queremos que seja abstrata
      */
     Vector2 position;
+    String name;
 
     /**
      * @brief Constructor for the class Entity
+     * @param name, name of the entity
      * @param x, x position of the entity
      * @param y, y position of the entity
      */
-    public Entity( int x, int y ) {
+    public Entity(String name, int x, int y) {
 
         position = new Vector2( x, y );
+        this.name = name;
     }
 
     /**
