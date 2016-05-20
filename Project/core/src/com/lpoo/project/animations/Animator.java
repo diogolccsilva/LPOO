@@ -10,8 +10,11 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
  */
 public class Animator {
 
-    private Animation attack, move;
-    private TextureAtlas attackTextures, moveTextures;
+    public enum AnimationStatus { ATTACK, STILL, MOVE_RIGHT, MOVE_LEFT}
+    private AnimationStatus status;
+    private Animation currAnimation;
+    private Animation attack, still, move_left, move_right;
+    private TextureAtlas attackTextures, stillTextures, move_leftTextures, move_rigtTextures;
     private float stateTime;
 
     /**
@@ -25,29 +28,44 @@ public class Animator {
 
         stateTime = 0;
 
+        status = AnimationStatus.STILL;
+
         attackTextures = new TextureAtlas( Gdx.files.internal( attackPath ) );
         attack = new Animation( attackSpeed, attackTextures.getRegions() );
 
-        moveTextures = new TextureAtlas( Gdx.files.internal( movePath ) );
-        move = new Animation( moveSpeed, moveTextures.getRegions() );
+        stillTextures = new TextureAtlas( Gdx.files.internal( movePath ) );
+        still = new Animation( moveSpeed, stillTextures.getRegions() );
+
+        move_leftTextures = new TextureAtlas( Gdx.files.internal( movePath ) );
+        move_left = new Animation( moveSpeed, stillTextures.getRegions() );
+
+        move_rigtTextures = new TextureAtlas( Gdx.files.internal( movePath ) );
+        move_right = new Animation( moveSpeed, stillTextures.getRegions() );
+
+        currAnimation = still;
     }
 
     /**
-     * @biref Sets the speed of the attack animation
+     * @biref Sets the speed of an animation
+     * @param stat
      * @param speed
      */
-    public void setAttackSpeed ( float speed ) {
+    public void setAttackSpeed ( AnimationStatus stat, float speed ) {
 
-        attack.setFrameDuration( speed );
-    }
-
-    /**
-     * @biref Sets the speed of the attack animation
-     * @param speed
-     */
-    public void setMoveSpeed ( float speed ) {
-
-        move.setFrameDuration( speed );
+        switch ( stat ) {
+            case ATTACK:
+                attack.setFrameDuration( speed );
+                break;
+            case STILL:
+                still.setFrameDuration( speed );
+                break;
+            case MOVE_LEFT:
+                move_left.setFrameDuration( speed );
+                break;
+            case MOVE_RIGHT:
+                move_right.setFrameDuration( speed );
+                break;
+        }
     }
 
     /**
@@ -55,9 +73,34 @@ public class Animator {
      * @param delta
      * @return TextureRegion to be drawn on the screen
      */
-    public TextureRegion getTexture ( float delta ) {
+    public TextureRegion getTexture ( AnimationStatus stat, float delta ) {
+        /* Mundo complitado */
+
+        Animation nextAnimation = null;
+
+        switch ( stat ) {
+            case ATTACK:
+                nextAnimation = attack;
+                break;
+            case STILL:
+                nextAnimation = still;
+                break;
+            case MOVE_LEFT:
+                nextAnimation = move_left;
+                break;
+            case MOVE_RIGHT:
+                nextAnimation = move_right;
+                break;
+        }
 
         stateTime += delta;
-        return attack.getKeyFrame( stateTime, true );
+
+        if (currAnimation.isAnimationFinished(stateTime) || ( currAnimation == still && nextAnimation != still )) {
+            stateTime = 0;
+            status = stat;
+            currAnimation = nextAnimation;
+        }
+
+        return currAnimation.getKeyFrame( stateTime, true );
     }
 }
