@@ -20,11 +20,15 @@ public class PlayScreen implements Screen, InputProcessor {
     private MyGame game;
     private Game play;
 
+    private boolean pressed;
+
     private Animator hero_animations;
 
     public PlayScreen(MyGame game) {
 
         this.game = game;
+
+        pressed = false;
 
         play = new Game();
 
@@ -44,11 +48,25 @@ public class PlayScreen implements Screen, InputProcessor {
     @Override
     public void render(float delta) {
 
+        /* UPDATE GAME'S LOGIC */
+        /* To Do */
         //Hero's position
         Vector2 hPos = play.getHero().getPosition();
 
-        //Hero's current texture
-        TextureRegion text = hero_animations.getTexture( delta );
+
+        /* UPDATE ALL ANIMATIONS */
+        /* In development */
+
+        //Hero's animation
+        TextureRegion text = hero_animations.getTexture( pressed ?
+                                                        Animator.AnimationStatus.ATTACK :
+                                                        Animator.AnimationStatus.STILL,
+                                                        delta );
+        //Traps' animations
+
+        //Enemies' animations
+
+        /* DRAW TEXTURES ON THE SCREEN */
 
         //Clear screen with certain color
         Gdx.gl.glClearColor((float)0.5, (float)0.5, (float)0.5, 1);
@@ -115,6 +133,8 @@ public class PlayScreen implements Screen, InputProcessor {
 
         play.touchDown( screenX, screenY );
 
+        pressed = true;
+
         return true;
     }
 
@@ -122,6 +142,8 @@ public class PlayScreen implements Screen, InputProcessor {
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 
         play.touchUp( );
+
+        pressed = false;
 
         return true;
     }

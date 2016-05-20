@@ -16,6 +16,11 @@ import java.util.LinkedList;
  */
 public class Hero extends Character {
 
+    public enum HeroStatus { STILL, ATTACK, MOVE_LEFT, MOVE_RIGHT, DEAD }
+    private HeroStatus state;
+    private HeroStatus nextState;
+    private int stateTime;
+
     /**
      * @brief Constructor for the class Hero
      * @param x
@@ -25,24 +30,8 @@ public class Hero extends Character {
      * @param strength
      */
     public Hero( int x, int y, int health, int resistance, int strength )  {
-
         super( x, y, health, resistance, strength );
     }
 
-    public void setDir( int dir ) {
-
-        //dir = -1 while moving left, dir = 0 while not moving, dir = 1 while moving
-        if( dir < -1 || dir > 1)
-            return ;
-
-        //Character's can only move left or right
-        velocity = max_velocity * dir;
-
-    }
-
-    public void update(float delta) {
-
-        position.x += velocity * delta;
-    }
 
 }
