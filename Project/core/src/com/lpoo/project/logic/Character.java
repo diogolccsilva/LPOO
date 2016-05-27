@@ -1,5 +1,7 @@
 package com.lpoo.project.logic;
 
+import java.awt.Rectangle;
+
 /**
  * Created by Vasco on 10/05/2016.
  */
@@ -12,6 +14,7 @@ public class Character extends Entity implements Move {
 
     private Stats stats;
     protected float velocity;
+    protected int width = 82, height = 124;
 
     /**
      * @brief Constructor for the class Character
@@ -72,5 +75,9 @@ public class Character extends Entity implements Move {
     public void update(float delta) {
 
         position.x += velocity * delta;
+    }
+
+    public boolean collision(Rectangle rect){
+        return position.x < rect.x + rect.width && position.x + width > rect.x && position.y < rect.y + rect.height && position.y + height > rect.y;
     }
 }
