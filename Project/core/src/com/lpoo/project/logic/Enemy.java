@@ -5,17 +5,23 @@ package com.lpoo.project.logic;
  */
 public class Enemy extends Character {
 
+    public enum EnemyStatus { ATTACK, MOVE_RIGHT, DEAD }
+    private int move_speed, attack_speed;
+    private EnemyStatus state;
+    private EnemyStatus nextState;
+    private int stateTime;
+
     /**
      * @brief Constructor for the class Enemy
-     * @param name
      * @param x
      * @param y
      * @param health
      * @param resistance
      * @param strength
      */
-    public Enemy(String name, int x, int y, int health, int resistance, int strength )  {
-
-        super(name, x, y, health, resistance, strength );
+    public Enemy(/*String name, */int x, int y, int health, int resistance, int strength )  {
+        super(/*name,*/ x, y, health, resistance, strength );
+        stateTime = 0;
+        state = EnemyStatus.MOVE_RIGHT;
     }
 }

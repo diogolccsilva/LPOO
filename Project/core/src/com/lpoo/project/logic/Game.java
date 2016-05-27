@@ -10,11 +10,11 @@ public class Game {
     public enum GameStatus { BUILDING, PLAYING, WON, LOST}
     private GameStatus state;
 
-    private Hero hero;
+    public Hero hero;
 
     public Game() {
 
-        hero = new Hero("hero1", 0, 0, 100, 10, 25 );
+        hero = new Hero( 0, 0, 100, 10, 25 );
         state = GameStatus.PLAYING;
     }
 

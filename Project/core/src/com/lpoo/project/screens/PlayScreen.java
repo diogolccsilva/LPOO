@@ -9,7 +9,9 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.lpoo.project.MyGame;
 import com.lpoo.project.animations.Animator;
+import com.lpoo.project.animations.HeroAnimation;
 import com.lpoo.project.logic.Game;
+import com.lpoo.project.logic.Hero;
 
 /**
  * Created by Vasco on 13/05/2016.
@@ -18,26 +20,28 @@ public class PlayScreen implements Screen, InputProcessor {
 
     private OrthographicCamera camera;
     private MyGame game;
-    private Game play;
+    public Game play;
 
     private boolean pressed;
 
-    private Animator hero_animations;
+    private HeroAnimation hero_animations;
 
     public PlayScreen(MyGame game) {
 
         this.game = game;
-
         pressed = false;
-
         play = new Game();
 
         int h = 500, w = h * 16 / 9;
         camera = new OrthographicCamera( w, h );
 
-        hero_animations = new Animator( "Hero\\hero1_fire.atlas", "Hero\\hero1_still.atlas", 1/10f, 1/3f );
+        hero_animations = new HeroAnimation( this, "Hero\\hero1_fire.atlas", "Hero\\hero1_still.atlas", 1/10f, 1/3f );
 
         Gdx.input.setInputProcessor(this); //Indicate that this class handles the inputs
+    }
+
+    public Game getGame() {
+        return play;
     }
 
     @Override
@@ -59,8 +63,8 @@ public class PlayScreen implements Screen, InputProcessor {
 
         //Hero's animation
         TextureRegion text = hero_animations.getTexture( pressed ?
-                                                        Animator.AnimationStatus.ATTACK :
-                                                        Animator.AnimationStatus.STILL,
+                                                        Hero.HeroStatus.ATTACK :
+                                                        Hero.HeroStatus.STILL,
                                                         delta );
         //Traps' animations
 
