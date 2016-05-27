@@ -19,8 +19,8 @@ public class Enemy extends Character {
      * @param resistance
      * @param strength
      */
-    public Enemy(/*String name, */int x, int y, int health, int resistance, int strength )  {
-        super(/*name,*/ x, y, health, resistance, strength );
+    public Enemy( int x, int y, int health, int resistance, int strength )  {
+        super( x, y, 82, 124, health, resistance, strength );
         stateTime = 0;
         state = EnemyStatus.MOVE_RIGHT;
     }

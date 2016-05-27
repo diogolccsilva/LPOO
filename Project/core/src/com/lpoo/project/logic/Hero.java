@@ -30,9 +30,8 @@ public class Hero extends Character {
      * @param resistance
      * @param strength
      */
-    public Hero(/*String name,*/ int x, int y, int health, int resistance, int strength )  {
-
-        super(/*name, */x, y, health, resistance, strength );
+    public Hero( int x, int y, int health, int resistance, int strength )  {
+        super( x, y, 54, 88, health, resistance, strength );
     }
 
     public void attack( ) {
@@ -48,7 +47,6 @@ public class Hero extends Character {
 
     public void update( int delta ) {
         int speed = 0;
-
         if( state == HeroStatus.STILL ) {
             if( nextState != HeroStatus.STILL ) {
                 stateTime = 0;
@@ -59,7 +57,6 @@ public class Hero extends Character {
         }
 
         stateTime += delta;
-
         switch ( state ) {
             case ATTACK:
                 speed = attack_speed;

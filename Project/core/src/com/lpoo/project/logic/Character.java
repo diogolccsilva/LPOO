@@ -14,7 +14,6 @@ public class Character extends Entity implements Move {
 
     private Stats stats;
     protected float velocity;
-    protected int width = 82, height = 124;
 
     /**
      * @brief Constructor for the class Character
@@ -24,7 +23,7 @@ public class Character extends Entity implements Move {
      * @param resistance
      * @param strength
      */
-    public Character(int x, int y, int health, int resistance, int strength ) {
+    public Character(int x, int y, int width, int height, int health, int resistance, int strength ) {
 
         super(x, y);
         stats = new Stats( health, resistance, strength );
@@ -74,9 +73,5 @@ public class Character extends Entity implements Move {
     public void update(float delta) {
 
         position.x += velocity * delta;
-    }
-
-    public boolean collision(Rectangle rect){
-        return position.x < rect.x + rect.width && position.x + width > rect.x && position.y < rect.y + rect.height && position.y + height > rect.y;
     }
 }

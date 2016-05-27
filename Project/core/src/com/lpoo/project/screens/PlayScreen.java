@@ -70,6 +70,10 @@ public class PlayScreen implements Screen, InputProcessor {
                                                         Hero.HeroStatus.ATTACK :
                                                         Hero.HeroStatus.STILL,
                                                         delta );
+
+        TextureRegion robot_text = enemy_animations.getTexture( Enemy.EnemyStatus.MOVE_RIGHT,
+                                                                delta );
+
         //Traps' animations
 
         //Enemies' animations
@@ -94,7 +98,7 @@ public class PlayScreen implements Screen, InputProcessor {
 
         //Draw hero's texture
         game.batch.draw( text, hPos.x, hPos.y );
-        game.batch.draw( enemy_animations.getTexture(Enemy.EnemyStatus.MOVE_RIGHT, delta), hPos.x - 200, hPos.y);
+        game.batch.draw( robot_text, hPos.x - 200, hPos.y);
 
         game.batch.end();
     }

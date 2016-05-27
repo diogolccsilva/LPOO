@@ -65,9 +65,6 @@ public class EnemyAnimation {
     public TextureRegion getTexture (Enemy.EnemyStatus stat, float delta ) {
     /* Mundo complitado */
 
-        stateTime += delta;
-        return currAnimation.getKeyFrame( stateTime, true );
-    /*
         Animation nextAnimation = null;
 
         switch ( stat ) {
@@ -88,7 +85,7 @@ public class EnemyAnimation {
         }
 
         return currAnimation.getKeyFrame( stateTime, true );
-    */
+
     }
 }
 
