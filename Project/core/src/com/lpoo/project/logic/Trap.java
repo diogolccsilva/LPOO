@@ -8,7 +8,7 @@ public class Trap extends Entity {
     public enum TrapStatus { WAIT, ATTACK, RECHARGE };
     private TrapStatus currStatus;
 
-    public Trap ( int x, int y ) {
-        super( x, y );
+    public Trap ( int x, int y, int width, int height ) {
+        super( x, y, width, height );
     }
 }

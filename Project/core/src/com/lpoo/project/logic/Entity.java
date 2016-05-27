@@ -12,8 +12,8 @@ public class Entity {
     /*
     Nao sei se queremos que seja abstrata
      */
-    private Vector2 position;
-    private int width, height;
+    protected Vector2 position;
+    protected int width, height;
     //String name;
 
     /**
@@ -33,7 +33,6 @@ public class Entity {
      * @return the entity's current position
      */
     public Vector2 getPosition() {
-
         return position;
     }
 

@@ -25,7 +25,7 @@ public class Character extends Entity implements Move {
      */
     public Character(int x, int y, int width, int height, int health, int resistance, int strength ) {
 
-        super(x, y);
+        super(x, y, width, height);
         stats = new Stats( health, resistance, strength );
     }
 
@@ -35,9 +35,9 @@ public class Character extends Entity implements Move {
      * @param y
      * @param stats
      */
-    public Character(int x, int y, Stats stats) {
+    public Character(int x, int y, int width, int height, Stats stats) {
 
-        super( x, y);
+        super(x, y, width, height);
         this.stats = stats;
     }
 

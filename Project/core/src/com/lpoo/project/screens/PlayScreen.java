@@ -5,6 +5,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.lpoo.project.MyGame;
@@ -28,6 +29,7 @@ public class PlayScreen implements Screen, InputProcessor {
 
     private HeroAnimation hero_animations;
     private EnemyAnimation enemy_animations;
+    private Texture map;
 
     public PlayScreen(MyGame game) {
 
@@ -40,6 +42,7 @@ public class PlayScreen implements Screen, InputProcessor {
 
         hero_animations = new HeroAnimation( this, "Hero\\hero1_fire.atlas", "Hero\\hero1_still.atlas", 1/10f, 1/3f );
         enemy_animations = new EnemyAnimation( this, "Hero\\hero1_fire.atlas", "Robot\\robot1_walk.atlas", 1/10f, 1/3f );
+        map = new Texture( "Map.png");
 
         Gdx.input.setInputProcessor(this); //Indicate that this class handles the inputs
     }
@@ -85,7 +88,7 @@ public class PlayScreen implements Screen, InputProcessor {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         //Calculate middle of the screen according to the hero's position
-        Vector2 midScreen = calMidScreen( hPos, text.getRegionWidth(), text.getRegionHeight() );
+        Vector2 midScreen = calMidScreen( hPos, text.getRegionWidth() );
 
         //Set batch to only draw what the camera sees
         game.batch.setProjectionMatrix( camera.combined );
@@ -97,6 +100,7 @@ public class PlayScreen implements Screen, InputProcessor {
         camera.update();
 
         //Draw hero's texture
+        game.batch.draw( map, 0, 0 );
         game.batch.draw( text, hPos.x, hPos.y );
         game.batch.draw( robot_text, hPos.x - 200, hPos.y);
 
@@ -107,12 +111,11 @@ public class PlayScreen implements Screen, InputProcessor {
      * @brief Calculates the center of the screen according to the hero's position
      * @param hPos
      * @param spriteWidth
-     * @param spriteHeight
      * @return
      */
-    private Vector2 calMidScreen ( Vector2 hPos, float spriteWidth, float spriteHeight ) {
+    private Vector2 calMidScreen ( Vector2 hPos, float spriteWidth ) {
 
-        return new Vector2( hPos.x + spriteWidth / 2, hPos.y + spriteHeight / 2 );
+        return new Vector2( hPos.x + spriteWidth / 2, 250);
     }
 
     @Override
