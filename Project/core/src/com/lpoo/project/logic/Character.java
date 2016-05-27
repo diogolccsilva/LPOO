@@ -18,16 +18,15 @@ public class Character extends Entity implements Move {
 
     /**
      * @brief Constructor for the class Character
-     * @param name
      * @param x
      * @param y
      * @param health
      * @param resistance
      * @param strength
      */
-    public Character(String name, int x, int y, int health, int resistance, int strength ) {
+    public Character(int x, int y, int health, int resistance, int strength ) {
 
-        super(name, x, y);
+        super(x, y);
         stats = new Stats( health, resistance, strength );
     }
 
@@ -37,9 +36,9 @@ public class Character extends Entity implements Move {
      * @param y
      * @param stats
      */
-    public Character(String name, int x, int y, Stats stats) {
+    public Character(int x, int y, Stats stats) {
 
-        super(name, x, y);
+        super( x, y);
         this.stats = stats;
     }
 

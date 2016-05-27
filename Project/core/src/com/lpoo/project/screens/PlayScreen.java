@@ -9,7 +9,9 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.lpoo.project.MyGame;
 import com.lpoo.project.animations.Animator;
+import com.lpoo.project.animations.EnemyAnimation;
 import com.lpoo.project.animations.HeroAnimation;
+import com.lpoo.project.logic.Enemy;
 import com.lpoo.project.logic.Game;
 import com.lpoo.project.logic.Hero;
 
@@ -25,6 +27,7 @@ public class PlayScreen implements Screen, InputProcessor {
     private boolean pressed;
 
     private HeroAnimation hero_animations;
+    private EnemyAnimation enemy_animations;
 
     public PlayScreen(MyGame game) {
 
@@ -36,6 +39,7 @@ public class PlayScreen implements Screen, InputProcessor {
         camera = new OrthographicCamera( w, h );
 
         hero_animations = new HeroAnimation( this, "Hero\\hero1_fire.atlas", "Hero\\hero1_still.atlas", 1/10f, 1/3f );
+        enemy_animations = new EnemyAnimation( this, "Hero\\hero1_fire.atlas", "Robot\\robot1_walk.atlas", 1/10f, 1/3f );
 
         Gdx.input.setInputProcessor(this); //Indicate that this class handles the inputs
     }
@@ -90,6 +94,7 @@ public class PlayScreen implements Screen, InputProcessor {
 
         //Draw hero's texture
         game.batch.draw( text, hPos.x, hPos.y );
+        game.batch.draw( enemy_animations.getTexture(Enemy.EnemyStatus.MOVE_RIGHT, delta), hPos.x - 200, hPos.y);
 
         game.batch.end();
     }
