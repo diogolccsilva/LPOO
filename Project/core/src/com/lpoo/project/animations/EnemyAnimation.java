@@ -4,19 +4,20 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.utils.Disposable;
 import com.lpoo.project.logic.Enemy;
 import com.lpoo.project.screens.PlayScreen;
 
 /**
  * Created by Vasco on 27/05/2016.
  */
-public class EnemyAnimation {
+public class EnemyAnimation implements Disposable {
     private PlayScreen game;
 
     private Enemy.EnemyStatus status;
     private Animation currAnimation;
     private Animation attack, move_right;
-    private TextureAtlas attackTextures, move_rigtTextures;
+    private TextureAtlas attackTextures, move_rightTextures;
     private float stateTime;
 
     /**
@@ -34,8 +35,8 @@ public class EnemyAnimation {
         attackTextures = new TextureAtlas( Gdx.files.internal( attackPath ) );
         attack = new Animation( attackSpeed, attackTextures.getRegions() );
 
-        move_rigtTextures = new TextureAtlas( Gdx.files.internal( movePath ) );
-        move_right = new Animation( moveSpeed, move_rigtTextures.getRegions() );
+        move_rightTextures = new TextureAtlas( Gdx.files.internal( movePath ) );
+        move_right = new Animation( moveSpeed, move_rightTextures.getRegions() );
 
         currAnimation = move_right;
     }
@@ -86,6 +87,12 @@ public class EnemyAnimation {
 
         return currAnimation.getKeyFrame( stateTime, true );
 
+    }
+
+    @Override
+    public void dispose() {
+        attackTextures.dispose();
+        move_rightTextures.dispose();
     }
 }
 

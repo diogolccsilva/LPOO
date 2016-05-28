@@ -14,7 +14,6 @@ public class Entity {
      */
     protected Vector2 position;
     protected int width, height;
-    //String name;
 
     /**
      * @brief Constructor for the class Entity

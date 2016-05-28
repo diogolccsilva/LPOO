@@ -1,16 +1,5 @@
 package com.lpoo.project.logic;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.utils.TimeUtils;
-import com.lpoo.project.animations.Animator;
-
-import java.util.LinkedList;
-
 /**
  * Created by Vasco on 12/05/2016.
  */
@@ -20,7 +9,7 @@ public class Hero extends Character {
     private int move_speed, attack_speed;
     private HeroStatus state;
     private HeroStatus nextState;
-    private int stateTime;
+    private float stateTime;
 
     /**
      * @brief Constructor for the class Hero
@@ -32,6 +21,10 @@ public class Hero extends Character {
      */
     public Hero( int x, int y, int health, int resistance, int strength )  {
         super( x, y, 54, 88, health, resistance, strength );
+    }
+
+    public void update ( float delta ) {
+        stateTime += delta;
     }
 
     public void attack( ) {

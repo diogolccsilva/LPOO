@@ -4,13 +4,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.utils.Disposable;
 import com.lpoo.project.logic.Trap;
 import com.lpoo.project.screens.PlayScreen;
 
 /**
  * Created by Vasco on 27/05/2016.
  */
-public class TrapAnimation {
+public class TrapAnimation implements Disposable {
 
     private PlayScreen game;
 
@@ -90,5 +91,12 @@ public class TrapAnimation {
         }
 
         return currAnimation.getKeyFrame( stateTime, true );
+    }
+
+    @Override
+    public void dispose() {
+        attackTextures.dispose();
+        waitTextures.dispose();
+        rechargeTextures.dispose();
     }
 }

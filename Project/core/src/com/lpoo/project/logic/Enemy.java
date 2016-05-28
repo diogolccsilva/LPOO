@@ -9,7 +9,7 @@ public class Enemy extends Character {
     private int move_speed, attack_speed;
     private EnemyStatus state;
     private EnemyStatus nextState;
-    private int stateTime;
+    private float stateTime;
 
     /**
      * @brief Constructor for the class Enemy
@@ -20,8 +20,13 @@ public class Enemy extends Character {
      * @param strength
      */
     public Enemy( int x, int y, int health, int resistance, int strength )  {
-        super( x, y, 82, 124, health, resistance, strength );
+        super( x, y, 140, 124, health, resistance, strength );
         stateTime = 0;
         state = EnemyStatus.MOVE_RIGHT;
+    }
+
+    public void update( float delta ) {
+        stateTime += delta;
+        position.x += 30 * delta;
     }
 }

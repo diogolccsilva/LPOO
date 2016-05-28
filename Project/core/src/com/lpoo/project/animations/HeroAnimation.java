@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.utils.Disposable;
 import com.lpoo.project.logic.Hero;
 import com.lpoo.project.logic.Hero.HeroStatus;
 import com.lpoo.project.screens.PlayScreen;
@@ -11,24 +12,28 @@ import com.lpoo.project.screens.PlayScreen;
 /**
  * Created by Vasco on 27/05/2016.
  */
-public class HeroAnimation {
+public class HeroAnimation implements Disposable {
 
     private PlayScreen game;
 
     private HeroStatus status;
     private Animation currAnimation;
     private Animation attack, still, move_left, move_right;
-    private TextureAtlas attackTextures, stillTextures, move_leftTextures, move_rigtTextures;
+    private TextureAtlas attackTextures, stillTextures, move_leftTextures, move_rightTextures;
     private float stateTime;
 
     /**
      * @brief Constructor for the Animator class
      * @param attackPath
-     * @param movePath
+     * @param stillPath
+     * @param leftPath
+     * @param rightPath
      * @param attackSpeed
      * @param moveSpeed
      */
-    public HeroAnimation( PlayScreen game, String attackPath, String movePath, float attackSpeed, float moveSpeed ) {
+    public HeroAnimation( PlayScreen game, String attackPath,
+                          String stillPath, String leftPath,
+                          String rightPath, float attackSpeed, float moveSpeed ) {
         this.game = game;
         stateTime = 0;
         status = HeroStatus.STILL;
@@ -36,14 +41,14 @@ public class HeroAnimation {
         attackTextures = new TextureAtlas( Gdx.files.internal( attackPath ) );
         attack = new Animation( attackSpeed, attackTextures.getRegions() );
 
-        stillTextures = new TextureAtlas( Gdx.files.internal( movePath ) );
+        stillTextures = new TextureAtlas( Gdx.files.internal( stillPath ) );
         still = new Animation( moveSpeed, stillTextures.getRegions() );
 
-        move_leftTextures = new TextureAtlas( Gdx.files.internal( movePath ) );
-        move_left = new Animation( moveSpeed, stillTextures.getRegions() );
+        move_leftTextures = new TextureAtlas( Gdx.files.internal( leftPath ) );
+        move_left = new Animation( moveSpeed, move_leftTextures.getRegions() );
 
-        move_rigtTextures = new TextureAtlas( Gdx.files.internal( movePath ) );
-        move_right = new Animation( moveSpeed, stillTextures.getRegions() );
+        move_rightTextures = new TextureAtlas( Gdx.files.internal( rightPath ) );
+        move_right = new Animation( moveSpeed, move_rightTextures.getRegions() );
 
         currAnimation = still;
     }
@@ -105,5 +110,13 @@ public class HeroAnimation {
         }
 
         return currAnimation.getKeyFrame( stateTime, true );
+    }
+
+    @Override
+    public void dispose() {
+        attackTextures.dispose();
+        stillTextures.dispose();
+        move_leftTextures.dispose();
+        move_rightTextures.dispose();
     }
 }

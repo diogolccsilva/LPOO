@@ -6,15 +6,17 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.lpoo.project.MyGame;
-import com.lpoo.project.animations.Animator;
 import com.lpoo.project.animations.EnemyAnimation;
 import com.lpoo.project.animations.HeroAnimation;
 import com.lpoo.project.logic.Enemy;
 import com.lpoo.project.logic.Game;
 import com.lpoo.project.logic.Hero;
+
+import java.util.LinkedList;
 
 /**
  * Created by Vasco on 13/05/2016.
@@ -24,6 +26,7 @@ public class PlayScreen implements Screen, InputProcessor {
     private OrthographicCamera camera;
     private MyGame game;
     public Game play;
+    private BitmapFont text;
 
     private boolean pressed;
 
@@ -36,11 +39,13 @@ public class PlayScreen implements Screen, InputProcessor {
         this.game = game;
         pressed = false;
         play = new Game();
+        text = new BitmapFont();
 
         int h = 500, w = h * 16 / 9;
         camera = new OrthographicCamera( w, h );
 
-        hero_animations = new HeroAnimation( this, "Hero\\hero1_fire.atlas", "Hero\\hero1_still.atlas", 1/10f, 1/3f );
+        hero_animations = new HeroAnimation( this, "Hero\\hero1_fire.atlas", "Hero\\hero1_still.atlas",
+                                                    "Hero\\hero1_still.atlas", "Hero\\hero1_still.atlas", 1/10f, 1/3f );
         enemy_animations = new EnemyAnimation( this, "Hero\\hero1_fire.atlas", "Robot\\robot1_walk.atlas", 1/10f, 1/3f );
         map = new Texture( "Map.png");
 
@@ -59,27 +64,25 @@ public class PlayScreen implements Screen, InputProcessor {
     @Override
     public void render(float delta) {
 
+        String str = "" + play.stateTime;
+
         /* UPDATE GAME'S LOGIC */
         /* To Do */
         //Hero's position
         Vector2 hPos = play.getHero().getPosition();
-
+        play.update( delta );
 
         /* UPDATE ALL ANIMATIONS */
         /* In development */
 
         //Hero's animation
-        TextureRegion text = hero_animations.getTexture( pressed ?
-                                                        Hero.HeroStatus.ATTACK :
-                                                        Hero.HeroStatus.STILL,
-                                                        delta );
+        TextureRegion hero_text = hero_animations.getTexture( pressed ? Hero.HeroStatus.ATTACK : Hero.HeroStatus.STILL, delta );
 
-        TextureRegion robot_text = enemy_animations.getTexture( Enemy.EnemyStatus.MOVE_RIGHT,
-                                                                delta );
 
         //Traps' animations
 
         //Enemies' animations
+        TextureRegion robot_text = enemy_animations.getTexture( Enemy.EnemyStatus.MOVE_RIGHT, delta );
 
         /* DRAW TEXTURES ON THE SCREEN */
 
@@ -88,12 +91,13 @@ public class PlayScreen implements Screen, InputProcessor {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         //Calculate middle of the screen according to the hero's position
-        Vector2 midScreen = calMidScreen( hPos, text.getRegionWidth() );
+        Vector2 midScreen = calMidScreen( hPos, hero_text.getRegionWidth() );
 
         //Set batch to only draw what the camera sees
         game.batch.setProjectionMatrix( camera.combined );
 
         game.batch.begin();
+
 
         //Set camera position to match hero's center position
         camera.position.set( midScreen.x, midScreen.y, 0 );
@@ -101,8 +105,13 @@ public class PlayScreen implements Screen, InputProcessor {
 
         //Draw hero's texture
         game.batch.draw( map, 0, 0 );
-        game.batch.draw( text, hPos.x, hPos.y );
-        game.batch.draw( robot_text, hPos.x - 200, hPos.y);
+        game.batch.draw( hero_text, hPos.x, hPos.y );
+
+        LinkedList<Enemy> enemies = play.getEnemies();
+        for( int i = 0; i < enemies.size(); i++ )
+            game.batch.draw( robot_text, enemies.get(i).getPosition().x, enemies.get(i).getPosition().y);
+
+        text.draw( game.batch, str, hPos.x - 300, hPos.y - 120);
 
         game.batch.end();
     }
@@ -114,8 +123,7 @@ public class PlayScreen implements Screen, InputProcessor {
      * @return
      */
     private Vector2 calMidScreen ( Vector2 hPos, float spriteWidth ) {
-
-        return new Vector2( hPos.x + spriteWidth / 2, 250);
+        return new Vector2( (hPos.x < 450 ) ? 450 : (hPos.x > 4000 ) ? 4000 : hPos.x + spriteWidth / 2, 250);
     }
 
     @Override
@@ -140,7 +148,9 @@ public class PlayScreen implements Screen, InputProcessor {
 
     @Override
     public void dispose() {
-
+        hero_animations.dispose();
+        enemy_animations.dispose();
+        map.dispose();
     }
 
 
