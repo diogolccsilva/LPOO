@@ -20,7 +20,7 @@ public class Hero extends Character {
      * @param strength
      */
     public Hero( int x, int y, int health, int resistance, int strength )  {
-        super( x, y, 54, 88, health, resistance, strength );
+        super( x, y, 45, 88, health, resistance, strength );
     }
 
     public void update ( float delta ) {

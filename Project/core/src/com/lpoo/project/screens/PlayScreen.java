@@ -31,6 +31,7 @@ public class PlayScreen implements Screen, InputProcessor {
     private boolean pressed;
 
     private HeroAnimation hero_animations;
+    private LinkedList<EnemyAnimation> eA;
     private EnemyAnimation enemy_animations;
     private Texture map;
 
@@ -46,7 +47,8 @@ public class PlayScreen implements Screen, InputProcessor {
 
         hero_animations = new HeroAnimation( this, "Hero\\hero1_fire.atlas", "Hero\\hero1_still.atlas",
                                                     "Hero\\hero1_still.atlas", "Hero\\hero1_still.atlas", 1/10f, 1/3f );
-        enemy_animations = new EnemyAnimation( this, "Hero\\hero1_fire.atlas", "Robot\\robot1_walk.atlas", 1/10f, 1/3f );
+        enemy_animations = new EnemyAnimation( this, "Robot\\robot1_attack.atlas", "Robot\\robot1_walk.atlas", 1/3f, 1/3f );
+        eA = new LinkedList<EnemyAnimation>();
         map = new Texture( "Map.png");
 
         Gdx.input.setInputProcessor(this); //Indicate that this class handles the inputs
@@ -70,7 +72,8 @@ public class PlayScreen implements Screen, InputProcessor {
         /* To Do */
         //Hero's position
         Vector2 hPos = play.getHero().getPosition();
-        play.update( delta );
+        if( play.update( delta ) )
+            eA.add( new EnemyAnimation( this, "Robot\\robot1_attack.atlas", "Robot\\robot1_walk.atlas", 1/3f, 1/3f ));
 
         /* UPDATE ALL ANIMATIONS */
         /* In development */
@@ -82,7 +85,7 @@ public class PlayScreen implements Screen, InputProcessor {
         //Traps' animations
 
         //Enemies' animations
-        TextureRegion robot_text = enemy_animations.getTexture( Enemy.EnemyStatus.MOVE_RIGHT, delta );
+       // TextureRegion robot_text = enemy_animations.getTexture( play., delta );
 
         /* DRAW TEXTURES ON THE SCREEN */
 
@@ -108,8 +111,10 @@ public class PlayScreen implements Screen, InputProcessor {
         game.batch.draw( hero_text, hPos.x, hPos.y );
 
         LinkedList<Enemy> enemies = play.getEnemies();
-        for( int i = 0; i < enemies.size(); i++ )
-            game.batch.draw( robot_text, enemies.get(i).getPosition().x, enemies.get(i).getPosition().y);
+        for( int i = 0; i < enemies.size(); i++ ) {
+            TextureRegion robot_text = eA.get(i).getTexture( enemies.get(i).getStatus(), delta );
+            game.batch.draw(robot_text, enemies.get(i).getPosition().x, enemies.get(i).getPosition().y);
+        }
 
         text.draw( game.batch, str, hPos.x - 300, hPos.y - 120);
 

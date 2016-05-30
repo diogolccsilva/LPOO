@@ -29,18 +29,21 @@ public class Game {
         stateTime = 0;
     }
 
-    public void update( float delta ) {
+    public boolean update( float delta ) {
         float currTime = stateTime + delta;
 
         for( int i = 0; i < enemies.size(); i++ ) {
-            enemies.get(i).update( delta );
+            enemies.get(i).update( delta, hero );
         }
 
         if( Math.floor( stateTime / diffNextEnemy ) != Math.floor( currTime / diffNextEnemy ) ) {
             Enemy e = new Enemy( 50, 144, enemyHealth, enemyResist, enemyStrength );
             enemies.add(e);
+            stateTime += delta;
+            return true;
         }
         stateTime += delta;
+        return  false;
     }
 
     public final Hero getHero() {
