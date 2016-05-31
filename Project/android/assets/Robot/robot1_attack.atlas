@@ -38,3 +38,17 @@ Robot_Attack5
   orig: 82, 128
   offset: 0, 0
   index: -1
+Robot_Attack6
+  rotate: false
+  xy: 337, 1
+  size: 82, 128
+  orig: 82, 128
+  offset: 0, 0
+  index: -1
+Robot_Attack7
+  rotate: false
+  xy: 337, 1
+  size: 82, 128
+  orig: 82, 128
+  offset: 0, 0
+  index: -1

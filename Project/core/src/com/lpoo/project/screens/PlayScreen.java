@@ -12,6 +12,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.lpoo.project.MyGame;
 import com.lpoo.project.animations.EnemyAnimation;
 import com.lpoo.project.animations.HeroAnimation;
+import com.lpoo.project.animations.Map;
 import com.lpoo.project.logic.Enemy;
 import com.lpoo.project.logic.Game;
 import com.lpoo.project.logic.Hero;
@@ -28,20 +29,17 @@ public class PlayScreen implements Screen, InputProcessor {
     public Game play;
     private BitmapFont text;
 
-    private boolean pressed;
-
     private HeroAnimation hero_animations;
     private LinkedList<EnemyAnimation> eA;
     private EnemyAnimation enemy_animations;
-    private Texture map;
-    private Texture spawnWall;
+    private Map map;
+
 
     private final int h = 500, w = 890;
 
     public PlayScreen(MyGame game) {
 
         this.game = game;
-        pressed = false;
         play = new Game();
         text = new BitmapFont();
 
@@ -51,8 +49,7 @@ public class PlayScreen implements Screen, InputProcessor {
                                                     "Hero\\hero1_still.atlas", "Hero\\hero1_still.atlas", 1/10f, 1/3f );
         enemy_animations = new EnemyAnimation( this, "Robot\\robot1_attack.atlas", "Robot\\robot1_walk.atlas", 1/3f, 1/3f );
         eA = new LinkedList<EnemyAnimation>();
-        map = new Texture("Map\\Map.png");
-        spawnWall = new Texture("Map\\SpawnWall.png");
+        map = new Map();
 
         Gdx.input.setInputProcessor(this); //Indicate that this class handles the inputs
     }
@@ -78,14 +75,19 @@ public class PlayScreen implements Screen, InputProcessor {
     @Override
     public void render(float delta) {
 
-        String str = "" + play.getHero().getNextState();
-
         /* UPDATE GAME'S LOGIC */
         /* To Do */
         //Hero's position
         Vector2 hPos = play.getHero().getPosition();
-        if( play.update( delta ) )
+        play.update( delta );
+
+        boolean[] frameEvents = play.getFrameEvents();
+        if( frameEvents[Game.ENEMY_SPAWN_INDEX] )
             eA.add( new EnemyAnimation( this, "Robot\\robot1_attack.atlas", "Robot\\robot1_walk.atlas", 1/5f, 1/3f ));
+
+        String str = "" + frameEvents[Game.ENEMY_SPAWN_INDEX];
+        play.setFrameEvents();
+        str += "\n" + frameEvents[Game.ENEMY_SPAWN_INDEX];
 
         /* UPDATE ALL ANIMATIONS */
         /* In development */
@@ -93,7 +95,7 @@ public class PlayScreen implements Screen, InputProcessor {
         //Hero's animation
         TextureRegion hero_text = hero_animations.getTexture( play.getHero().getNextState(), delta );
         play.getHero().AnimationStatus( hero_animations.getStatus() );
-        str += "\n" + hero_animations.getStatus();
+
 
 
         //Traps' animations
@@ -115,13 +117,12 @@ public class PlayScreen implements Screen, InputProcessor {
 
         game.batch.begin();
 
-
         //Set camera position to match hero's center position
         camera.position.set( midScreen.x, midScreen.y, 0 );
         camera.update();
 
         //Draw hero's texture
-        game.batch.draw( map, 0, 0 );
+        game.batch.draw( map.getMap(), 0, 0 );
         game.batch.draw( hero_text, hPos.x, hPos.y );
 
         LinkedList<Enemy> enemies = play.getEnemies();
@@ -130,8 +131,8 @@ public class PlayScreen implements Screen, InputProcessor {
             game.batch.draw(robot_text, enemies.get(i).getPosition().x, enemies.get(i).getPosition().y);
             play.getEnemies().get(i).AnimationStatus( eA.get(i).getStatus() );
         }
-        game.batch.draw( spawnWall, 0, 142);
-        text.draw( game.batch, str, hPos.x, hPos.y - 120);
+        game.batch.draw( map.getSpawnWall(), 0, 142);
+        text.draw( game.batch, str, hPos.x, hPos.y - 50);
 
         game.batch.end();
     }
@@ -182,7 +183,6 @@ public class PlayScreen implements Screen, InputProcessor {
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         play.touchUp( );
-        pressed = false;
         return true;
     }
 

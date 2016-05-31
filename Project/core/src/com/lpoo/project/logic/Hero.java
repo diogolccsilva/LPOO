@@ -26,7 +26,7 @@ public class Hero extends Character {
         attack_speed = 1/10f;
     }
 
-    public HeroStatus getStatus () {
+    public HeroStatus getState () {
         return state;
     }
 
@@ -34,7 +34,7 @@ public class Hero extends Character {
         return nextState;
     }
 
-    public void move( int dir, int delta ) {
+    public void move( int dir, float delta ) {
         rect.x += 40 * delta * dir;
     }
 
@@ -59,7 +59,7 @@ public class Hero extends Character {
         }
     }
 
-    public void update( int delta ) {
+    public void update( float delta ) {
         stateTime += delta;
 
         switch( state ) {

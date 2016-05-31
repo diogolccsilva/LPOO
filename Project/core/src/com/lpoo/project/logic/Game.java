@@ -4,10 +4,16 @@ import com.badlogic.gdx.Gdx;
 
 import java.util.LinkedList;
 
+
 /**
  * Created by Vasco on 10/05/2016.
  */
 public class Game {
+
+    public static final int ENEMY_SPAWN_INDEX = 0;
+    public static final int PROJECTILE_FIRED_INDEX = 1;
+
+    private boolean[] frameEvents;
 
     public enum GameStatus { BUILDING, PLAYING, WON, LOST}
     private GameStatus state;
@@ -22,6 +28,10 @@ public class Game {
     private int enemyResist = 10, enemyHealth = 10, enemyStrength = 10;
 
     public Game() {
+        frameEvents = new boolean[2];
+        frameEvents[ENEMY_SPAWN_INDEX] = false;
+        frameEvents[PROJECTILE_FIRED_INDEX] = false;
+
         hero = new Hero( 200, 144, 100, 10, 25 );
         enemies = new LinkedList<Enemy>();
         traps = new LinkedList<Trap>();
@@ -29,21 +39,43 @@ public class Game {
         stateTime = 0;
     }
 
-    public boolean update( float delta ) {
+    public void updatePlaying( float delta ) {
         float currTime = stateTime + delta;
+        hero.update( delta );
 
-        for( int i = 0; i < enemies.size(); i++ ) {
+        for( int i = 0; i < enemies.size(); i++ )
             enemies.get(i).update( delta, hero );
+
+        if( Math.floor( stateTime / (float)diffNextEnemy ) != Math.floor( currTime / (float)diffNextEnemy ) ) {
+            Enemy e = new Enemy( 50, 144, enemyHealth, enemyResist, enemyStrength );
+            frameEvents[ENEMY_SPAWN_INDEX] = true;
+            enemies.add(e);
         }
 
-        if( Math.floor( stateTime / diffNextEnemy ) != Math.floor( currTime / diffNextEnemy ) ) {
-            Enemy e = new Enemy( 50, 144, enemyHealth, enemyResist, enemyStrength );
-            enemies.add(e);
-            stateTime += delta;
-            return true;
+        stateTime = currTime;
+    }
+
+    public void update( float delta ) {
+        switch ( state ) {
+            case PLAYING:
+                updatePlaying( delta );
+                break;
+            case BUILDING:
+                break;
+            case WON:
+                break;
+            case LOST:
+                break;
         }
-        stateTime += delta;
-        return  false;
+    }
+
+    public boolean[] getFrameEvents() {
+        return frameEvents;
+    }
+
+    public void setFrameEvents( ) {
+        for( int i = 0; i < frameEvents.length; i++ )
+            frameEvents[i] = false;
     }
 
     public final Hero getHero() {
@@ -62,7 +94,4 @@ public class Game {
         hero.touchUp();
     }
 
-    public void touchDragged(int screenX, int screenY) {
-
-    }
 }
