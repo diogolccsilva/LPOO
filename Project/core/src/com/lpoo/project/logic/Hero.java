@@ -6,9 +6,8 @@ package com.lpoo.project.logic;
 public class Hero extends Character {
 
     public enum HeroStatus { STILL, ATTACK, MOVE_LEFT, MOVE_RIGHT, DEAD }
-    private int move_speed, attack_speed;
-    private HeroStatus state;
-    private HeroStatus nextState;
+    private float move_speed, attack_speed;
+    private HeroStatus state, nextState;
     private float stateTime;
 
     /**
@@ -21,49 +20,57 @@ public class Hero extends Character {
      */
     public Hero( int x, int y, int health, int resistance, int strength )  {
         super( x, y, 45, 88, health, resistance, strength );
+        state = HeroStatus.STILL;
+        nextState = state;
+        move_speed = 1/3f;
+        attack_speed = 1/10f;
     }
 
-    public void update ( float delta ) {
-        stateTime += delta;
+    public HeroStatus getStatus () {
+        return state;
     }
 
-    public void attack( ) {
-        nextState = HeroStatus.ATTACK;
+    public HeroStatus getNextState () {
+        return nextState;
     }
 
-    public void move( int dir ) {
-        if( dir < 0 )
+    public void move( int dir, int delta ) {
+        rect.x += 40 * delta * dir;
+    }
+
+    public void touchDown( float screenX, float screenY ) {
+        if( screenX < 50 )
             nextState = HeroStatus.MOVE_LEFT;
-        else
+        else if( screenX > 840 )
             nextState = HeroStatus.MOVE_RIGHT;
+        else
+            nextState = HeroStatus.ATTACK;
+    }
+
+    public void touchUp( ) {
+        nextState = HeroStatus.STILL;
+    }
+
+    public void AnimationStatus( HeroStatus stat ) {
+        if( stat != state) {
+            nextState = stat;
+            state = stat;
+            stateTime = 0;
+        }
     }
 
     public void update( int delta ) {
-        int speed = 0;
-        if( state == HeroStatus.STILL ) {
-            if( nextState != HeroStatus.STILL ) {
-                stateTime = 0;
-                state = nextState;
-                nextState = HeroStatus.STILL;
-            }
-            return ;
-        }
-
         stateTime += delta;
-        switch ( state ) {
+
+        switch( state ) {
             case ATTACK:
-                speed = attack_speed;
                 break;
             case MOVE_LEFT:
-            case MOVE_RIGHT:
-                speed = move_speed;
+                move( -1, delta );
                 break;
-        }
-
-        if( stateTime > speed ) {
-            stateTime = 0;
-            state = nextState;
-            nextState = HeroStatus.STILL;
+            case MOVE_RIGHT:
+                move( 1, delta );
+                break;
         }
     }
 }

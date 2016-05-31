@@ -54,12 +54,12 @@ public class Game {
         return enemies;
     }
 
-    public void touchDown( int screenX, int screenY ) {
-
+    public void touchDown( float screenX, float screenY ) {
+        hero.touchDown( screenX, screenY );
     }
 
     public void touchUp( ) {
-
+        hero.touchUp();
     }
 
     public void touchDragged(int screenX, int screenY) {

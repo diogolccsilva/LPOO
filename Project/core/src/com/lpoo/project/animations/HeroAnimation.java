@@ -53,6 +53,10 @@ public class HeroAnimation implements Disposable {
         currAnimation = still;
     }
 
+    public HeroStatus getStatus() {
+        return status;
+    }
+
     /**
      * @biref Sets the speed of an animation
      * @param stat

@@ -36,6 +36,8 @@ public class PlayScreen implements Screen, InputProcessor {
     private Texture map;
     private Texture spawnWall;
 
+    private final int h = 500, w = 890;
+
     public PlayScreen(MyGame game) {
 
         this.game = game;
@@ -43,7 +45,6 @@ public class PlayScreen implements Screen, InputProcessor {
         play = new Game();
         text = new BitmapFont();
 
-        int h = 500, w = h * 16 / 9;
         camera = new OrthographicCamera( w, h );
 
         hero_animations = new HeroAnimation( this, "Hero\\hero1_fire.atlas", "Hero\\hero1_still.atlas",
@@ -54,6 +55,15 @@ public class PlayScreen implements Screen, InputProcessor {
         spawnWall = new Texture("Map\\SpawnWall.png");
 
         Gdx.input.setInputProcessor(this); //Indicate that this class handles the inputs
+    }
+
+
+    public float getRelativeY( int y ) {
+        return h * y / Gdx.graphics.getHeight();
+    }
+
+    public float getRelativeX( int x ) {
+        return w * x / Gdx.graphics.getWidth();
     }
 
     public Game getGame() {
@@ -68,7 +78,7 @@ public class PlayScreen implements Screen, InputProcessor {
     @Override
     public void render(float delta) {
 
-        String str = "" + play.stateTime;
+        String str = "" + play.getHero().getNextState();
 
         /* UPDATE GAME'S LOGIC */
         /* To Do */
@@ -81,7 +91,9 @@ public class PlayScreen implements Screen, InputProcessor {
         /* In development */
 
         //Hero's animation
-        TextureRegion hero_text = hero_animations.getTexture( pressed ? Hero.HeroStatus.ATTACK : Hero.HeroStatus.STILL, delta );
+        TextureRegion hero_text = hero_animations.getTexture( play.getHero().getNextState(), delta );
+        play.getHero().AnimationStatus( hero_animations.getStatus() );
+        str += "\n" + hero_animations.getStatus();
 
 
         //Traps' animations
@@ -161,32 +173,21 @@ public class PlayScreen implements Screen, InputProcessor {
         map.dispose();
     }
 
-
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-
-        play.touchDown( screenX, screenY );
-
-        pressed = true;
-
+        play.touchDown( getRelativeX(screenX), getRelativeY(screenY) );
         return true;
     }
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-
         play.touchUp( );
-
         pressed = false;
-
         return true;
     }
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
-
-        play.touchDragged( screenX, screenY );
-
         return true;
     }
 
@@ -194,7 +195,6 @@ public class PlayScreen implements Screen, InputProcessor {
     /*
         Functions that are not used in android
     */
-
     @Override
     public boolean keyDown(int keycode) {
         return false;

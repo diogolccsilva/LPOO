@@ -26,7 +26,7 @@ public class Enemy extends Character {
         state = EnemyStatus.MOVE_RIGHT;
         nextState = EnemyStatus.MOVE_RIGHT;
         move_speed = 1/3f;
-        attack_speed = 1/3f;
+        attack_speed = 1/5f;
     }
 
     public float getSpeed( EnemyStatus stat ) {
@@ -59,7 +59,7 @@ public class Enemy extends Character {
         stateTime += delta;
 
         //Change state
-        if( state != EnemyStatus.DEAD && stateTime >= getSpeed( state ) ) {
+        if( state != EnemyStatus.DEAD /* && stateTime >= getSpeed( state )*/ ) {
             if ( rect.overlaps( hero.getRect()) )
                 nextState = EnemyStatus.ATTACK;
             else

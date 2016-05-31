@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Disposable;
-import com.lpoo.project.logic.Enemy;
+import com.lpoo.project.logic.Enemy.EnemyStatus;
 import com.lpoo.project.screens.PlayScreen;
 
 /**
@@ -14,7 +14,7 @@ import com.lpoo.project.screens.PlayScreen;
 public class EnemyAnimation implements Disposable {
     private PlayScreen game;
 
-    private Enemy.EnemyStatus status;
+    private EnemyStatus status;
     private Animation currAnimation;
     private Animation attack, move_right;
     private TextureAtlas attackTextures, move_rightTextures;
@@ -30,7 +30,7 @@ public class EnemyAnimation implements Disposable {
     public EnemyAnimation( PlayScreen game, String attackPath, String movePath, float attackSpeed, float moveSpeed ) {
         this.game = game;
         stateTime = 0;
-        status = Enemy.EnemyStatus.MOVE_RIGHT;
+        status = EnemyStatus.MOVE_RIGHT;
 
         attackTextures = new TextureAtlas( Gdx.files.internal( attackPath ) );
         attack = new Animation( attackSpeed, attackTextures.getRegions() );
@@ -41,7 +41,7 @@ public class EnemyAnimation implements Disposable {
         currAnimation = move_right;
     }
 
-    public Enemy.EnemyStatus getStatus() {
+    public EnemyStatus getStatus() {
         return status;
     }
 
@@ -50,7 +50,7 @@ public class EnemyAnimation implements Disposable {
      * @param stat
      * @param speed
      */
-    public void setAttackSpeed (Enemy.EnemyStatus stat, float speed ) {
+    public void setAttackSpeed (EnemyStatus stat, float speed ) {
 
         switch ( stat ) {
             case ATTACK:
@@ -67,7 +67,7 @@ public class EnemyAnimation implements Disposable {
      * @param delta
      * @return TextureRegion to be drawn on the screen
      */
-    public TextureRegion getTexture (Enemy.EnemyStatus stat, float delta ) {
+    public TextureRegion getTexture (EnemyStatus stat, float delta ) {
     /* Mundo complitado */
 
         Animation nextAnimation = null;
