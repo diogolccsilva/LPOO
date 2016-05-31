@@ -1,7 +1,5 @@
 package com.lpoo.project.logic;
 
-import com.badlogic.gdx.Gdx;
-
 import java.util.LinkedList;
 
 /**
@@ -20,7 +18,7 @@ public class Game {
     private Hero hero;
     private LinkedList<Enemy> enemies;
     private LinkedList<Trap> traps;
-    private LinkedList<Projectille> projectilles;
+    private LinkedList<Projectile> projectiles;
 
     public float stateTime;
 
@@ -35,7 +33,7 @@ public class Game {
         hero = new Hero( 200, 144, 100, 10, 25, this );
         enemies = new LinkedList<Enemy>();
         traps = new LinkedList<Trap>();
-        projectilles = new LinkedList<Projectille>();
+        projectiles = new LinkedList<Projectile>();
         state = GameStatus.PLAYING;
         stateTime = 0;
     }
@@ -95,8 +93,8 @@ public class Game {
         hero.touchUp();
     }
 
-    public void addProjectille(Projectille projectille) {
-        projectilles.add(projectille);
+    public void addProjectile(Projectile projectile) {
+        projectiles.add(projectile);
     }
 
 }

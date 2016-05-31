@@ -54,14 +54,14 @@ public class Hero extends Character {
     }
 
     public void AnimationStatus( HeroStatus stat ) {
-        if( stat != state) {
+        if( stat != state ) {
             nextState = stat;
             state = stat;
             stateTime = 0;
 
             if( stat == HeroStatus.ATTACK){
-                Projectille projectille = new Projectille(rect.x, rect.y + 44, 10, 3, 5, 80);
-                game.addProjectille(projectille);
+                Projectile projectile = new Projectile(rect.x, rect.y + 44, 10, 3, 5, 80);
+                game.addProjectile(projectile);
             }
 
         }
