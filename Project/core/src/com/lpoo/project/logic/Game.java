@@ -99,9 +99,4 @@ public class Game {
         projectilles.add(projectille);
     }
 
-    public void removeProjectille(Projectille projectille) {
-        for(int i=0; i<projectilles.size(); i++)
-            if(projectilles.get(i) == projectille)
-                projectilles.remove(i);
-    }
 }
