@@ -34,6 +34,7 @@ public class PlayScreen implements Screen, InputProcessor {
     private LinkedList<EnemyAnimation> eA;
     private EnemyAnimation enemy_animations;
     private Texture map;
+    private Texture spawnWall;
 
     public PlayScreen(MyGame game) {
 
@@ -49,7 +50,8 @@ public class PlayScreen implements Screen, InputProcessor {
                                                     "Hero\\hero1_still.atlas", "Hero\\hero1_still.atlas", 1/10f, 1/3f );
         enemy_animations = new EnemyAnimation( this, "Robot\\robot1_attack.atlas", "Robot\\robot1_walk.atlas", 1/3f, 1/3f );
         eA = new LinkedList<EnemyAnimation>();
-        map = new Texture( "Map.png");
+        map = new Texture("Map\\Map.png");
+        spawnWall = new Texture("Map\\SpawnWall.png");
 
         Gdx.input.setInputProcessor(this); //Indicate that this class handles the inputs
     }
@@ -115,7 +117,7 @@ public class PlayScreen implements Screen, InputProcessor {
             TextureRegion robot_text = eA.get(i).getTexture( enemies.get(i).getStatus(), delta );
             game.batch.draw(robot_text, enemies.get(i).getPosition().x, enemies.get(i).getPosition().y);
         }
-
+        game.batch.draw( spawnWall, 0, 142);
         text.draw( game.batch, str, hPos.x - 300, hPos.y - 120);
 
         game.batch.end();

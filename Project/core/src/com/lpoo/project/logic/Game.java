@@ -22,7 +22,7 @@ public class Game {
     private int enemyResist = 10, enemyHealth = 10, enemyStrength = 10;
 
     public Game() {
-        hero = new Hero( 600, 144, 100, 10, 25 );
+        hero = new Hero( 200, 144, 100, 10, 25 );
         enemies = new LinkedList<Enemy>();
         traps = new LinkedList<Trap>();
         state = GameStatus.PLAYING;

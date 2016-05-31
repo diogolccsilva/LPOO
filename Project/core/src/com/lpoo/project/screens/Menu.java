@@ -22,18 +22,15 @@ public class Menu implements Screen, InputProcessor {
     private Texture background;
     private BitmapFont menu;
     private Stage stage;
-    private boolean pressed;
+    private final int h = 256, w = 453;
 
     public Menu( MyGame game ) {
 
         this.game = game;
-        pressed = false;
         menu = new BitmapFont();
 
-        int h = 500, w = h * 16 / 9;
         camera = new OrthographicCamera( w, h );
-
-        background = new Texture("Background.png");
+        background = new Texture("Back.jpg");
 
         Gdx.input.setInputProcessor(this); //Indicate that this class handles the inputs
     }
@@ -49,6 +46,12 @@ public class Menu implements Screen, InputProcessor {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         stage.act(delta);
+
+        //Set batch to only draw what the camera sees
+        game.batch.setProjectionMatrix( camera.combined );
+
+        camera.position.set( w / 2, h / 2, 0 );
+        camera.update();
 
         game.batch.begin();
         game.batch.draw(background, 0, 0);
