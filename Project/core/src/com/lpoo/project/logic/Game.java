@@ -32,7 +32,7 @@ public class Game {
         frameEvents[ENEMY_SPAWN_INDEX] = false;
         frameEvents[PROJECTILE_FIRED_INDEX] = false;
 
-        hero = new Hero( 200, 144, 100, 10, 25 );
+        hero = new Hero( 200, 144, 100, 10, 25, this );
         enemies = new LinkedList<Enemy>();
         traps = new LinkedList<Trap>();
         projectilles = new LinkedList<Projectille>();

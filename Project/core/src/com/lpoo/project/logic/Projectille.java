@@ -1,8 +1,5 @@
 package com.lpoo.project.logic;
 
-import com.badlogic.gdx.graphics.Texture;
-import com.lpoo.project.animations.EnemyAnimation;
-
 import java.util.LinkedList;
 
 /**
@@ -10,11 +7,12 @@ import java.util.LinkedList;
  */
 public class Projectille extends Entity {
 
-    private int damage;
+    private int damage, velocity;
 
-    public Projectille( float x, float y, int width, int height, int damage ) {
+    public Projectille( float x, float y, int width, int height, int damage, int velocity ) {
         super(x, y, width, height);
         this.damage = damage;
+        this.velocity = velocity;
     }
 
     public int getDamage() {

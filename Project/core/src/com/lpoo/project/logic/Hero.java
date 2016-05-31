@@ -9,6 +9,7 @@ public class Hero extends Character {
     private float move_speed, attack_speed;
     private HeroStatus state, nextState;
     private float stateTime;
+    private Game game;
 
     /**
      * @brief Constructor for the class Hero
@@ -18,12 +19,13 @@ public class Hero extends Character {
      * @param resistance
      * @param strength
      */
-    public Hero( int x, int y, int health, int resistance, int strength )  {
+    public Hero( int x, int y, int health, int resistance, int strength, Game game )  {
         super( x, y, 45, 88, health, resistance, strength );
         state = HeroStatus.STILL;
         nextState = state;
         move_speed = 1/3f;
         attack_speed = 1/10f;
+        this.game = game;
     }
 
     public HeroStatus getState () {
@@ -56,6 +58,12 @@ public class Hero extends Character {
             nextState = stat;
             state = stat;
             stateTime = 0;
+
+            if( stat == HeroStatus.ATTACK){
+                Projectille projectille = new Projectille(rect.x, rect.y + 44, 10, 3, 5, 80);
+                game.addProjectille(projectille);
+            }
+
         }
     }
 
