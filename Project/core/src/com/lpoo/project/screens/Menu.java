@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.lpoo.project.MyGame;
 import com.badlogic.gdx.graphics.GL20;
 
@@ -20,19 +19,29 @@ public class Menu implements Screen, InputProcessor {
     private Rectangle play, instructions, exit;
     private OrthographicCamera camera;
     private Texture background;
-    private BitmapFont menu;
-    private Stage stage;
     private final int h = 256, w = 453;
+    private String str;
 
     public Menu( MyGame game ) {
 
         this.game = game;
-        menu = new BitmapFont();
+
+        play = new Rectangle( 235, 116, 130, 35 );
+        instructions = new Rectangle( 235, 163, 130, 35 );
+        exit = new Rectangle( 235, 210, 130, 35 );
 
         camera = new OrthographicCamera( w, h );
         background = new Texture("Back.jpg");
 
         Gdx.input.setInputProcessor(this); //Indicate that this class handles the inputs
+    }
+
+    public float getRelativeY( int y ) {
+        return h * y / Gdx.graphics.getHeight();
+    }
+
+    public float getRelativeX( int x ) {
+        return w * x / Gdx.graphics.getWidth();
     }
 
     @Override
@@ -44,8 +53,6 @@ public class Menu implements Screen, InputProcessor {
         //Clear screen with certain color
         Gdx.gl.glClearColor((float)0.5, (float)0.5, (float)0.5, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        stage.act(delta);
 
         //Set batch to only draw what the camera sees
         game.batch.setProjectionMatrix( camera.combined );
@@ -60,11 +67,7 @@ public class Menu implements Screen, InputProcessor {
 
     @Override
     public void resize(int width, int height) {
-        if(stage == null)
-            stage = new Stage();
-        stage.clear();
 
-        Gdx.input.setInputProcessor(stage);
     }
 
     @Override
@@ -84,21 +87,22 @@ public class Menu implements Screen, InputProcessor {
 
     @Override
     public void dispose() {
-
-        //background.dispose();
-        menu.dispose();
         background.dispose();
-        game.batch.dispose();
     }
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        return false;
+        return true;
     }
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        return false;
+        Rectangle rect = new Rectangle( getRelativeX(screenX), getRelativeY(screenY), 20, 20 );
+        if( rect.overlaps(play))
+            game.changeScreen(MyGame.States.PLAY);
+        else if ( rect.overlaps(exit))
+            game.changeScreen(MyGame.States.EXIT);
+        return true;
     }
 
     @Override

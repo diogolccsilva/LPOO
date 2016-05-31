@@ -41,6 +41,10 @@ public class EnemyAnimation implements Disposable {
         currAnimation = move_right;
     }
 
+    public Enemy.EnemyStatus getStatus() {
+        return status;
+    }
+
     /**
      * @biref Sets the speed of an animation
      * @param stat

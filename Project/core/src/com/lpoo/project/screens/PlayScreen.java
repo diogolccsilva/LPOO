@@ -75,7 +75,7 @@ public class PlayScreen implements Screen, InputProcessor {
         //Hero's position
         Vector2 hPos = play.getHero().getPosition();
         if( play.update( delta ) )
-            eA.add( new EnemyAnimation( this, "Robot\\robot1_attack.atlas", "Robot\\robot1_walk.atlas", 1/3f, 1/3f ));
+            eA.add( new EnemyAnimation( this, "Robot\\robot1_attack.atlas", "Robot\\robot1_walk.atlas", 1/5f, 1/3f ));
 
         /* UPDATE ALL ANIMATIONS */
         /* In development */
@@ -114,11 +114,12 @@ public class PlayScreen implements Screen, InputProcessor {
 
         LinkedList<Enemy> enemies = play.getEnemies();
         for( int i = 0; i < enemies.size(); i++ ) {
-            TextureRegion robot_text = eA.get(i).getTexture( enemies.get(i).getStatus(), delta );
+            TextureRegion robot_text = eA.get(i).getTexture( enemies.get(i).getNextState(), delta );
             game.batch.draw(robot_text, enemies.get(i).getPosition().x, enemies.get(i).getPosition().y);
+            play.getEnemies().get(i).AnimationStatus( eA.get(i).getStatus() );
         }
         game.batch.draw( spawnWall, 0, 142);
-        text.draw( game.batch, str, hPos.x - 300, hPos.y - 120);
+        text.draw( game.batch, str, hPos.x, hPos.y - 120);
 
         game.batch.end();
     }
