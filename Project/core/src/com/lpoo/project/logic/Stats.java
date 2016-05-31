@@ -56,4 +56,12 @@ public class Stats {
     public int getResistance() {
         return resistance;
     }
+
+    /**
+     * @brief Sets the health's variable
+     * @param health New health to be setted
+     */
+    public void setHealth(int health) {
+        this.health = health;
+    }
 }

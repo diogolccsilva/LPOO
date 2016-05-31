@@ -69,4 +69,8 @@ public class Enemy extends Character {
         if( state == EnemyStatus.MOVE_RIGHT )
             rect.x += 30 * delta;
     }
+
+    public void setHealth(int health) {
+
+    }
 }
