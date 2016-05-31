@@ -15,6 +15,7 @@ public class Game {
     private Hero hero;
     private LinkedList<Enemy> enemies;
     private LinkedList<Trap> traps;
+    private LinkedList<Projectille> projectilles;
 
     public float stateTime;
 
@@ -25,6 +26,7 @@ public class Game {
         hero = new Hero( 200, 144, 100, 10, 25 );
         enemies = new LinkedList<Enemy>();
         traps = new LinkedList<Trap>();
+        projectilles = new LinkedList<Projectille>();
         state = GameStatus.PLAYING;
         stateTime = 0;
     }
@@ -64,5 +66,15 @@ public class Game {
 
     public void touchDragged(int screenX, int screenY) {
 
+    }
+
+    public void addProjectille(Projectille projectille) {
+        projectilles.add(projectille);
+    }
+
+    public void removeProjectille(Projectille projectille) {
+        for(int i=0; i<projectilles.size(); i++)
+            if(projectilles.get(i) == projectille)
+                projectilles.remove(i);
     }
 }
