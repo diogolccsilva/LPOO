@@ -1,42 +1,67 @@
 package com.lpoo.project.screens;
 
-
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.lpoo.project.MyGame;
+import com.badlogic.gdx.graphics.GL20;
 
 /**
  * Created by Vasco on 11/05/2016.
  */
 public class Menu implements Screen, InputProcessor {
 
-    //private Texture background;
     private MyGame game;
-    private Button play, exit;
-    private Texture playBtn, exitBtn;
+    private Rectangle play, instructions, exit;
+    private OrthographicCamera camera;
+    private Texture background;
+    private BitmapFont menu;
+    private Stage stage;
+    private boolean pressed;
 
     public Menu( MyGame game ) {
 
         this.game = game;
+        pressed = false;
+        menu = new BitmapFont();
+
+        int h = 500, w = h * 16 / 9;
+        camera = new OrthographicCamera( w, h );
+
+        background = new Texture("Background.png");
+
+        Gdx.input.setInputProcessor(this); //Indicate that this class handles the inputs
     }
 
     @Override
     public void show() {
-
     }
 
     @Override
     public void render(float delta) {
+        //Clear screen with certain color
+        Gdx.gl.glClearColor((float)0.5, (float)0.5, (float)0.5, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        stage.act(delta);
+
+        game.batch.begin();
+        game.batch.draw(background, 0, 0);
+        game.batch.end();
     }
 
     @Override
     public void resize(int width, int height) {
+        if(stage == null)
+            stage = new Stage();
+        stage.clear();
 
+        Gdx.input.setInputProcessor(stage);
     }
 
     @Override
@@ -51,15 +76,16 @@ public class Menu implements Screen, InputProcessor {
 
     @Override
     public void hide() {
-
+        dispose();
     }
 
     @Override
     public void dispose() {
 
         //background.dispose();
-        playBtn.dispose();
-        exitBtn.dispose();
+        menu.dispose();
+        background.dispose();
+        game.batch.dispose();
     }
 
     @Override

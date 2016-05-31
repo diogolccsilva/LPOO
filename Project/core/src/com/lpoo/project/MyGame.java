@@ -2,6 +2,7 @@ package com.lpoo.project;
 
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.lpoo.project.screens.Menu;
 import com.lpoo.project.screens.PlayScreen;
 
 import java.lang.*;
@@ -22,9 +23,9 @@ public class MyGame extends com.badlogic.gdx.Game {
         screenWidth = Gdx.graphics.getWidth();
         screenHeight = Gdx.graphics.getHeight();
 
-        setScreen( new PlayScreen(this) );
+        setScreen( new Menu(this) );
 
-        state = States.PLAY;
+        state = States.MENU;
 	}
 
     @Override
