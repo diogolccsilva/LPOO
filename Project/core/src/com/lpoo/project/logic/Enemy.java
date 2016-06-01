@@ -25,7 +25,7 @@ public class Enemy extends Character {
         state = EnemyStatus.MOVE_RIGHT;
         nextState = EnemyStatus.MOVE_RIGHT;
         move_speed = 1/3f;
-        attack_speed = 1/5f;
+        attack_speed = 1/5 * 6f;
     }
 
     public float getSpeed( EnemyStatus stat ) {

@@ -24,7 +24,7 @@ public class Hero extends Character {
         state = HeroStatus.STILL;
         nextState = state;
         move_speed = 1/3f;
-        attack_speed = 1/10f;
+        attack_speed = 1/10f * 7;
         this.game = game;
     }
 
@@ -54,15 +54,10 @@ public class Hero extends Character {
     }
 
     public void AnimationStatus( HeroStatus stat ) {
-        if( stat != state || (stat == HeroStatus.ATTACK && stateTime >= attack_speed * 6 )) {
+        if( stat != state ) {
             nextState = stat;
             state = stat;
             stateTime = 0;
-
-            if( stat == HeroStatus.ATTACK ){
-                Projectile projectile = new Projectile(rect.x, rect.y + 44, 10, 3, 5, 80);
-                game.addProjectile(projectile);
-            }
         }
     }
 
@@ -71,6 +66,11 @@ public class Hero extends Character {
 
         switch( state ) {
             case ATTACK:
+                if( stateTime >= attack_speed ) {
+                    Projectile projectile = new Projectile(rect.x, rect.y + 46, 10, 3, 5, 80);
+                    game.addProjectile(projectile);
+                    stateTime -= attack_speed;
+                }
                 break;
             case MOVE_LEFT:
                 move( -1, delta );
