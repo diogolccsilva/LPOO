@@ -9,24 +9,59 @@ import com.lpoo.project.logic.Trap;
 import com.lpoo.project.screens.PlayScreen;
 
 /**
- * Created by Vasco on 27/05/2016.
+ * Class that creates the trap's animation
+ * This class implements the interface Disposable
  */
 public class TrapAnimation implements Disposable {
 
+    /**
+     * PlayScreen where the game will be played
+     */
     private PlayScreen game;
 
+    /**
+     * Trap's status
+     */
     private Trap.TrapStatus status;
+    /**
+     * Current animation of the trap
+     */
     private Animation currAnimation;
-    private Animation attack, wait, recharge;
-    private TextureAtlas attackTextures, waitTextures,rechargeTextures;
+    /**
+     * Trap's animation when it is attacking
+     */
+    private Animation attack;
+    /**
+     * Trap's animation when it is waiting
+     */
+    private Animation wait;
+    /**
+     * Trap's animation when it is recharging
+     */
+    private Animation recharge;
+    /**
+     *  Loads images from texture atlases that represents the attack of the trap
+     */
+    private TextureAtlas attackTextures;
+    /**
+     *  Loads images from texture atlases that represents the trap waiting
+     */
+    private TextureAtlas waitTextures;
+    /**
+     *  Loads images from texture atlases that represents the trap recharging
+     */
+    private TextureAtlas rechargeTextures;
+    /**
+     * Trap's "time of life"
+     */
     private float stateTime;
 
     /**
-     * @brief Constructor for the Animator class
-     * @param attackPath
-     * @param movePath
-     * @param attackSpeed
-     * @param moveSpeed
+     * @brief Constructor for the TrapAnimator class
+     * @param attackPath Path where is saved the TextureAtlas of the trap's attack
+     * @param movePath Path where is saved the TextureAtlas of the trap's moving
+     * @param attackSpeed Trap's velocity of the attack
+     * @param moveSpeed Trap's velocity of moving
      */
     public TrapAnimation( PlayScreen game, String attackPath, String movePath, float attackSpeed, float moveSpeed ) {
         this.game = game;
@@ -40,9 +75,9 @@ public class TrapAnimation implements Disposable {
     }
 
     /**
-     * @biref Sets the speed of an animation
-     * @param stat
-     * @param speed
+     * Sets the speed of an animation
+     * @param stat Trap's status
+     * @param speed Trap's velocity
      */
     public void setAttackSpeed ( Trap.TrapStatus stat, float speed ) {
 
@@ -60,14 +95,12 @@ public class TrapAnimation implements Disposable {
     }
 
     /**
-     * @brief Getter for the current texture of the animation
-     * @param stat
-     * @param delta
+     * Getter for the current texture of the animation
+     * @param stat Trap's status
+     * @param delta Increasing time
      * @return TextureRegion to be drawn on the screen
      */
     public TextureRegion getTexture (Trap.TrapStatus stat, float delta ) {
-        /* Mundo complitado */
-
         Animation nextAnimation = null;
 
         switch ( stat ) {
@@ -94,6 +127,9 @@ public class TrapAnimation implements Disposable {
     }
 
     @Override
+    /**
+     * Releases all textures of the trap
+     */
     public void dispose() {
         attackTextures.dispose();
         waitTextures.dispose();

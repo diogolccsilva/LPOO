@@ -10,26 +10,65 @@ import com.lpoo.project.logic.Hero.HeroStatus;
 import com.lpoo.project.screens.PlayScreen;
 
 /**
- * Created by Vasco on 27/05/2016.
+ * Class that creates the hero's animation
+ * This class implements the interface Disposable
  */
 public class HeroAnimation implements Disposable {
 
-    private HeroStatus state;
-    private Animation currAnimation;
-    private Animation attack, still, move_left, move_right;
-    private TextureAtlas attackTextures, stillTextures, move_leftTextures, move_rightTextures;
-    private float stateTime;
-    private float attack_speed, move_speed;
-
     /**
-     * @brief Constructor for the Animator class
-     * @param attackPath
-     * @param stillPath
-     * @param leftPath
-     * @param rightPath
-     * @param attackSpeed
-     * @param moveSpeed
+     * Hero status
      */
+    private HeroStatus state;
+    /**
+     * Current animation of the hero
+     */
+    private Animation currAnimation;
+    /**
+     * Hero's attack's animation
+     */
+    private Animation attack;
+    /**
+     * Hero's normal's animation
+     */
+    private Animation still;
+    /**
+     * Animation of the hero's moving to the left
+     */
+    private Animation move_left;
+    /**
+     * Animation of the hero's moving to the right
+     */
+    private Animation move_right;
+    /**
+     *  Loads images from texture atlases that represents the attack of the hero
+     */
+    private TextureAtlas attackTextures;
+    /**
+     *  Loads images from texture atlases that represents the "normal" position of the hero
+     */
+    private TextureAtlas stillTextures;
+    /**
+     *  Loads images from texture atlases that represents the hero moving to the left
+     */
+    private TextureAtlas move_leftTextures;
+    /**
+     *  Loads images from texture atlases that represents the hero moving to the right
+     */
+    private TextureAtlas move_rightTextures;
+    /**
+     * Time given to the life's status of the hero
+     */
+    private float stateTime;
+    /**
+     * Hero's velocity's attack
+     */
+    private float attack_speed;
+    /**
+     * Velocity of hero when he is moving
+     */
+    private float move_speed;
+
+
     public HeroAnimation( String attackPath,
                           String stillPath, String leftPath,
                           String rightPath, float attackSpeed, float moveSpeed ) {
@@ -59,9 +98,9 @@ public class HeroAnimation implements Disposable {
     }
 
     /**
-     * @biref Sets the speed of an animation
-     * @param stat
-     * @param speed
+     * Sets the speed of an animation
+     * @param stat Hero's status
+     * @param speed Hero's velocity when he is moving
      */
     public void setAttackSpeed ( HeroStatus stat, float speed ) {
 
@@ -82,13 +121,11 @@ public class HeroAnimation implements Disposable {
     }
 
     /**
-     * @brief Getter for the current texture of the animation
-     * @param delta
+     * Getter for the current texture of the animation
+     * @param delta Increasing time
      * @return TextureRegion to be drawn on the screen
      */
     public TextureRegion getTexture ( HeroStatus stat, float delta ) {
-        /* Mundo complitado */
-
         Animation nextAnimation = null;
 
         switch ( stat ) {
@@ -118,6 +155,9 @@ public class HeroAnimation implements Disposable {
     }
 
     @Override
+    /**
+     * Releases all textures of the hero
+     */
     public void dispose() {
         attackTextures.dispose();
         stillTextures.dispose();

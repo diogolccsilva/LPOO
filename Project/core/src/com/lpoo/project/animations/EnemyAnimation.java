@@ -8,22 +8,54 @@ import com.badlogic.gdx.utils.Disposable;
 import com.lpoo.project.logic.Enemy.EnemyStatus;
 
 /**
- * Created by Vasco on 27/05/2016.
+ * Class that creates the enemies' animation
+ * This class implements the interface Disposable
  */
 public class EnemyAnimation implements Disposable {
 
+    /**
+     * Enemy's status
+     */
     private EnemyStatus status;
+    /**
+     * Current animation of the enemy
+     */
     private Animation currAnimation;
-    private Animation attack, move_right, dead;
-    private TextureAtlas attackTextures, move_rightTextures, deadTextures;
+    /**
+     * Animation which represents the attack of the enemy
+     */
+    private Animation attack;
+    /**
+     * Animation which represents the enemy moving to the right
+     */
+    private Animation move_right;
+    /**
+     * Animation which represents the enemy's death
+     */
+    private Animation dead;
+    /**
+     *  Loads images from texture atlases that represents the attack of the enemies
+     */
+    private TextureAtlas attackTextures;
+    /**
+     *  Loads images from texture atlases that represents the enemy moving to the right
+     */
+    private TextureAtlas move_rightTextures;
+    /**
+     *  Loads images from texture atlases that represents the enemy's death
+     */
+    private TextureAtlas deadTextures;
+    /**
+     * Time given to the life's status of the enemy
+     */
     private float stateTime;
 
     /**
-     * @brief Constructor for the Animator class
-     * @param attackPath
-     * @param movePath
-     * @param attackSpeed
-     * @param moveSpeed
+     * Constructor for the EnemyAnimator class
+     * @param attackPath Path where is saved the TextureAtlas of the enemy's attack
+     * @param movePath Path where is saved the TextureAtlas of the enemy moving to the right
+     * @param attackSpeed Enemy's velocity's attack
+     * @param moveSpeed Velocity of the enemy when he is moving
      */
     public EnemyAnimation( String attackPath, String movePath, float attackSpeed, float moveSpeed ) {
         stateTime = 0;
@@ -41,14 +73,18 @@ public class EnemyAnimation implements Disposable {
         currAnimation = move_right;
     }
 
+    /**
+     * Gets the current enemy's status
+     * @return the enemy's status
+     */
     public EnemyStatus getStatus() {
         return status;
     }
 
     /**
-     * @biref Sets the speed of an animation
-     * @param stat
-     * @param speed
+     * Sets the speed of an animation
+     * @param stat Enemy's status
+     * @param speed New speed to be changed
      */
     public void setAttackSpeed (EnemyStatus stat, float speed ) {
 
@@ -63,12 +99,12 @@ public class EnemyAnimation implements Disposable {
     }
 
     /**
-     * @brief Getter for the current texture of the animation
-     * @param delta
+     * Gets the current texture of the animation
+     * @param stat Enemy's status
+     * @param delta Increasing time
      * @return TextureRegion to be drawn on the screen
      */
     public TextureRegion getTexture (EnemyStatus stat, float delta ) {
-    /* Mundo complitado */
 
         Animation nextAnimation = null;
 
@@ -95,11 +131,19 @@ public class EnemyAnimation implements Disposable {
         return currAnimation.getKeyFrame( stateTime, true );
     }
 
+    /**
+     * Function that verifies if the enemy's animation is finished
+     * @param state Enemy's status
+     * @return True if the enemy's animation is finished, False if it isn't
+     */
     public boolean isFinished( EnemyStatus state ) {
         return state == status && currAnimation.isAnimationFinished(stateTime);
     }
 
     @Override
+    /**
+     * Releases all textures of the enemy
+     */
     public void dispose() {
         attackTextures.dispose();
         move_rightTextures.dispose();

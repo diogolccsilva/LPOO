@@ -9,28 +9,55 @@ import com.lpoo.project.logic.Projectile.ProjectileStatus;
 import com.lpoo.project.screens.PlayScreen;
 
 /**
- * Created by Vasco on 01/06/2016.
+ * Class that creates the projectile's animation
+ * This class implements the interface Disposable
  */
 public class ProjectileAnimation implements Disposable {
 
+    /**
+     * Velocity of the projectile's explosion
+     */
     private final float explode_speed = 1/10f;
 
+    /**
+     * Projectile's "time of life"
+     */
     private float stateTime;
 
+    /**
+     * Animation which represents the explosion of the projectile
+     */
     private Animation explode;
+    /**
+     *  Loads images from texture atlases that represents the movement of the bullet / projectile
+     */
     private TextureAtlas bullet;
 
+    /**
+     * Constructor for the ProjectileAnimator class
+     * @param path Path where is saved the TextureAtlas of the projectile's movement
+     */
     public ProjectileAnimation( String path ) {
         stateTime = 0;
         bullet = new TextureAtlas( Gdx.files.internal( path ) );
         explode = new Animation( explode_speed, bullet.getRegions() );
     }
 
+    /**
+     * Function that verifies if the projectile's animation is finished
+     * @return True if the projectile's animation is finished, False if it isn't
+     */
     public boolean isFinished() {
 
         return explode_speed * 4 <= stateTime;
     }
 
+    /**
+     * Gets the current texture of the animation
+     * @param stat Projectile's status
+     * @param delta Increasing time
+     * @return TextureRegion to be drawn on the screen
+     */
     public TextureRegion getTexture ( ProjectileStatus stat, float delta ) {
         if( stat == ProjectileStatus.HIT_TRAGET ) {
             stateTime += delta;
@@ -41,6 +68,9 @@ public class ProjectileAnimation implements Disposable {
 
 
     @Override
+    /**
+     * Releases all textures of the projectile
+     */
     public void dispose() {
         bullet.dispose();
     }
