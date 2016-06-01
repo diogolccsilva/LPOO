@@ -1,7 +1,6 @@
 package com.lpoo.project.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -12,7 +11,7 @@ import com.badlogic.gdx.graphics.GL20;
 /**
  * Created by Vasco on 11/05/2016.
  */
-public class Menu implements Screen, InputProcessor {
+public class Menu implements Screen{
 
     private MyGame game;
     private Rectangle play, instructions, exit;
@@ -31,8 +30,6 @@ public class Menu implements Screen, InputProcessor {
 
         camera = new OrthographicCamera( w, h );
         background = new Texture("Back.jpg");
-
-        Gdx.input.setInputProcessor(this); //Indicate that this class handles the inputs
     }
 
     public float getRelativeY( int y ) {
@@ -89,12 +86,10 @@ public class Menu implements Screen, InputProcessor {
         background.dispose();
     }
 
-    @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         return true;
     }
 
-    @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         Rectangle rect = new Rectangle( getRelativeX(screenX), getRelativeY(screenY), 20, 20 );
         if( rect.overlaps(play))
@@ -102,38 +97,5 @@ public class Menu implements Screen, InputProcessor {
         else if ( rect.overlaps(exit))
             game.changeScreen(MyGame.States.EXIT);
         return true;
-    }
-
-    @Override
-    public boolean touchDragged(int screenX, int screenY, int pointer) {
-        return false;
-    }
-
-    /*
-     * Unhandled input (not needed)
-     */
-    @Override
-    public boolean keyDown(int keycode) {
-        return false;
-    }
-
-    @Override
-    public boolean keyUp(int keycode) {
-        return false;
-    }
-
-    @Override
-    public boolean keyTyped(char character) {
-        return false;
-    }
-
-    @Override
-    public boolean mouseMoved(int screenX, int screenY) {
-        return false;
-    }
-
-    @Override
-    public boolean scrolled(int amount) {
-        return false;
     }
 }

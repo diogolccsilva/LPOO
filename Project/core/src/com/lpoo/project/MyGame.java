@@ -59,6 +59,17 @@ public class MyGame extends com.badlogic.gdx.Game {
         }
     }
 
+    public final States getState() {
+        return state;
+    }
+
+    public Menu getMenu(){
+        return menu;
+    }
+
+    public PlayScreen getPlayScreen(){
+        return game;
+    }
 
     @Override
     public void dispose() {

@@ -1,7 +1,6 @@
 package com.lpoo.project.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -23,7 +22,7 @@ import java.util.LinkedList;
 /**
  * Created by Vasco on 13/05/2016.
  */
-public class PlayScreen implements Screen, InputProcessor {
+public class PlayScreen implements Screen {
 
     private OrthographicCamera camera;
     private MyGame game;
@@ -51,8 +50,6 @@ public class PlayScreen implements Screen, InputProcessor {
         enemies = new LinkedList<EnemyAnimation>();
         projectiles = new LinkedList<ProjectileAnimation>();
         map = new Map();
-
-        Gdx.input.setInputProcessor(this); //Indicate that this class handles the inputs
     }
 
 
@@ -180,49 +177,13 @@ public class PlayScreen implements Screen, InputProcessor {
         map.dispose();
     }
 
-    @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         play.touchDown( getRelativeX(screenX), getRelativeY(screenY) );
         return true;
     }
 
-    @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         play.touchUp( );
         return true;
-    }
-
-    @Override
-    public boolean touchDragged(int screenX, int screenY, int pointer) {
-        return true;
-    }
-
-
-    /*
-        Functions that are not used in android
-    */
-    @Override
-    public boolean keyDown(int keycode) {
-        return false;
-    }
-
-    @Override
-    public boolean keyUp(int keycode) {
-        return false;
-    }
-
-    @Override
-    public boolean keyTyped(char character) {
-        return false;
-    }
-
-    @Override
-    public boolean mouseMoved(int screenX, int screenY) {
-        return false;
-    }
-
-    @Override
-    public boolean scrolled(int amount) {
-        return false;
     }
 }
