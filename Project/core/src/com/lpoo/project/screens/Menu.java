@@ -18,10 +18,8 @@ public class Menu implements Screen{
     private OrthographicCamera camera;
     private Texture background;
     private final int h = 256, w = 453;
-    private String str;
 
     public Menu( MyGame game ) {
-
         this.game = game;
 
         play = new Rectangle( 235, 116, 130, 35 );

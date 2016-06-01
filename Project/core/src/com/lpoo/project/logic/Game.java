@@ -105,12 +105,12 @@ public class Game {
         return projectiles;
     }
 
-    public void eraseEnemy( Enemy e ) {
-        enemies.remove(e);
+    public void eraseEnemy( int index ) {
+        enemies.remove(index);
     }
 
-    public void eraseProjectile( Projectile p ) {
-        enemies.remove(p);
+    public void eraseProjectile( int index ) {
+        projectiles.remove(index);
     }
 
     public void touchDown( float screenX, float screenY ) {

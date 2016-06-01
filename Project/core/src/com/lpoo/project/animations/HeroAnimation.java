@@ -14,13 +14,12 @@ import com.lpoo.project.screens.PlayScreen;
  */
 public class HeroAnimation implements Disposable {
 
-    private PlayScreen game;
-
     private HeroStatus state;
     private Animation currAnimation;
     private Animation attack, still, move_left, move_right;
     private TextureAtlas attackTextures, stillTextures, move_leftTextures, move_rightTextures;
     private float stateTime;
+    private float attack_speed, move_speed;
 
     /**
      * @brief Constructor for the Animator class
@@ -31,10 +30,9 @@ public class HeroAnimation implements Disposable {
      * @param attackSpeed
      * @param moveSpeed
      */
-    public HeroAnimation( PlayScreen game, String attackPath,
+    public HeroAnimation( String attackPath,
                           String stillPath, String leftPath,
                           String rightPath, float attackSpeed, float moveSpeed ) {
-        this.game = game;
         stateTime = 0;
         state = HeroStatus.STILL;
 
@@ -51,6 +49,9 @@ public class HeroAnimation implements Disposable {
         move_right = new Animation( moveSpeed, move_rightTextures.getRegions() );
 
         currAnimation = still;
+
+        this.attack_speed = attackSpeed;
+        this.move_speed = moveSpeed;
     }
 
     public HeroStatus getState() {

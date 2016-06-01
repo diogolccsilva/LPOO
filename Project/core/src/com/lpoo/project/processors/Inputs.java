@@ -6,7 +6,7 @@ import com.badlogic.gdx.Input.Keys;
 
 import com.lpoo.project.MyGame;
 
-public class Inputs implements InputProcessor{
+public class Inputs implements InputProcessor {
 
     MyGame game;
 
@@ -86,10 +86,10 @@ public class Inputs implements InputProcessor{
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         switch (game.getState()){
             case MENU:
-                game.getMenu().touchDown(screenX,screenY,pointer, button);
+                game.getMenu().touchDown(screenX, screenY, pointer, button);
                 break;
             case PLAY:
-                game.getPlayScreen().touchDown(screenX,screenY,pointer, button);
+                game.getPlayScreen().touchDown(screenX, screenY, pointer, button);
                 break;
             default:
                 break;

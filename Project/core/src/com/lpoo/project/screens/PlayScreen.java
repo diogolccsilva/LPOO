@@ -27,6 +27,7 @@ public class PlayScreen implements Screen {
     private OrthographicCamera camera;
     private MyGame game;
     public Game play;
+    private BitmapFont font;
 
     private HeroAnimation hero_animations;
     private LinkedList<EnemyAnimation> enemies;
@@ -41,12 +42,13 @@ public class PlayScreen implements Screen {
 
         this.game = game;
         play = new Game();
+        font = new BitmapFont();
 
         camera = new OrthographicCamera( w, h );
 
-        hero_animations = new HeroAnimation( this, "Hero\\hero1_fire.atlas", "Hero\\hero1_still.atlas",
+        hero_animations = new HeroAnimation( "Hero\\hero1_fire.atlas", "Hero\\hero1_still.atlas",
                                                     "Hero\\hero1_still.atlas", "Hero\\hero1_still.atlas", 1/10f, 1/3f );
-        enemy_animations = new EnemyAnimation( this, "Robot\\robot1_attack.atlas", "Robot\\robot1_walk.atlas", 1/3f, 1/3f );
+        enemy_animations = new EnemyAnimation( "Robot\\robot1_attack.atlas", "Robot\\robot1_walk.atlas", 1/3f, 1/3f );
         enemies = new LinkedList<EnemyAnimation>();
         projectiles = new LinkedList<ProjectileAnimation>();
         map = new Map();
@@ -79,6 +81,8 @@ public class PlayScreen implements Screen {
         Vector2 hPos = play.getHero().getPosition();
         play.update( delta );
 
+        String str;
+
         /* UPDATE ALL ANIMATIONS */
         /* In development */
 
@@ -88,9 +92,9 @@ public class PlayScreen implements Screen {
 
         boolean[] frameEvents = play.getFrameEvents();
         if( frameEvents[Game.ENEMY_SPAWN_INDEX] )
-            enemies.add( new EnemyAnimation( this, "Robot\\robot1_attack.atlas", "Robot\\robot1_walk.atlas", 1/5f, 1/3f ));
+            enemies.add( new EnemyAnimation( "Robot\\robot1_attack.atlas", "Robot\\robot1_walk.atlas", 1/5f, 1/3f ));
         if( frameEvents[Game.PROJECTILE_FIRED_INDEX] )
-            projectiles.add( new ProjectileAnimation( this, "Projectile\\projectile1.atlas", 1/10f));
+            projectiles.add( new ProjectileAnimation( "Projectile\\projectile1.atlas" ));
         play.setFrameEvents();
 
         //Traps' animations
@@ -120,22 +124,32 @@ public class PlayScreen implements Screen {
         game.batch.draw( map.getMap(), 0, 0 );
         game.batch.draw( hero_text, hPos.x, hPos.y );
 
-        LinkedList<Enemy> enemies = play.getEnemies();
+        LinkedList<Enemy> en = play.getEnemies();
+        str = "Play en size: " + en.size() + "  - En size: " + enemies.size();
         for( int i = 0; i < enemies.size(); i++ ) {
-            TextureRegion robot_text = this.enemies.get(i).getTexture( enemies.get(i).getNextState(), delta );
-            game.batch.draw(robot_text, enemies.get(i).getPosition().x, enemies.get(i).getPosition().y);
-            play.getEnemies().get(i).AnimationStatus( this.enemies.get(i).getStatus() );
-            if( enemies.get(i).getState() == Enemy.EnemyStatus.DEAD && this.enemies.get(i).isFinished( enemies.get(i).getState() ))
-                play.eraseEnemy( enemies.get(i) );
+            Enemy e = en.get(i);
+            str += "\nLife: " + e.getStats().getHealth() + " - State: " + e.getState();
+            TextureRegion robot_text = enemies.get(i).getTexture( e.getNextState(), delta );
+            game.batch.draw(robot_text, e.getPosition().x,e.getPosition().y);
+            if( e.getState() == Enemy.EnemyStatus.DEAD /*&& enemies.get(i).isFinished( e.getState() )*/) {
+                enemies.remove(i);
+                play.eraseEnemy(i);
+                i--;
+            } else e.AnimationStatus( enemies.get(i).getStatus() );
         }
-        LinkedList<Projectile> projectiles = play.getProjectiles();
+
+        LinkedList<Projectile> proj = play.getProjectiles();
         for( int i = 0; i < projectiles.size(); i++ ) {
-            TextureRegion project_text = this.projectiles.get(i).getTexture( projectiles.get(i).getState(), delta );
-            game.batch.draw(project_text, projectiles.get(i).getPosition().x, projectiles.get(i).getPosition().y);
-            if( this.projectiles.get(i).isFinished() )
-                play.eraseProjectile( projectiles.get(i) );
+            TextureRegion project_text = projectiles.get(i).getTexture( proj.get(i).getState(), delta );
+            game.batch.draw(project_text, proj.get(i).getPosition().x, proj.get(i).getPosition().y);
+            if( projectiles.get(i).isFinished() ) {
+                projectiles.remove(i);
+                play.eraseProjectile(i);
+                i--;
+            }
         }
         game.batch.draw( map.getSpawnWall(), 0, 142);
+        font.draw( game.batch, str, hPos.x, hPos.y - 10 );
 
         game.batch.end();
     }

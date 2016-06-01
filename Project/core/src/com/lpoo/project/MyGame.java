@@ -2,6 +2,7 @@ package com.lpoo.project;
 
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.lpoo.project.processors.Inputs;
 import com.lpoo.project.screens.Menu;
 import com.lpoo.project.screens.PlayScreen;
 
@@ -12,6 +13,7 @@ public class MyGame extends com.badlogic.gdx.Game {
     public SpriteBatch batch;
     public int screenWidth, screenHeight;
 
+    private Inputs inputs;
     private PlayScreen game;
     private Menu menu;
 
@@ -25,6 +27,7 @@ public class MyGame extends com.badlogic.gdx.Game {
         screenWidth = Gdx.graphics.getWidth();
         screenHeight = Gdx.graphics.getHeight();
 
+        inputs = new Inputs(this);
         menu = new Menu(this);
         setScreen( menu );
 
@@ -43,14 +46,17 @@ public class MyGame extends com.badlogic.gdx.Game {
     }
 
     public void changeScreen( States stat ) {
+
         switch ( stat ) {
             case MENU:
                 disposeState();
+                state = stat;
                 menu = new Menu(this);
                 setScreen( new Menu(this) );
                 break;
             case PLAY:
                 disposeState();
+                state = stat;
                 game = new PlayScreen(this);
                 setScreen( game );
                 break;

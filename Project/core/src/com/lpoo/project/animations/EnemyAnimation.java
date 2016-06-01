@@ -6,13 +6,11 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Disposable;
 import com.lpoo.project.logic.Enemy.EnemyStatus;
-import com.lpoo.project.screens.PlayScreen;
 
 /**
  * Created by Vasco on 27/05/2016.
  */
 public class EnemyAnimation implements Disposable {
-    private PlayScreen game;
 
     private EnemyStatus status;
     private Animation currAnimation;
@@ -27,8 +25,7 @@ public class EnemyAnimation implements Disposable {
      * @param attackSpeed
      * @param moveSpeed
      */
-    public EnemyAnimation( PlayScreen game, String attackPath, String movePath, float attackSpeed, float moveSpeed ) {
-        this.game = game;
+    public EnemyAnimation( String attackPath, String movePath, float attackSpeed, float moveSpeed ) {
         stateTime = 0;
         status = EnemyStatus.MOVE_RIGHT;
 
@@ -82,11 +79,14 @@ public class EnemyAnimation implements Disposable {
             case MOVE_RIGHT:
                 nextAnimation = move_right;
                 break;
+            case DEAD:
+                nextAnimation = attack;
+                break;
         }
 
         stateTime += delta;
 
-        if ( currAnimation.isAnimationFinished(stateTime )) {
+        if ( stat == EnemyStatus.DEAD || currAnimation.isAnimationFinished(stateTime) ) {
             stateTime = 0;
             status = stat;
             currAnimation = nextAnimation;

@@ -20,7 +20,7 @@ public class Enemy extends Character {
      * @param strength
      */
     public Enemy( int x, int y, int health, int resistance, int strength )  {
-        super( x, y, 70, 124, health, resistance, strength );
+        super( x, y, 10, 124, health, resistance, strength );
         stateTime = 0;
         state = EnemyStatus.MOVE_RIGHT;
         nextState = EnemyStatus.MOVE_RIGHT;
@@ -47,7 +47,7 @@ public class Enemy extends Character {
     }
 
     public void AnimationStatus( EnemyStatus stat ) {
-        if( stat != state) {
+        if( stat != state ) {
             nextState = stat;
             state = stat;
             stateTime = 0;
@@ -71,8 +71,10 @@ public class Enemy extends Character {
 
     public void bulletHit( Projectile p ) {
         stats.setHealth(p.getDamage());
-        if(stats.getHealth()<=0)
+        if(stats.getHealth()<=0) {
             state = EnemyStatus.DEAD;
+            nextState = EnemyStatus.DEAD;
+        }
     }
 
     public void setHealth(int health) {

@@ -13,34 +13,28 @@ import com.lpoo.project.screens.PlayScreen;
  */
 public class ProjectileAnimation implements Disposable {
 
-    private PlayScreen game;
+    private final float explode_speed = 1/10f;
+
     private float stateTime;
-    private ProjectileStatus state;
 
     private Animation explode;
     private TextureAtlas bullet;
 
-    public ProjectileAnimation( PlayScreen game, String path, float explode_speed ) {
-        this.game = game;
+    public ProjectileAnimation( String path ) {
         stateTime = 0;
-        state = ProjectileStatus.TRAVELLING;
-
         bullet = new TextureAtlas( Gdx.files.internal( path ) );
         explode = new Animation( explode_speed, bullet.getRegions() );
     }
 
-    public ProjectileStatus getState() {
-        return state;
-    }
-
     public boolean isFinished() {
-        return explode.isAnimationFinished(stateTime);
+
+        return explode_speed * 4 <= stateTime;
     }
 
     public TextureRegion getTexture ( ProjectileStatus stat, float delta ) {
         if( stat == ProjectileStatus.HIT_TRAGET ) {
             stateTime += delta;
-            return explode.getKeyFrame(stateTime, true);
+            return explode.getKeyFrame(stateTime, false);
         }
         return explode.getKeyFrames()[0];
     }
