@@ -54,7 +54,7 @@ public class Hero extends Character {
     }
 
     public void AnimationStatus( HeroStatus stat ) {
-        if( stat != state || (stat == HeroStatus.ATTACK && stateTime >= attack_speed )) {
+        if( stat != state || (stat == HeroStatus.ATTACK && stateTime >= attack_speed * 6 )) {
             nextState = stat;
             state = stat;
             stateTime = 0;
