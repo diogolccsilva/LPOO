@@ -13,9 +13,10 @@ import com.lpoo.project.MyGame;
 import com.lpoo.project.animations.EnemyAnimation;
 import com.lpoo.project.animations.HeroAnimation;
 import com.lpoo.project.animations.Map;
+import com.lpoo.project.animations.ProjectileAnimation;
 import com.lpoo.project.logic.Enemy;
 import com.lpoo.project.logic.Game;
-import com.lpoo.project.logic.Hero;
+import com.lpoo.project.logic.Projectile;
 
 import java.util.LinkedList;
 
@@ -27,10 +28,10 @@ public class PlayScreen implements Screen, InputProcessor {
     private OrthographicCamera camera;
     private MyGame game;
     public Game play;
-    private BitmapFont text;
 
     private HeroAnimation hero_animations;
-    private LinkedList<EnemyAnimation> eA;
+    private LinkedList<EnemyAnimation> enemies;
+    private LinkedList<ProjectileAnimation> projectiles;
     private EnemyAnimation enemy_animations;
     private Map map;
 
@@ -41,14 +42,14 @@ public class PlayScreen implements Screen, InputProcessor {
 
         this.game = game;
         play = new Game();
-        text = new BitmapFont();
 
         camera = new OrthographicCamera( w, h );
 
         hero_animations = new HeroAnimation( this, "Hero\\hero1_fire.atlas", "Hero\\hero1_still.atlas",
                                                     "Hero\\hero1_still.atlas", "Hero\\hero1_still.atlas", 1/10f, 1/3f );
         enemy_animations = new EnemyAnimation( this, "Robot\\robot1_attack.atlas", "Robot\\robot1_walk.atlas", 1/3f, 1/3f );
-        eA = new LinkedList<EnemyAnimation>();
+        enemies = new LinkedList<EnemyAnimation>();
+        projectiles = new LinkedList<ProjectileAnimation>();
         map = new Map();
 
         Gdx.input.setInputProcessor(this); //Indicate that this class handles the inputs
@@ -81,22 +82,19 @@ public class PlayScreen implements Screen, InputProcessor {
         Vector2 hPos = play.getHero().getPosition();
         play.update( delta );
 
-        boolean[] frameEvents = play.getFrameEvents();
-        if( frameEvents[Game.ENEMY_SPAWN_INDEX] )
-            eA.add( new EnemyAnimation( this, "Robot\\robot1_attack.atlas", "Robot\\robot1_walk.atlas", 1/5f, 1/3f ));
-
-        String str = "" + frameEvents[Game.ENEMY_SPAWN_INDEX];
-        play.setFrameEvents();
-        str += "\n" + frameEvents[Game.ENEMY_SPAWN_INDEX];
-
         /* UPDATE ALL ANIMATIONS */
         /* In development */
 
         //Hero's animation
         TextureRegion hero_text = hero_animations.getTexture( play.getHero().getNextState(), delta );
-        play.getHero().AnimationStatus( hero_animations.getStatus() );
+        play.getHero().AnimationStatus( hero_animations.getState() );
 
-
+        boolean[] frameEvents = play.getFrameEvents();
+        if( frameEvents[Game.ENEMY_SPAWN_INDEX] )
+            enemies.add( new EnemyAnimation( this, "Robot\\robot1_attack.atlas", "Robot\\robot1_walk.atlas", 1/5f, 1/3f ));
+        if( frameEvents[Game.PROJECTILE_FIRED_INDEX] )
+            projectiles.add( new ProjectileAnimation( this, "Projectile\\projectile1.atlas", 1/10f));
+        play.setFrameEvents();
 
         //Traps' animations
 
@@ -127,12 +125,20 @@ public class PlayScreen implements Screen, InputProcessor {
 
         LinkedList<Enemy> enemies = play.getEnemies();
         for( int i = 0; i < enemies.size(); i++ ) {
-            TextureRegion robot_text = eA.get(i).getTexture( enemies.get(i).getNextState(), delta );
+            TextureRegion robot_text = this.enemies.get(i).getTexture( enemies.get(i).getNextState(), delta );
             game.batch.draw(robot_text, enemies.get(i).getPosition().x, enemies.get(i).getPosition().y);
-            play.getEnemies().get(i).AnimationStatus( eA.get(i).getStatus() );
+            play.getEnemies().get(i).AnimationStatus( this.enemies.get(i).getStatus() );
+            if( enemies.get(i).getState() == Enemy.EnemyStatus.DEAD && this.enemies.get(i).isFinished( enemies.get(i).getState() ))
+                play.eraseEnemy( enemies.get(i) );
+        }
+        LinkedList<Projectile> projectiles = play.getProjectiles();
+        for( int i = 0; i < projectiles.size(); i++ ) {
+            TextureRegion project_text = this.projectiles.get(i).getTexture( projectiles.get(i).getState(), delta );
+            game.batch.draw(project_text, projectiles.get(i).getPosition().x, projectiles.get(i).getPosition().y);
+            if( this.projectiles.get(i).isFinished() )
+                play.eraseProjectile( projectiles.get(i) );
         }
         game.batch.draw( map.getSpawnWall(), 0, 142);
-        text.draw( game.batch, str, hPos.x, hPos.y - 50);
 
         game.batch.end();
     }

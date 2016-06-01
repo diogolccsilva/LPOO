@@ -62,6 +62,6 @@ public class Stats {
      * @param health New health to be setted
      */
     public void setHealth(int health) {
-        this.health = health;
+        this.health -= health;
     }
 }

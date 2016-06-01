@@ -1,6 +1,5 @@
 package com.lpoo.project.logic;
 
-import com.badlogic.gdx.math.Rectangle;
 
 /**
  * Created by Vasco on 12/05/2016.
@@ -39,7 +38,7 @@ public class Enemy extends Character {
         return 0;
     }
 
-    public EnemyStatus getStatus () {
+    public EnemyStatus getState() {
         return state;
     }
 
@@ -68,6 +67,12 @@ public class Enemy extends Character {
 
         if( state == EnemyStatus.MOVE_RIGHT )
             rect.x += 30 * delta;
+    }
+
+    public void bulletHit( Projectile p ) {
+        stats.setHealth(p.getDamage());
+        if(stats.getHealth()<=0)
+            state = EnemyStatus.DEAD;
     }
 
     public void setHealth(int health) {

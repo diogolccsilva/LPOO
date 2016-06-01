@@ -12,7 +12,7 @@ public class Character extends Entity {
      */
     protected static final int max_velocity = 20;
 
-    private Stats stats;
+    protected Stats stats;
     protected float velocity;
 
     /**

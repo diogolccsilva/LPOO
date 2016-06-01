@@ -63,7 +63,6 @@ public class Hero extends Character {
                 Projectile projectile = new Projectile(rect.x, rect.y + 44, 10, 3, 5, 80);
                 game.addProjectile(projectile);
             }
-
         }
     }
 

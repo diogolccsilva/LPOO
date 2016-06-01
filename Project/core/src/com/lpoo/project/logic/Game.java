@@ -8,7 +8,9 @@ import java.util.LinkedList;
 public class Game {
 
     public static final int ENEMY_SPAWN_INDEX = 0;
-    public static final int PROJECTILE_FIRED_INDEX = 1;
+    public static final int ENEMY_KILLED_INDEX = 1;
+    public static final int PROJECTILE_FIRED_INDEX = 2;
+    public static final int PROJECTILE_ERASED_INDEX = 3;
 
     private boolean[] frameEvents;
 
@@ -26,9 +28,11 @@ public class Game {
     private int enemyResist = 10, enemyHealth = 10, enemyStrength = 10;
 
     public Game() {
-        frameEvents = new boolean[2];
+        frameEvents = new boolean[4];
         frameEvents[ENEMY_SPAWN_INDEX] = false;
+        frameEvents[ENEMY_KILLED_INDEX] = false;
         frameEvents[PROJECTILE_FIRED_INDEX] = false;
+        frameEvents[PROJECTILE_ERASED_INDEX] = false;
 
         hero = new Hero( 200, 144, 100, 10, 25, this );
         enemies = new LinkedList<Enemy>();
@@ -42,8 +46,20 @@ public class Game {
         float currTime = stateTime + delta;
         hero.update( delta );
 
-        for( int i = 0; i < enemies.size(); i++ )
-            enemies.get(i).update( delta, hero );
+        for( Enemy e : enemies ) {
+            if(e.getState()== Enemy.EnemyStatus.DEAD) {
+                frameEvents[ENEMY_KILLED_INDEX] = true;
+                //enemies.remove(e);
+            }
+            else e.update(delta, hero);
+        }
+        for( Projectile p : projectiles ) {
+            p.update(delta, enemies);
+            if( p.getState() == Projectile.ProjectileStatus.HIT_TRAGET ) {
+                frameEvents[PROJECTILE_ERASED_INDEX] = true;
+                //projectiles.remove(p);
+            }
+        }
 
         if( Math.floor( stateTime / (float)diffNextEnemy ) != Math.floor( currTime / (float)diffNextEnemy ) ) {
             Enemy e = new Enemy( 50, 144, enemyHealth, enemyResist, enemyStrength );
@@ -81,8 +97,20 @@ public class Game {
         return hero;
     }
 
-    public final LinkedList<Enemy> getEnemies () {
+    public final LinkedList<Enemy> getEnemies() {
         return enemies;
+    }
+
+    public final LinkedList<Projectile> getProjectiles() {
+        return projectiles;
+    }
+
+    public void eraseEnemy( Enemy e ) {
+        enemies.remove(e);
+    }
+
+    public void eraseProjectile( Projectile p ) {
+        enemies.remove(p);
     }
 
     public void touchDown( float screenX, float screenY ) {
@@ -94,6 +122,7 @@ public class Game {
     }
 
     public void addProjectile(Projectile projectile) {
+        frameEvents[PROJECTILE_FIRED_INDEX] = true;
         projectiles.add(projectile);
     }
 

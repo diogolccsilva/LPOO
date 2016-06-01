@@ -16,7 +16,7 @@ public class HeroAnimation implements Disposable {
 
     private PlayScreen game;
 
-    private HeroStatus status;
+    private HeroStatus state;
     private Animation currAnimation;
     private Animation attack, still, move_left, move_right;
     private TextureAtlas attackTextures, stillTextures, move_leftTextures, move_rightTextures;
@@ -36,7 +36,7 @@ public class HeroAnimation implements Disposable {
                           String rightPath, float attackSpeed, float moveSpeed ) {
         this.game = game;
         stateTime = 0;
-        status = HeroStatus.STILL;
+        state = HeroStatus.STILL;
 
         attackTextures = new TextureAtlas( Gdx.files.internal( attackPath ) );
         attack = new Animation( attackSpeed, attackTextures.getRegions() );
@@ -53,8 +53,8 @@ public class HeroAnimation implements Disposable {
         currAnimation = still;
     }
 
-    public HeroStatus getStatus() {
-        return status;
+    public HeroStatus getState() {
+        return state;
     }
 
     /**
@@ -109,7 +109,7 @@ public class HeroAnimation implements Disposable {
 
         if (currAnimation.isAnimationFinished(stateTime) || ( currAnimation == still && nextAnimation != still )) {
             stateTime = 0;
-            status = stat;
+            state = stat;
             currAnimation = nextAnimation;
         }
 

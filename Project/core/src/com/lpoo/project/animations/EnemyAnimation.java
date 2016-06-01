@@ -16,8 +16,8 @@ public class EnemyAnimation implements Disposable {
 
     private EnemyStatus status;
     private Animation currAnimation;
-    private Animation attack, move_right;
-    private TextureAtlas attackTextures, move_rightTextures;
+    private Animation attack, move_right, dead;
+    private TextureAtlas attackTextures, move_rightTextures, deadTextures;
     private float stateTime;
 
     /**
@@ -37,6 +37,9 @@ public class EnemyAnimation implements Disposable {
 
         move_rightTextures = new TextureAtlas( Gdx.files.internal( movePath ) );
         move_right = new Animation( moveSpeed, move_rightTextures.getRegions() );
+
+        //deadTextures = new TextureAtlas( Gdx.files.internal( deadPath ));
+        dead = new Animation( attackSpeed, move_rightTextures.getRegions() );
 
         currAnimation = move_right;
     }
@@ -90,7 +93,10 @@ public class EnemyAnimation implements Disposable {
         }
 
         return currAnimation.getKeyFrame( stateTime, true );
+    }
 
+    public boolean isFinished( EnemyStatus state ) {
+        return state == status && currAnimation.isAnimationFinished(stateTime);
     }
 
     @Override

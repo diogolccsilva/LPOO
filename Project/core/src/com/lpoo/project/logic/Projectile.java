@@ -7,10 +7,15 @@ import java.util.LinkedList;
  */
 public class Projectile extends Entity {
 
+    public enum ProjectileStatus { TRAVELLING, HIT_TRAGET }
+    private ProjectileStatus state;
     private int damage, velocity;
+    private float stateTime;
 
     public Projectile( float x, float y, int width, int height, int damage, int velocity ) {
         super(x, y, width, height);
+        state = ProjectileStatus.TRAVELLING;
+        stateTime = 0;
         this.damage = damage;
         this.velocity = velocity;
     }
@@ -19,16 +24,26 @@ public class Projectile extends Entity {
         return damage;
     }
 
-    public boolean collision(LinkedList<Enemy> enemies) {
-        for(int i=0; i<enemies.size(); i++) {
-            if(rect.overlaps(enemies.get(i).getRect())) {
-                int health = enemies.get(i).getStats().getHealth() - damage;
-                enemies.get(i).getStats().setHealth(health);
-                return true;
+    public ProjectileStatus getState() {
+        return state;
+    }
+
+    public void update( float delta, LinkedList<Enemy> enemies ) {
+        stateTime += delta;
+        if( state != ProjectileStatus.HIT_TRAGET) {
+            rect.x -= velocity * delta;
+            collision(enemies);
+        }
+    }
+
+    public void collision(LinkedList<Enemy> enemies) {
+        for( Enemy e : enemies ) {
+            if(rect.overlaps(e.getRect())) {
+                state = ProjectileStatus.HIT_TRAGET;
+                e.bulletHit(this);
+                return ;
             }
         }
-
-        return false;
     }
 
 }
