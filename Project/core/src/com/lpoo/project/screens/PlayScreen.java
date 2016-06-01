@@ -124,11 +124,10 @@ public class PlayScreen implements Screen {
         game.batch.draw( map.getMap(), 0, 0 );
         game.batch.draw( hero_text, hPos.x, hPos.y );
 
+        //Iterate throw the enemies' animations
         LinkedList<Enemy> en = play.getEnemies();
-        str = "Play en size: " + en.size() + "  - En size: " + enemies.size();
         for( int i = 0; i < enemies.size(); i++ ) {
             Enemy e = en.get(i);
-            str += "\nLife: " + e.getStats().getHealth() + " - State: " + e.getState();
             TextureRegion robot_text = enemies.get(i).getTexture( e.getNextState(), delta );
             game.batch.draw(robot_text, e.getPosition().x,e.getPosition().y);
             if( e.getState() == Enemy.EnemyStatus.DEAD /*&& enemies.get(i).isFinished( e.getState() )*/) {
@@ -138,11 +137,17 @@ public class PlayScreen implements Screen {
             } else e.AnimationStatus( enemies.get(i).getStatus() );
         }
 
+        //Iterate throw the projectiles' animations
         LinkedList<Projectile> proj = play.getProjectiles();
+        str = "Play proj size: " + proj.size() + "  - En size: " + projectiles.size();
         for( int i = 0; i < projectiles.size(); i++ ) {
-            TextureRegion project_text = projectiles.get(i).getTexture( proj.get(i).getState(), delta );
-            game.batch.draw(project_text, proj.get(i).getPosition().x, proj.get(i).getPosition().y);
-            if( projectiles.get(i).isFinished() ) {
+            ProjectileAnimation p_ani = projectiles.get(i);
+            Projectile p = proj.get(i);
+            TextureRegion project_text = p_ani.getTexture( p.getState(), delta );
+            game.batch.draw(project_text, p.getPosition().x, p.getPosition().y);
+
+            //If the projectile's animation has ended or if the bullet is already out of the map
+            if( p_ani.isFinished() || p.getPosition().x <= 0 ) {
                 projectiles.remove(i);
                 play.eraseProjectile(i);
                 i--;
