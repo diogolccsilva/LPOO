@@ -10,22 +10,17 @@ public class Entity {
     /*
     Nao sei se queremos que seja abstrata
      */
+    protected Game game;
     protected Rectangle rect;
-    protected Vector2 position;
-    protected int width, height;
 
     /**
      * @brief Constructor for the class Entity
      * @param x, x position of the entity
      * @param y, y position of the entity
      */
-    public Entity( float x, float y, int width, int height ) {
+    public Entity( Game game, float x, float y, int width, int height ) {
+        this.game = game;
         rect = new Rectangle( x, y, width, height );
-        /*
-        position = new Vector2( x, y );
-        this.width = width;
-        this.height = height;
-        */
     }
 
     public Rectangle getRect() {

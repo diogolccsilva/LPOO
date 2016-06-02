@@ -63,10 +63,6 @@ public class PlayScreen implements Screen {
         return w * x / Gdx.graphics.getWidth();
     }
 
-    public Game getGame() {
-        return play;
-    }
-
     @Override
     public void show() {
 

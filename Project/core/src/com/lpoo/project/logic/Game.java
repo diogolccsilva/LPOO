@@ -34,7 +34,7 @@ public class Game {
         frameEvents[PROJECTILE_FIRED_INDEX] = false;
         frameEvents[PROJECTILE_ERASED_INDEX] = false;
 
-        hero = new Hero( 200, 144, 100, 10, 25, this );
+        hero = new Hero( this, 200, 144, 100, 10, 25 );
         enemies = new LinkedList<Enemy>();
         traps = new LinkedList<Trap>();
         projectiles = new LinkedList<Projectile>();
@@ -60,7 +60,7 @@ public class Game {
                 frameEvents[ENEMY_KILLED_INDEX] = true;
                 //enemies.remove(e);
             }
-            else e.update(delta, hero);
+            else e.update(delta);
         }
         for( Projectile p : projectiles ) {
             p.update(delta, enemies);
@@ -71,7 +71,7 @@ public class Game {
         }
 
         if( Math.floor( stateTime / (float)diffNextEnemy ) != Math.floor( currTime / (float)diffNextEnemy ) ) {
-            Enemy e = new Enemy( 50, 144, enemyHealth, enemyResist, enemyStrength );
+            Enemy e = new Enemy( this, 50, 144, enemyHealth, enemyResist, enemyStrength );
             frameEvents[ENEMY_SPAWN_INDEX] = true;
             enemies.add(e);
         }

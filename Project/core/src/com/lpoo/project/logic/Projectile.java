@@ -9,11 +9,12 @@ public class Projectile extends Entity {
 
     public enum ProjectileStatus { TRAVELLING, HIT_TRAGET }
     private ProjectileStatus state;
-    private int damage, velocity;
     private float stateTime;
 
-    public Projectile( float x, float y, int width, int height, int damage, int velocity ) {
-        super(x, y, width, height);
+    private int damage, velocity;
+
+    public Projectile( Game game, float x, float y, int width, int height, int damage, int velocity ) {
+        super(game, x, y, width, height);
         state = ProjectileStatus.TRAVELLING;
         stateTime = 0;
         this.damage = damage;

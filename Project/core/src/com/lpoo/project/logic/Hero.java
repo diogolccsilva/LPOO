@@ -9,7 +9,6 @@ public class Hero extends Character {
     private float move_speed, attack_speed;
     private HeroStatus state, nextState;
     private float stateTime;
-    private Game game;
 
     /**
      * @brief Constructor for the class Hero
@@ -19,12 +18,12 @@ public class Hero extends Character {
      * @param resistance
      * @param strength
      */
-    public Hero( int x, int y, int health, int resistance, int strength, Game game )  {
-        super( x, y, 45, 88, health, resistance, strength );
+    public Hero( Game game, int x, int y, int health, int resistance, int strength )  {
+        super( game, x, y, 45, 88, health, resistance, strength );
         state = HeroStatus.STILL;
         nextState = state;
         move_speed = 1/3f;
-        attack_speed = 1/10f * 7;
+        attack_speed = 0.7f;
         this.game = game;
     }
 
@@ -67,7 +66,7 @@ public class Hero extends Character {
         switch( state ) {
             case ATTACK:
                 if( stateTime >= attack_speed ) {
-                    Projectile projectile = new Projectile(rect.x, rect.y + 46, 10, 3, 5, 80);
+                    Projectile projectile = new Projectile(game, rect.x, rect.y + 46, 10, 3, 5, 80);
                     game.addProjectile(projectile);
                     stateTime -= attack_speed;
                 }

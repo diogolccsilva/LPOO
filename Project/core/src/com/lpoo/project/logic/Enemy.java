@@ -7,9 +7,11 @@ package com.lpoo.project.logic;
 public class Enemy extends Character {
 
     public enum EnemyStatus { ATTACK, MOVE_RIGHT, DEAD }
-    private float move_speed, attack_speed;
     private EnemyStatus state, nextState;
     private float stateTime;
+
+    private float move_speed, attack_speed, attack_time;
+    private boolean attacked;
 
     /**
      * @brief Constructor for the class Enemy
@@ -19,13 +21,15 @@ public class Enemy extends Character {
      * @param resistance
      * @param strength
      */
-    public Enemy( int x, int y, int health, int resistance, int strength )  {
-        super( x, y, 80, 124, health, resistance, strength );
+    public Enemy( Game game, int x, int y, int health, int resistance, int strength )  {
+        super( game, x, y, 80, 124, health, resistance, strength );
         stateTime = 0;
         state = EnemyStatus.MOVE_RIGHT;
         nextState = EnemyStatus.MOVE_RIGHT;
         move_speed = 1/3f;
-        attack_speed = 1.2f;
+        attack_speed = 1.4f;
+        attack_time = 0.6f;
+        attacked = false;
     }
 
     public float getSpeed( EnemyStatus stat ) {
@@ -54,7 +58,7 @@ public class Enemy extends Character {
         }
     }
 
-    public void update( float delta, Hero hero ) {
+    public void update( float delta ) {
         stateTime += delta;
 
         switch( state ) {
@@ -65,15 +69,18 @@ public class Enemy extends Character {
                 break;
             case ATTACK:
                 if( stateTime >= attack_speed ) {
-                    hero.hit(stats.getStrength());
                     stateTime -= attack_speed;
+                    attacked = false;
+                } else if( stateTime >= attack_time && !attacked ) {
+                    attacked = true;
+                    game.getHero().hit(stats.getStrength());
                 }
                 break;
         }
 
         //Change state
         if( state != EnemyStatus.DEAD /* && stateTime >= getSpeed( state )*/ ) {
-            if ( rect.overlaps( hero.getRect()) )
+            if ( rect.overlaps( game.getHero().getRect()) )
                 nextState = EnemyStatus.ATTACK;
             else
                 nextState = EnemyStatus.MOVE_RIGHT;

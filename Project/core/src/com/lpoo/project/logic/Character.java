@@ -23,9 +23,8 @@ public class Character extends Entity {
      * @param strength
      * @brief Constructor for the class Character
      */
-    public Character(int x, int y, int width, int height, int health, int resistance, int strength) {
-
-        super(x, y, width, height);
+    public Character(Game game, int x, int y, int width, int height, int health, int resistance, int strength) {
+        super(game, x, y, width, height);
         stats = new Stats(health, resistance, strength);
     }
 
@@ -35,8 +34,8 @@ public class Character extends Entity {
      * @param stats
      * @brief Constructor for the class Character
      */
-    public Character(int x, int y, int width, int height, Stats stats) {
-        super(x, y, width, height);
+    public Character(Game game, int x, int y, int width, int height, Stats stats) {
+        super(game, x, y, width, height);
         this.stats = stats;
     }
 
