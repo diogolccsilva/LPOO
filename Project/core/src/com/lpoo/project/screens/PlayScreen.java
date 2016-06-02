@@ -130,9 +130,7 @@ public class PlayScreen implements Screen {
         //Draw hero's texture
         game.batch.draw( map.getMap(), 0, 0 );
         game.batch.draw( hero_text, hPos.x, hPos.y );
-        TextureRegion[] t = LifeBar.getTexture( play.getHero().getStats().getHealth() );
-        str += "\nWidth: " + t[0].getRegionWidth();
-        drawLifeBard( hPos.x, hPos.y + 100, t);
+        drawLifeBard( hPos.x + hero_text.getRegionWidth() / 4, hPos.y + 100, LifeBar.getTexture( play.getHero().getStats().getHealth() ));
 
         //Iterate throw the enemies' animations
         LinkedList<Enemy> en = play.getEnemies();

@@ -17,7 +17,6 @@ public class Trap extends Entity implements Updatable {
         this.damage = damage;
     }
 
-    public int getDamage() { return damage; }
 
     public TrapStatus getState() {
         return currStatus;
