@@ -27,8 +27,8 @@ public class LifeBar {
         death_bar = atlas.getRegions().get(1);
     }*/
 
-    public static TextureRegion[] getTexture( int health ) {
-        int life_pixel = health * 38 / 100;
+    public static TextureRegion[] getTexture( int health, int max_health ) {
+        int life_pixel = health * 38 / max_health;
 
         if( life_pixel == life_bar.getRegionWidth() - 2 ) {
             TextureRegion[] textureRegions = new TextureRegion[1];

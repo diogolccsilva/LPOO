@@ -130,7 +130,8 @@ public class PlayScreen implements Screen {
         //Draw hero's texture
         game.batch.draw( map.getMap(), 0, 0 );
         game.batch.draw( hero_text, hPos.x, hPos.y );
-        drawLifeBard( hPos.x + hero_text.getRegionWidth() / 4, hPos.y + 100, LifeBar.getTexture( play.getHero().getStats().getHealth() ));
+        drawLifeBard( hPos.x + hero_text.getRegionWidth() / 3, hPos.y + hero_text.getRegionHeight(),
+                LifeBar.getTexture( play.getHero().getStats().getHealth(), play.getHero().getStats().getMaxHealth() ));
 
         //Iterate throw the enemies' animations
         LinkedList<Enemy> en = play.getEnemies();
@@ -138,6 +139,8 @@ public class PlayScreen implements Screen {
             Enemy e = en.get(i);
             TextureRegion robot_text = enemies.get(i).getTexture( e.getNextState(), delta );
             game.batch.draw(robot_text, e.getPosition().x,e.getPosition().y);
+            drawLifeBard( e.getPosition().x + robot_text.getRegionWidth() / 3, e.getPosition().y + robot_text.getRegionHeight(),
+                    LifeBar.getTexture( e.getStats().getHealth(), e.getStats().getMaxHealth() ));
             if( e.getState() == Enemy.EnemyStatus.DEAD /*&& enemies.get(i).isFinished( e.getState() )*/) {
                 enemies.remove(i);
                 play.eraseEnemy(i);

@@ -30,7 +30,7 @@ public class Game implements Updatable {
     private int enemyResist = 20, enemyHealth = 50, enemyStrength = 20;
 
     public Game() {
-        frameEvents = new boolean[4];
+        frameEvents = new boolean[6];
         frameEvents[ENEMY_SPAWN_INDEX] = false;
         frameEvents[ENEMY_KILLED_INDEX] = false;
         frameEvents[PROJECTILE_FIRED_INDEX] = false;

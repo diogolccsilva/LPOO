@@ -10,6 +10,8 @@ public class Stats {
      */
     private int health;
 
+    private int maxHealth;
+
     /**
      * @brief Character's resistance
      */
@@ -27,7 +29,7 @@ public class Stats {
      * @param strength
      */
     public Stats ( int health, int resistance, int strength ) {
-
+        maxHealth = health;
         this.health = health;
         this.resistance = resistance;
         this.strength = strength;
@@ -39,6 +41,10 @@ public class Stats {
      */
     public int getHealth() {
         return health;
+    }
+
+    public int getMaxHealth() {
+        return maxHealth;
     }
 
     /**
