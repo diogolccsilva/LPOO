@@ -46,7 +46,6 @@ public class MyGame extends com.badlogic.gdx.Game {
     }
 
     public void changeScreen( States stat ) {
-
         switch ( stat ) {
             case MENU:
                 disposeState();

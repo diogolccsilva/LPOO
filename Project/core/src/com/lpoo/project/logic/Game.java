@@ -42,7 +42,16 @@ public class Game {
         stateTime = 0;
     }
 
+    public GameStatus getState() {
+        return state;
+    }
+
     public void updatePlaying( float delta ) {
+        if( hero.getState() == Hero.HeroStatus.DEAD ) {
+            state = GameStatus.LOST;
+            return ;
+        }
+
         float currTime = stateTime + delta;
         hero.update( delta );
 

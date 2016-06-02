@@ -80,4 +80,12 @@ public class Hero extends Character {
                 break;
         }
     }
+
+    public void hit(int damage) {
+        stats.setHealth(damage);
+        if(stats.getHealth()<=0) {
+            state = HeroStatus.DEAD;
+            nextState = HeroStatus.DEAD;
+        }
+    }
 }

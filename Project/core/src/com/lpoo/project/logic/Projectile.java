@@ -40,7 +40,7 @@ public class Projectile extends Entity {
         for( Enemy e : enemies ) {
             if(rect.overlaps(e.getRect())) {
                 state = ProjectileStatus.HIT_TRAGET;
-                e.bulletHit(this);
+                e.hit(damage);
                 return ;
             }
         }

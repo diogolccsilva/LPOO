@@ -20,12 +20,12 @@ public class Enemy extends Character {
      * @param strength
      */
     public Enemy( int x, int y, int health, int resistance, int strength )  {
-        super( x, y, 10, 124, health, resistance, strength );
+        super( x, y, 80, 124, health, resistance, strength );
         stateTime = 0;
         state = EnemyStatus.MOVE_RIGHT;
         nextState = EnemyStatus.MOVE_RIGHT;
         move_speed = 1/3f;
-        attack_speed = 1/5 * 6f;
+        attack_speed = 1.2f;
     }
 
     public float getSpeed( EnemyStatus stat ) {
@@ -57,6 +57,20 @@ public class Enemy extends Character {
     public void update( float delta, Hero hero ) {
         stateTime += delta;
 
+        switch( state ) {
+            case DEAD:
+                break;
+            case MOVE_RIGHT:
+                rect.x += 30 * delta;
+                break;
+            case ATTACK:
+                if( stateTime >= attack_speed ) {
+                    hero.hit(stats.getStrength());
+                    stateTime -= attack_speed;
+                }
+                break;
+        }
+
         //Change state
         if( state != EnemyStatus.DEAD /* && stateTime >= getSpeed( state )*/ ) {
             if ( rect.overlaps( hero.getRect()) )
@@ -69,15 +83,12 @@ public class Enemy extends Character {
             rect.x += 30 * delta;
     }
 
-    public void bulletHit( Projectile p ) {
-        stats.setHealth(p.getDamage());
+    public void hit( int damage ) {
+        stats.setHealth(damage);
         if(stats.getHealth()<=0) {
             state = EnemyStatus.DEAD;
             nextState = EnemyStatus.DEAD;
         }
     }
 
-    public void setHealth(int health) {
-
-    }
 }

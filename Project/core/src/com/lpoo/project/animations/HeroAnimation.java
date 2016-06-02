@@ -141,11 +141,16 @@ public class HeroAnimation implements Disposable {
             case MOVE_RIGHT:
                 nextAnimation = move_right;
                 break;
+            case DEAD:
+                currAnimation = still;
+                stateTime = 0;
+                state = stat;
+                return currAnimation.getKeyFrame( stateTime, true );
         }
 
         stateTime += delta;
 
-        if (currAnimation.isAnimationFinished(stateTime) || ( currAnimation == still && nextAnimation != still )) {
+        if ( currAnimation.isAnimationFinished(stateTime) || ( currAnimation == still && nextAnimation != still )) {
             stateTime = 0;
             state = stat;
             currAnimation = nextAnimation;

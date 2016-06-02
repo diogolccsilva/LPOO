@@ -81,7 +81,10 @@ public class PlayScreen implements Screen {
         Vector2 hPos = play.getHero().getPosition();
         play.update( delta );
 
-        String str;
+        if( play.getState() == Game.GameStatus.LOST || play.getState() == Game.GameStatus.WON )
+            game.changeScreen(MyGame.States.MENU);
+
+        String str = "Hero health: " + play.getHero().getStats().getHealth();
 
         /* UPDATE ALL ANIMATIONS */
         /* In development */
@@ -139,7 +142,6 @@ public class PlayScreen implements Screen {
 
         //Iterate throw the projectiles' animations
         LinkedList<Projectile> proj = play.getProjectiles();
-        str = "Play proj size: " + proj.size() + "  - En size: " + projectiles.size();
         for( int i = 0; i < projectiles.size(); i++ ) {
             ProjectileAnimation p_ani = projectiles.get(i);
             Projectile p = proj.get(i);
