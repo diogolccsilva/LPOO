@@ -11,6 +11,8 @@ public class Game implements Updatable {
     public static final int ENEMY_KILLED_INDEX = 1;
     public static final int PROJECTILE_FIRED_INDEX = 2;
     public static final int PROJECTILE_ERASED_INDEX = 3;
+    public static final int TRAP_CHARGING = 4;
+    public static final int TRAP_ERASED= 3;
 
     private boolean[] frameEvents;
 
@@ -33,6 +35,8 @@ public class Game implements Updatable {
         frameEvents[ENEMY_KILLED_INDEX] = false;
         frameEvents[PROJECTILE_FIRED_INDEX] = false;
         frameEvents[PROJECTILE_ERASED_INDEX] = false;
+        frameEvents[TRAP_CHARGING] = false;
+        frameEvents[TRAP_ERASED] = false;
 
         hero = new Hero( this, 200, 144, 100, 10, 25 );
         enemies = new LinkedList<Enemy>();
@@ -64,6 +68,11 @@ public class Game implements Updatable {
             p.update(delta);
             if( p.getState() == Projectile.ProjectileStatus.HIT_TARGET)
                 frameEvents[PROJECTILE_ERASED_INDEX] = true;
+        }
+        for( Trap t : traps ) {
+            t.update(delta);
+            if( t.getState() == Trap.TrapStatus.ATTACK)
+                frameEvents[TRAP_ERASED] = true;
         }
 
         if( Math.floor( stateTime / (float)diffNextEnemy ) != Math.floor( currTime / (float)diffNextEnemy ) ) {
@@ -110,12 +119,20 @@ public class Game implements Updatable {
         return projectiles;
     }
 
+    public final LinkedList<Trap> getTraps() {
+        return traps;
+    }
+
     public void eraseEnemy( int index ) {
         enemies.remove(index);
     }
 
     public void eraseProjectile( int index ) {
         projectiles.remove(index);
+    }
+
+    public void eraseTrap( int index ) {
+        traps.remove(index);
     }
 
     public void touchDown( float screenX, float screenY ) {
@@ -129,6 +146,11 @@ public class Game implements Updatable {
     public void addProjectile(Projectile projectile) {
         frameEvents[PROJECTILE_FIRED_INDEX] = true;
         projectiles.add(projectile);
+    }
+
+    public void addTrap(Trap trap) {
+        frameEvents[TRAP_CHARGING] = true;
+        traps.add(trap);
     }
 
 }
