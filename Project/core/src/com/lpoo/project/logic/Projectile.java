@@ -5,46 +5,44 @@ import java.util.LinkedList;
 /**
  * Created by asus1 on 31/05/2016.
  */
-public class Projectile extends Entity {
+public class Projectile extends Entity implements Updatable, Movable {
 
-    public enum ProjectileStatus { TRAVELLING, HIT_TRAGET }
+    public enum ProjectileStatus { TRAVELLING, HIT_TARGET}
     private ProjectileStatus state;
-    private float stateTime;
 
-    private int damage, velocity;
+    private int damage;
+    private float velocity;
 
-    public Projectile( Game game, float x, float y, int width, int height, int damage, int velocity ) {
+    public Projectile( Game game, float x, float y, int width, int height, int damage ) {
         super(game, x, y, width, height);
         state = ProjectileStatus.TRAVELLING;
-        stateTime = 0;
         this.damage = damage;
-        this.velocity = velocity;
-    }
-
-    public int getDamage() {
-        return damage;
+        velocity = 100f;
     }
 
     public ProjectileStatus getState() {
         return state;
     }
 
-    public void update( float delta, LinkedList<Enemy> enemies ) {
-        stateTime += delta;
-        if( state != ProjectileStatus.HIT_TRAGET) {
-            rect.x -= velocity * delta;
-            collision(enemies);
+    public void update( float delta ) {
+        if( state != ProjectileStatus.HIT_TARGET) {
+            move( -1, delta );
+            collision();
         }
     }
 
-    public void collision(LinkedList<Enemy> enemies) {
+    public void collision( ) {
+        LinkedList<Enemy> enemies = game.getEnemies();
         for( Enemy e : enemies ) {
             if(rect.overlaps(e.getRect())) {
-                state = ProjectileStatus.HIT_TRAGET;
+                state = ProjectileStatus.HIT_TARGET;
                 e.hit(damage);
                 return ;
             }
         }
     }
 
+    public void move( int dir, float delta ) {
+        rect.x += dir * velocity * delta;
+    }
 }

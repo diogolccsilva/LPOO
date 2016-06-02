@@ -5,7 +5,7 @@ import java.util.LinkedList;
 /**
  * Created by Vasco on 10/05/2016.
  */
-public class Game {
+public class Game implements Updatable {
 
     public static final int ENEMY_SPAWN_INDEX = 0;
     public static final int ENEMY_KILLED_INDEX = 1;
@@ -24,8 +24,8 @@ public class Game {
 
     public float stateTime;
 
-    private int diffNextEnemy = 10;
-    private int enemyResist = 10, enemyHealth = 10, enemyStrength = 10;
+    private int diffNextEnemy = 2;
+    private int enemyResist = 20, enemyHealth = 50, enemyStrength = 20;
 
     public Game() {
         frameEvents = new boolean[4];
@@ -56,18 +56,14 @@ public class Game {
         hero.update( delta );
 
         for( Enemy e : enemies ) {
-            if(e.getState()== Enemy.EnemyStatus.DEAD) {
+            if(e.getState()== Enemy.EnemyStatus.DEAD)
                 frameEvents[ENEMY_KILLED_INDEX] = true;
-                //enemies.remove(e);
-            }
             else e.update(delta);
         }
         for( Projectile p : projectiles ) {
-            p.update(delta, enemies);
-            if( p.getState() == Projectile.ProjectileStatus.HIT_TRAGET ) {
+            p.update(delta);
+            if( p.getState() == Projectile.ProjectileStatus.HIT_TARGET)
                 frameEvents[PROJECTILE_ERASED_INDEX] = true;
-                //projectiles.remove(p);
-            }
         }
 
         if( Math.floor( stateTime / (float)diffNextEnemy ) != Math.floor( currTime / (float)diffNextEnemy ) ) {

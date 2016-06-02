@@ -3,12 +3,14 @@ package com.lpoo.project.logic;
 /**
  * Created by Vasco on 12/05/2016.
  */
-public class Hero extends Character {
+public class Hero extends Character implements Updatable, Movable, Hitable {
 
     public enum HeroStatus { STILL, ATTACK, MOVE_LEFT, MOVE_RIGHT, DEAD }
-    private float move_speed, attack_speed;
     private HeroStatus state, nextState;
     private float stateTime;
+
+    private float move_speed, attack_speed;
+    private float velocity;
 
     /**
      * @brief Constructor for the class Hero
@@ -24,6 +26,7 @@ public class Hero extends Character {
         nextState = state;
         move_speed = 1/3f;
         attack_speed = 0.7f;
+        velocity = 50f;
         this.game = game;
     }
 
@@ -33,10 +36,6 @@ public class Hero extends Character {
 
     public HeroStatus getNextState () {
         return nextState;
-    }
-
-    public void move( int dir, float delta ) {
-        rect.x += 40 * delta * dir;
     }
 
     public void touchDown( float screenX, float screenY ) {
@@ -60,13 +59,14 @@ public class Hero extends Character {
         }
     }
 
-    public void update( float delta ) {
+    @Override
+    public void update(float delta) {
         stateTime += delta;
 
         switch( state ) {
             case ATTACK:
                 if( stateTime >= attack_speed ) {
-                    Projectile projectile = new Projectile(game, rect.x, rect.y + 46, 10, 3, 5, 80);
+                    Projectile projectile = new Projectile(game, rect.x, rect.y + 46, 10, 3, 5);
                     game.addProjectile(projectile);
                     stateTime -= attack_speed;
                 }
@@ -86,5 +86,9 @@ public class Hero extends Character {
             state = HeroStatus.DEAD;
             nextState = HeroStatus.DEAD;
         }
+    }
+
+    public void move( int dir, float delta ) {
+        rect.x += velocity * delta * dir;
     }
 }

@@ -38,9 +38,5 @@ public class Entity {
     public Vector2 getSize() {
         return new Vector2( rect.width, rect.height );
     }
-/*
-    public boolean collision(Rectangle rect){
-        return position.x < rect.x + rect.width && position.x + width > rect.x && position.y < rect.y + rect.height && position.y + height > rect.y;
-    }
-*/
+
 }

@@ -48,7 +48,7 @@ public class PlayScreen implements Screen {
 
         hero_animations = new HeroAnimation( "Hero\\hero1_fire.atlas", "Hero\\hero1_still.atlas",
                                                     "Hero\\hero1_still.atlas", "Hero\\hero1_still.atlas", 1/10f, 1/3f );
-        enemy_animations = new EnemyAnimation( "Robot\\robot1_attack.atlas", "Robot\\robot1_walk.atlas", 1/3f, 1/3f );
+        enemy_animations = new EnemyAnimation( "Robot\\robot1_attack.atlas", "Robot\\robot1_walk.atlas", 1/3f, 1/4f );
         enemies = new LinkedList<EnemyAnimation>();
         projectiles = new LinkedList<ProjectileAnimation>();
         map = new Map();

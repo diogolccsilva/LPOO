@@ -4,13 +4,14 @@ package com.lpoo.project.logic;
 /**
  * Created by Vasco on 12/05/2016.
  */
-public class Enemy extends Character {
+public class Enemy extends Character implements Updatable, Movable, Hitable {
 
     public enum EnemyStatus { ATTACK, MOVE_RIGHT, DEAD }
     private EnemyStatus state, nextState;
     private float stateTime;
 
     private float move_speed, attack_speed, attack_time;
+    private float velocity;
     private boolean attacked;
 
     /**
@@ -26,20 +27,11 @@ public class Enemy extends Character {
         stateTime = 0;
         state = EnemyStatus.MOVE_RIGHT;
         nextState = EnemyStatus.MOVE_RIGHT;
-        move_speed = 1/3f;
+        move_speed = 1/4f;
         attack_speed = 1.4f;
         attack_time = 0.6f;
         attacked = false;
-    }
-
-    public float getSpeed( EnemyStatus stat ) {
-        switch(stat) {
-            case ATTACK:
-                return attack_speed;
-            case MOVE_RIGHT:
-                return move_speed;
-        }
-        return 0;
+        velocity = 40f;
     }
 
     public EnemyStatus getState() {
@@ -58,14 +50,15 @@ public class Enemy extends Character {
         }
     }
 
-    public void update( float delta ) {
+    @Override
+    public void update(float delta) {
         stateTime += delta;
 
         switch( state ) {
             case DEAD:
                 break;
             case MOVE_RIGHT:
-                rect.x += 30 * delta;
+                move( 1, delta );
                 break;
             case ATTACK:
                 if( stateTime >= attack_speed ) {
@@ -85,9 +78,6 @@ public class Enemy extends Character {
             else
                 nextState = EnemyStatus.MOVE_RIGHT;
         }
-
-        if( state == EnemyStatus.MOVE_RIGHT )
-            rect.x += 30 * delta;
     }
 
     public void hit( int damage ) {
@@ -98,4 +88,8 @@ public class Enemy extends Character {
         }
     }
 
+    @Override
+    public void move(int dir, float delta) {
+        rect.x += velocity * dir * delta;
+    }
 }

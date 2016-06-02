@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Disposable;
 import com.lpoo.project.logic.Projectile.ProjectileStatus;
-import com.lpoo.project.screens.PlayScreen;
 
 /**
  * Class that creates the projectile's animation
@@ -59,7 +58,7 @@ public class ProjectileAnimation implements Disposable {
      * @return TextureRegion to be drawn on the screen
      */
     public TextureRegion getTexture ( ProjectileStatus stat, float delta ) {
-        if( stat == ProjectileStatus.HIT_TRAGET ) {
+        if( stat == ProjectileStatus.HIT_TARGET) {
             stateTime += delta;
             return explode.getKeyFrame(stateTime, false);
         }
