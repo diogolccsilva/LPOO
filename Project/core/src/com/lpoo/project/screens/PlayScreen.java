@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.lpoo.project.MyGame;
 import com.lpoo.project.animations.EnemyAnimation;
 import com.lpoo.project.animations.HeroAnimation;
+import com.lpoo.project.animations.LifeBar;
 import com.lpoo.project.animations.Map;
 import com.lpoo.project.animations.ProjectileAnimation;
 import com.lpoo.project.logic.Enemy;
@@ -68,6 +69,14 @@ public class PlayScreen implements Screen {
 
     }
 
+    public void drawLifeBard( float x, float y, TextureRegion[] textures  ) {
+        float width = 0;
+        for( TextureRegion t : textures ) {
+            game.batch.draw(t, x + width, y);
+            width += t.getRegionWidth();
+        }
+    }
+
     @Override
     public void render(float delta) {
 
@@ -99,7 +108,6 @@ public class PlayScreen implements Screen {
         //Traps' animations
 
         //Enemies' animations
-       // TextureRegion robot_text = enemy_animations.getTexture( play., delta );
 
         /* DRAW TEXTURES ON THE SCREEN */
 
@@ -122,6 +130,9 @@ public class PlayScreen implements Screen {
         //Draw hero's texture
         game.batch.draw( map.getMap(), 0, 0 );
         game.batch.draw( hero_text, hPos.x, hPos.y );
+        TextureRegion[] t = LifeBar.getTexture( play.getHero().getStats().getHealth() );
+        str += "\nWidth: " + t[0].getRegionWidth();
+        drawLifeBard( hPos.x, hPos.y + 100, t);
 
         //Iterate throw the enemies' animations
         LinkedList<Enemy> en = play.getEnemies();
