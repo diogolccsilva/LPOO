@@ -23,7 +23,6 @@ public class Trap extends Entity implements Updatable {
         return currStatus;
     }
 
-
     @Override
     public void update(float delta) {
         if( currStatus != TrapStatus.ATTACK)
