@@ -29,6 +29,14 @@ public class MyGame extends com.badlogic.gdx.Game {
     public enum States { MENU, PLAY, BUILD, EXIT }
     private States state;
 
+    private static MyGame ourInstance = new MyGame();
+
+    public static MyGame getInstance() {
+        return ourInstance;
+    }
+
+    private MyGame() {}
+
     @Override
 	public void create () {
         batch = new SpriteBatch();

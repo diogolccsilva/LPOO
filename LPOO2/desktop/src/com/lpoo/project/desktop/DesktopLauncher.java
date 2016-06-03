@@ -7,6 +7,6 @@ import com.lpoo.project.MyGame;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		new LwjglApplication(new MyGame(), config);
+		new LwjglApplication(MyGame.getInstance(), config);
 	}
 }
