@@ -1,13 +1,15 @@
 package com.lpoo.project.logic;
 
 /**
- * Created by Vasco on 14/05/2016.
+ * Interface that changes the direction of a character
  */
 public interface Movable {
 
     /**
-     * @brief Changes the direction. Entities that move can only do so to the left or right
-     * @param dir
+     * Changes the direction
+     * Entities that move can only do so to the left or right
+     * @param dir Direction to move
+     * @param delta Increasing value
      */
     void move( int dir, float delta );
 }

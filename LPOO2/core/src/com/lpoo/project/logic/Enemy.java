@@ -129,7 +129,7 @@ public class Enemy extends Character implements Updatable, Movable, Hitable {
     }
 
     /**
-     * Verifies if the enemy was hit by a projectile if it will die
+     * Verifies if the enemy was hit by a projectile and if its life is 0 or less the enemy dies
      * @param stats Enemy's properties
      */
     public void hit(Stats stats) {
@@ -143,6 +143,8 @@ public class Enemy extends Character implements Updatable, Movable, Hitable {
     @Override
     /**
      * Represents the way the enemy moves
+     * @param dir Movement's direction
+     * @param delta Increasing value
      */
     public void move(int dir, float delta) {
         rect.x += velocity * dir * delta;

@@ -1,8 +1,12 @@
 package com.lpoo.project.logic;
 
 /**
- * Created by Vasco on 02/06/2016.
+ * Interface that allows to update a entity
  */
 public interface Updatable {
+    /**
+     * Updates a entity
+     * @param delta Increasing value
+     */
     void update( float delta );
 }

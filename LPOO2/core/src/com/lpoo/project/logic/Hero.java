@@ -101,10 +101,17 @@ public class Hero extends Character implements Updatable, Movable, Hitable {
             nextState = HeroStatus.ATTACK;
     }
 
+    /**
+     *
+     */
     public void touchUp( ) {
         nextState = HeroStatus.STILL;
     }
 
+    /**
+     * Function which represents the hero's status' animation
+     * @param stat hero's status
+     */
     public void AnimationStatus( HeroStatus stat ) {
         if( stat != state ) {
             nextState = stat;
@@ -114,6 +121,9 @@ public class Hero extends Character implements Updatable, Movable, Hitable {
     }
 
     @Override
+    /**
+     * Updates the hero and current status
+     */
     public void update(float delta) {
         stateTime += delta;
 
@@ -134,6 +144,10 @@ public class Hero extends Character implements Updatable, Movable, Hitable {
         }
     }
 
+    /**
+     * Verifies if the hero was hit by a enemy and if its life is 0 or less the enemy dies
+     * @param stats Hero's properties
+     */
     public void hit(Stats stats) {
         this.stats.applyDamage(stats);
         if(this.stats.getHealth()<=0) {
@@ -142,11 +156,19 @@ public class Hero extends Character implements Updatable, Movable, Hitable {
         }
     }
 
+    /**
+     * Allows the hero to move
+     * @param dir Movement's direction
+     * @param delta Increasing value
+     */
     public void move( int dir, float delta ) {
         rect.x += velocity * delta * dir;
     }
 
     @Override
+    /**
+     * Creates a string with the hero's properties
+     */
     public String toString(){
         return "Hero [stats=" + stats + "]";
     }

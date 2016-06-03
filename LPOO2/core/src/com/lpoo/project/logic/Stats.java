@@ -1,27 +1,33 @@
 package com.lpoo.project.logic;
 
 /**
- * Created by Vasco on 12/05/2016.
- */
+ * Class that creates objects of type Stats (properties of a character)
+ * */
 public class Stats {
 
     /**
-     * @brief Character's health
+     * Character's health
      */
     private int health;
 
+    /**
+     * Character's max health
+     */
     private int maxHealth;
 
     /**
-     * @brief Character's resistance
+     * Character's resistance
      */
     private int resistance;
 
     /**
-     * @brief Character's strength
+     * Character's strength
      */
     private int strength;
 
+    /**
+     * Character's damage
+     */
     private int damage;
 
     private int penetration;
