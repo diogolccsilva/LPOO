@@ -2,25 +2,58 @@ package com.lpoo.project.logic;
 
 
 /**
- * Created by Vasco on 12/05/2016.
+ * Class that creates the enemies
+ * This class extends the superclass Character and it implements the Updatable, Movable and Hitable interfaces
  */
 public class Enemy extends Character implements Updatable, Movable, Hitable {
 
+    /**
+     * Enumeration for the enemy's status
+     */
     public enum EnemyStatus { ATTACK, MOVE_RIGHT, DEAD }
-    private EnemyStatus state, nextState;
+
+    /**
+     * Enemy's current status
+     */
+    private EnemyStatus state;
+    /**
+     * Enemy's next status
+     */
+    private EnemyStatus nextState;
+    /**
+     * Status "time of life"
+     */
     private float stateTime;
 
-    private float move_speed, attack_speed, attack_time;
+    /**
+     * Moving speed
+     */
+    private float move_speed;
+    /**
+     * Attack's speed
+     */
+    private float attack_speed;
+    /**
+     * Attack's time
+     */
+    private float attack_time;
+    /**
+     * Enemy's velocity
+     */
     private float velocity;
+    /**
+     * Boolean which represents if the enemy was attacked or not
+     */
     private boolean attacked;
 
     /**
-     * @brief Constructor for the class Enemy
-     * @param x
-     * @param y
-     * @param health
-     * @param resistance
-     * @param strength
+     * Constructor for the class Enemy
+     * @param game Game where the enemy will be placed
+     * @param x Enemy's x position
+     * @param y Enemy's y position
+     * @param health Enemy's health
+     * @param resistance Enemy's resistance
+     * @param strength Enemy's strength
      */
     public Enemy( Game game, int x, int y, int health, int resistance, int strength )  {
         super( game, x, y, 80, 124, health, resistance, strength );
@@ -34,14 +67,26 @@ public class Enemy extends Character implements Updatable, Movable, Hitable {
         velocity = 40f;
     }
 
+    /**
+     * Getter for the status
+     * @return enemy's currents status
+     */
     public EnemyStatus getState() {
         return state;
     }
 
+    /**
+     * Getter for the status
+     * @return enemy's next status
+     */
     public EnemyStatus getNextState () {
         return nextState;
     }
 
+    /**
+     * Function which represents the enemy's status' animation
+     * @param stat Enemy's status
+     */
     public void AnimationStatus( EnemyStatus stat ) {
         if( stat != state ) {
             nextState = stat;
@@ -51,6 +96,9 @@ public class Enemy extends Character implements Updatable, Movable, Hitable {
     }
 
     @Override
+    /**
+     * Updates the enemy and current status
+     */
     public void update(float delta) {
         stateTime += delta;
 
@@ -80,6 +128,10 @@ public class Enemy extends Character implements Updatable, Movable, Hitable {
         }
     }
 
+    /**
+     * Verifies if the enemy was hit by a projectile if it will die
+     * @param stats Enemy's properties
+     */
     public void hit(Stats stats) {
         this.stats.applyDamage(stats);
         if(this.stats.getHealth()<=0) {
@@ -89,6 +141,9 @@ public class Enemy extends Character implements Updatable, Movable, Hitable {
     }
 
     @Override
+    /**
+     * Represents the way the enemy moves
+     */
     public void move(int dir, float delta) {
         rect.x += velocity * dir * delta;
     }

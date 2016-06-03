@@ -3,24 +3,49 @@ package com.lpoo.project.logic;
 import com.lpoo.project.MyGame;
 
 /**
- * Created by Vasco on 12/05/2016.
+ * Class that creates the heroes
+ * This class extends the superclass Character and it implements the Updatable, Movable and Hitable interfaces
  */
 public class Hero extends Character implements Updatable, Movable, Hitable {
 
+    /**
+     * Enumeration for the heros status
+     */
     public enum HeroStatus { STILL, ATTACK, MOVE_LEFT, MOVE_RIGHT, DEAD }
-    private HeroStatus state, nextState;
+    /**
+     * Hero's current status
+     */
+    private HeroStatus state;
+    /**
+     * Hero's next status
+     */
+    private HeroStatus nextState;
+    /**
+     * Status "time of life"
+     */
     private float stateTime;
 
-    private float move_speed, attack_speed;
-    private float velocity;
+    /**
+     * Moving speed
+     */
+    private float move_speed;
+    /**
+     * Attack's speed
+     */
+    private float attack_speed;
 
     /**
+     * Enemy's velocity
+     */
+    private float velocity;
+    /**
      * @brief Constructor for the class Hero
-     * @param x
-     * @param y
-     * @param health
-     * @param resistance
-     * @param strength
+     * @param game Game where the hero will be placed
+     * @param x x position of the hero
+     * @param y y position of the hero
+     * @param health Hero's health
+     * @param resistance Hero's resistance
+     * @param strength Hero's strength
      */
     public Hero( Game game, int x, int y, int health, int resistance, int strength )  {
         super( game, x, y, 45, 88, health, resistance, strength );
@@ -32,23 +57,42 @@ public class Hero extends Character implements Updatable, Movable, Hitable {
         this.game = game;
     }
 
+    /**
+     * Getter for the hero's current status
+     * @return the hero's current status
+     */
     public HeroStatus getState () {
         return state;
     }
 
+    /**
+     * Getter for the hero's next status
+     * @return the hero's next status
+     */
     public HeroStatus getNextState () {
         return nextState;
     }
 
+    /**
+     * Function which allows the hero to move
+     * @param state New status to be saved in the nextState variable
+     */
     public void move(HeroStatus state) {
         nextState = state;
     }
 
+    /**
+     * Function which allows the hero to attack
+     */
     public void attack() {
         nextState = HeroStatus.ATTACK;
     }
 
-    public void touchDown( float screenX, float screenY ) {
+    /**
+     *
+     * @param screenX
+     */
+    public void touchDown( float screenX) {
         if( screenX < 50 )
             nextState = HeroStatus.MOVE_LEFT;
         else if( screenX > 840 )

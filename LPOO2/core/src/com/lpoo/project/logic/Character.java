@@ -1,27 +1,35 @@
 package com.lpoo.project.logic;
 
-import java.awt.Rectangle;
-
 /**
- * Created by Vasco on 10/05/2016.
+ * Class that creates the game's characters
+ * This class extends the superclass Entity
  */
 public class Character extends Entity {
 
     /**
-     * @brief Maximum velocity per second
+     * Maximum velocity per second
      */
     protected static final int max_velocity = 20;
 
+    /**
+     * Character's properties
+     */
     protected Stats stats;
+    /**
+     * Character's velocity
+     */
     protected float velocity;
 
     /**
-     * @param x
-     * @param y
-     * @param health
-     * @param resistance
-     * @param strength
-     * @brief Constructor for the class Character
+     * Constructor for the class Character
+     * @param game Game where the character will be placed
+     * @param x Character's x position
+     * @param y Character's y position
+     * @param width Character's width
+     * @param height Character's height
+     * @param health Character's health
+     * @param resistance Character's resistance
+     * @param strength Character's strength
      */
     public Character(Game game, int x, int y, int width, int height, int health, int resistance, int strength) {
         super(game, x, y, width, height);
@@ -29,10 +37,13 @@ public class Character extends Entity {
     }
 
     /**
-     * @param x
-     * @param y
-     * @param stats
-     * @brief Constructor for the class Character
+     * Constructor for the class Character
+     * @param game Game where the character will be placed
+     * @param x Character's x position
+     * @param y Character's y position
+     * @param width Character's width
+     * @param height Character's height
+     * @param stats Character's properties
      */
     public Character(Game game, int x, int y, int width, int height, Stats stats) {
         super(game, x, y, width, height);
@@ -40,16 +51,16 @@ public class Character extends Entity {
     }
 
     /**
+     * Getter for stats
      * @return character's current stats
-     * @brief Getter for stats
      */
     public Stats getStats() {
         return stats;
     }
 
     /**
+     * Getter for velocity
      * @return character's velocity
-     * @brief Getter for velocity
      */
     public float getVelocity() {
         return velocity;
