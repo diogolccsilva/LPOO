@@ -7,7 +7,7 @@ import java.util.LinkedList;
  */
 public class Trap extends Entity implements Updatable {
 
-    public enum TrapStatus { WAIT, ATTACK, RECHARGE };
+    public enum TrapStatus { WAIT, HEATUP, ATTACK, RECHARGE };
     private TrapStatus currStatus;
     private Stats stats;
 
