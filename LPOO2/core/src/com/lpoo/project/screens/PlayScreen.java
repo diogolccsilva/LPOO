@@ -26,8 +26,8 @@ import java.util.LinkedList;
 public class PlayScreen implements Screen {
 
     private OrthographicCamera camera;
-    private MyGame game;
-    public Game play;
+    private MyGame myGame;
+    public Game game;
     private BitmapFont font;
 
     private HeroAnimation hero_animations;
@@ -36,13 +36,12 @@ public class PlayScreen implements Screen {
     private EnemyAnimation enemy_animations;
     private Map map;
 
-
     private final int h = 500, w = 890;
 
-    public PlayScreen(MyGame game) {
+    public PlayScreen( MyGame myGame, Game game ) {
 
+        this.myGame = myGame;
         this.game = game;
-        play = new Game();
         font = new BitmapFont();
 
         camera = new OrthographicCamera( w, h );
@@ -72,10 +71,16 @@ public class PlayScreen implements Screen {
     public void drawLifeBard( float x, float y, TextureRegion[] textures  ) {
         float width = 0;
         for( TextureRegion t : textures ) {
-            game.batch.draw(t, x + width, y);
+            myGame.batch.draw(t, x + width, y);
             width += t.getRegionWidth();
         }
     }
+
+   // public void renderPlaying
+    //Vasco: Fazemos o building num screen diferente, ou fazemos aqui?
+    //Sara: diferente talvez? mas isso nao complica?
+    //Pingu: diferente
+    //Vasco: alright
 
     @Override
     public void render(float delta) {
@@ -83,27 +88,27 @@ public class PlayScreen implements Screen {
         /* UPDATE GAME'S LOGIC */
         /* To Do */
         //Hero's position
-        Vector2 hPos = play.getHero().getPosition();
-        play.update( delta );
+        Vector2 hPos = game.getHero().getPosition();
+        game.update( delta );
 
-        if( play.getState() == Game.GameStatus.LOST || play.getState() == Game.GameStatus.WON )
-            game.changeScreen(MyGame.States.MENU);
+        if( game.getState() == Game.GameStatus.LOST || game.getState() == Game.GameStatus.WON )
+            myGame.changeScreen(MyGame.States.MENU);
 
-        String str = "Hero health: " + play.getHero().getStats().getHealth();
+        String str = "Hero health: " + game.getHero().getStats().getHealth();
 
         /* UPDATE ALL ANIMATIONS */
         /* In development */
 
         //Hero's animation
-        TextureRegion hero_text = hero_animations.getTexture( play.getHero().getNextState(), delta );
-        play.getHero().AnimationStatus( hero_animations.getState() );
+        TextureRegion hero_text = hero_animations.getTexture( game.getHero().getNextState(), delta );
+        game.getHero().AnimationStatus( hero_animations.getState() );
 
-        boolean[] frameEvents = play.getFrameEvents();
+        boolean[] frameEvents = game.getFrameEvents();
         if( frameEvents[Game.ENEMY_SPAWN_INDEX] )
             enemies.add( new EnemyAnimation( "Robot\\robot1_attack.atlas", "Robot\\robot1_walk.atlas", 1/5f, 1/3f ));
         if( frameEvents[Game.PROJECTILE_FIRED_INDEX] )
             projectiles.add( new ProjectileAnimation( "Projectile\\projectile1.atlas" ));
-        play.setFrameEvents();
+        game.setFrameEvents();
 
         //Traps' animations
 
@@ -119,54 +124,54 @@ public class PlayScreen implements Screen {
         Vector2 midScreen = calMidScreen( hPos, hero_text.getRegionWidth() );
 
         //Set batch to only draw what the camera sees
-        game.batch.setProjectionMatrix( camera.combined );
+        myGame.batch.setProjectionMatrix( camera.combined );
 
-        game.batch.begin();
+        myGame.batch.begin();
 
         //Set camera position to match hero's center position
         camera.position.set( midScreen.x, midScreen.y, 0 );
         camera.update();
 
         //Draw hero's texture
-        game.batch.draw( map.getMap(), 0, 0 );
-        game.batch.draw( hero_text, hPos.x, hPos.y );
+        myGame.batch.draw( map.getSky(), 0, 0 );
+        myGame.batch.draw( hero_text, hPos.x, hPos.y );
         drawLifeBard( hPos.x + hero_text.getRegionWidth() / 3, hPos.y + hero_text.getRegionHeight(),
-                LifeBar.getTexture( play.getHero().getStats().getHealth(), play.getHero().getStats().getMaxHealth() ));
+                LifeBar.getTexture( game.getHero().getStats().getHealth(), game.getHero().getStats().getMaxHealth() ));
 
         //Iterate throw the enemies' animations
-        LinkedList<Enemy> en = play.getEnemies();
+        LinkedList<Enemy> en = game.getEnemies();
         for( int i = 0; i < enemies.size(); i++ ) {
             Enemy e = en.get(i);
             TextureRegion robot_text = enemies.get(i).getTexture( e.getNextState(), delta );
-            game.batch.draw(robot_text, e.getPosition().x,e.getPosition().y);
+            myGame.batch.draw(robot_text, e.getPosition().x,e.getPosition().y);
             drawLifeBard( e.getPosition().x + robot_text.getRegionWidth() / 3, e.getPosition().y + robot_text.getRegionHeight(),
                     LifeBar.getTexture( e.getStats().getHealth(), e.getStats().getMaxHealth() ));
             if( e.getState() == Enemy.EnemyStatus.DEAD /*&& enemies.get(i).isFinished( e.getState() )*/) {
                 enemies.remove(i);
-                play.eraseEnemy(i);
+                game.eraseEnemy(i);
                 i--;
             } else e.AnimationStatus( enemies.get(i).getStatus() );
         }
 
         //Iterate throw the projectiles' animations
-        LinkedList<Projectile> proj = play.getProjectiles();
+        LinkedList<Projectile> proj = game.getProjectiles();
         for( int i = 0; i < projectiles.size(); i++ ) {
             ProjectileAnimation p_ani = projectiles.get(i);
             Projectile p = proj.get(i);
             TextureRegion project_text = p_ani.getTexture( p.getState(), delta );
-            game.batch.draw(project_text, p.getPosition().x, p.getPosition().y);
+            myGame.batch.draw(project_text, p.getPosition().x, p.getPosition().y);
 
             //If the projectile's animation has ended or if the bullet is already out of the map
             if( p_ani.isFinished() || p.getPosition().x <= 0 ) {
                 projectiles.remove(i);
-                play.eraseProjectile(i);
+                game.eraseProjectile(i);
                 i--;
             }
         }
-        game.batch.draw( map.getSpawnWall(), 0, 142);
-        font.draw( game.batch, str, hPos.x, hPos.y - 10 );
+        myGame.batch.draw( map.getTerrain(), 0, 0);
+        font.draw( myGame.batch, str, hPos.x, hPos.y - 10 );
 
-        game.batch.end();
+        myGame.batch.end();
     }
 
     /**
@@ -176,7 +181,8 @@ public class PlayScreen implements Screen {
      * @return
      */
     private Vector2 calMidScreen ( Vector2 hPos, float spriteWidth ) {
-        return new Vector2( (hPos.x < 450 ) ? 450 : (hPos.x > 4000 ) ? 4000 : hPos.x + spriteWidth / 2, 250);
+        float tmp = hPos.x + spriteWidth / 2;
+        return new Vector2( (tmp < 250 ) ? 250 : (tmp > 3650 ) ? 3650 : tmp, 250);
     }
 
     @Override
@@ -207,16 +213,16 @@ public class PlayScreen implements Screen {
     }
 
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        play.touchDown( getRelativeX(screenX), getRelativeY(screenY) );
+        game.touchDown( getRelativeX(screenX), getRelativeY(screenY) );
         return true;
     }
 
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        play.touchUp( );
+        game.touchUp( );
         return true;
     }
 
     public Game getGame(){
-        return play;
+        return game;
     }
 }

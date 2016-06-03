@@ -13,12 +13,6 @@ import com.lpoo.project.screens.PlayScreen;
  * This class implements the interface Disposable
  */
 public class TrapAnimation {
-
-    /*
-     * PlayScreen where the game will be played
-     */
-    private PlayScreen game;
-
     /**
      * Trap's status
      */
@@ -48,8 +42,7 @@ public class TrapAnimation {
      * @param attackSpeed Trap's velocity of the attack
      * @param rechargeSpeed Trap's velocity of moving
      */
-    public TrapAnimation( PlayScreen game, String path, float attackSpeed, float rechargeSpeed ) {
-        this.game = game;
+    public TrapAnimation( String path, float attackSpeed, float rechargeSpeed ) {
         stateTime = 0;
         status = TrapStatus.WAIT;
 
