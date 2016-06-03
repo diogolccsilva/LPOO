@@ -26,7 +26,9 @@ public class BuildScreen implements Screen {
 
     private OrthographicCamera camera;
     private Texture grid;
-    private Rectangle[] rects;
+    private Texture play;
+    private Rectangle[] rectangles;
+    private Rectangle advance;
     private TrapAnimation trapDraw;
 
     private int xPos = 450;
@@ -45,10 +47,13 @@ public class BuildScreen implements Screen {
         camera = new OrthographicCamera(w, h);
         trapDraw = new TrapAnimation( "Trap\\trap1.atlas", 0, 0 );
         grid = new Texture("Grid.png");
-        rects = new Rectangle[26];
+        rectangles = new Rectangle[26];
+        advance = new Rectangle( xPos + 200, yPos + 100, 18, 25);
+        play = new Texture("PlayButton.png");
+
         int x = 250;
-        for( int i = 0; i < rects.length; i++ ) {
-            rects[i] = new Rectangle( x, 144, 128, 128 );
+        for( int i = 0; i < rectangles.length; i++ ) {
+            rectangles[i] = new Rectangle( x, 144, 128, 128 );
             x += 128;
         }
     }
@@ -89,11 +94,14 @@ public class BuildScreen implements Screen {
         xTouch = (int)pos.x;
         yTouch = (int)pos.y;
 
+        if( advance.overlaps(new Rectangle(pos.x, pos.y, 20, 20)))
+            myGame.changeScreen(MyGame.States.PLAY);
+
         if( select && pos.y >= 144 && pos.y <= 272 && pos.x > 250 && pos.x < 3578 ) {
             int tmp = (int)pos.x - 250;
             tmp /= 128;
             System.out.println("Tmp:" + tmp);
-            game.addTrap( new Trap( game, (int) rects[tmp].getX(), (int) rects[tmp].getY(), 128, 128, 20 ), tmp );
+            game.addTrap( new Trap( game, (int) rectangles[tmp].getX(), (int) rectangles[tmp].getY(), 128, 128, 20 ), tmp );
         }
         select = false;
     }
@@ -122,12 +130,16 @@ public class BuildScreen implements Screen {
 
         Trap[] traps = game.getTraps();
 
-        for( int i = 0; i < rects.length; i++ ) {
+        for( int i = 0; i < rectangles.length; i++ ) {
             if( traps[i] == null )
-                myGame.batch.draw(grid, rects[i].getX(), rects[i].getY());
+                myGame.batch.draw(grid, rectangles[i].getX(), rectangles[i].getY());
             else
                 myGame.batch.draw(trapDraw.getTexture(Trap.TrapStatus.WAIT, 0), traps[i].getPosition().x, traps[i].getPosition().y);
         }
+
+        advance.setX( xPos + 200 );
+        advance.setY( yPos + 100 );
+        myGame.batch.draw(play, advance.getX(), advance.getY());
 
         font.draw(myGame.batch, "" + xTouch + "-" + yTouch, xPos, yPos + 100);
 

@@ -91,7 +91,7 @@ public class Menu implements Screen{
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         Rectangle rect = new Rectangle( getRelativeX(screenX), getRelativeY(screenY), 20, 20 );
         if( rect.overlaps(play))
-            game.changeScreen(MyGame.States.PLAY);
+            game.changeScreen(MyGame.States.BUILD);
         else if ( rect.overlaps(exit))
             game.changeScreen(MyGame.States.EXIT);
         return true;
