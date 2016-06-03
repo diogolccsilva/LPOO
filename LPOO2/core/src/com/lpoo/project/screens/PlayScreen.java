@@ -13,9 +13,11 @@ import com.lpoo.project.animations.HeroAnimation;
 import com.lpoo.project.animations.LifeBar;
 import com.lpoo.project.animations.Map;
 import com.lpoo.project.animations.ProjectileAnimation;
+import com.lpoo.project.animations.TrapAnimation;
 import com.lpoo.project.logic.Enemy;
 import com.lpoo.project.logic.Game;
 import com.lpoo.project.logic.Projectile;
+import com.lpoo.project.logic.Trap;
 
 import java.util.LinkedList;
 
@@ -31,8 +33,8 @@ public class PlayScreen implements Screen {
 
     private HeroAnimation hero_animations;
     private LinkedList<EnemyAnimation> enemies;
+    private TrapAnimation[] trapAnimations;
     private LinkedList<ProjectileAnimation> projectiles;
-    private EnemyAnimation enemy_animations;
     private Map map;
 
     private final int h = 500, w = 890;
@@ -47,8 +49,8 @@ public class PlayScreen implements Screen {
 
         hero_animations = new HeroAnimation( "Hero\\hero1_fire.atlas", "Hero\\hero1_still.atlas",
                                                     "Hero\\hero1_still.atlas", "Hero\\hero1_still.atlas", 1/10f, 1/3f );
-        enemy_animations = new EnemyAnimation( "Robot\\robot1_attack.atlas", "Robot\\robot1_walk.atlas", 1/3f, 1/4f );
         enemies = new LinkedList<EnemyAnimation>();
+        trapAnimations = new TrapAnimation[26];
         projectiles = new LinkedList<ProjectileAnimation>();
         map = new Map();
     }
@@ -74,12 +76,6 @@ public class PlayScreen implements Screen {
             width += t.getRegionWidth();
         }
     }
-
-   // public void renderPlaying
-    //Vasco: Fazemos o building num screen diferente, ou fazemos aqui?
-    //Sara: diferente talvez? mas isso nao complica?
-    //Pingu: diferente
-    //Vasco: alright
 
     @Override
     public void render(float delta) {
@@ -133,9 +129,17 @@ public class PlayScreen implements Screen {
 
         //Draw hero's texture
         myGame.batch.draw( map.getSky(), 0, 0 );
-        myGame.batch.draw( hero_text, hPos.x, hPos.y );
-        drawLifeBard( hPos.x + hero_text.getRegionWidth() / 3, hPos.y + hero_text.getRegionHeight(),
-                LifeBar.getTexture( game.getHero().getStats().getHealth(), game.getHero().getStats().getMaxHealth() ));
+
+        //Iterate throw the traps' animations
+        Trap[] traps = game.getTraps();
+        for( int i = 0; i < traps.length; i++ ) {
+            if( traps[i] == null )
+                continue;
+            Trap t = traps[i];
+            if( trapAnimations[i] == null )
+                trapAnimations[i] = new TrapAnimation("Trap\\trap1.atlas", 1/10f, 1);
+            myGame.batch.draw(trapAnimations[i].getTexture(t.getState(), delta),t.getPosition().x,t.getPosition().y);
+        }
 
         //Iterate throw the enemies' animations
         LinkedList<Enemy> en = game.getEnemies();
@@ -167,6 +171,11 @@ public class PlayScreen implements Screen {
                 i--;
             }
         }
+
+        myGame.batch.draw( hero_text, hPos.x, hPos.y );
+        drawLifeBard( hPos.x + hero_text.getRegionWidth() / 3, hPos.y + hero_text.getRegionHeight(),
+                LifeBar.getTexture( game.getHero().getStats().getHealth(), game.getHero().getStats().getMaxHealth() ));
+
         myGame.batch.draw( map.getTerrain(), 0, 0);
         font.draw( myGame.batch, str, hPos.x, hPos.y - 10 );
 
@@ -207,7 +216,6 @@ public class PlayScreen implements Screen {
     @Override
     public void dispose() {
         hero_animations.dispose();
-        enemy_animations.dispose();
         map.dispose();
     }
 
