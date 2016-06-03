@@ -11,8 +11,6 @@ public class Game implements Updatable {
     public static final int ENEMY_KILLED_INDEX = 1;
     public static final int PROJECTILE_FIRED_INDEX = 2;
     public static final int PROJECTILE_ERASED_INDEX = 3;
-    public static final int TRAP_CHARGING = 4;
-    public static final int TRAP_ERASED= 3;
 
     private boolean[] frameEvents;
 
@@ -30,13 +28,11 @@ public class Game implements Updatable {
     private int enemyResist = 20, enemyHealth = 50, enemyStrength = 20;
 
     public Game() {
-        frameEvents = new boolean[6];
+        frameEvents = new boolean[4];
         frameEvents[ENEMY_SPAWN_INDEX] = false;
         frameEvents[ENEMY_KILLED_INDEX] = false;
         frameEvents[PROJECTILE_FIRED_INDEX] = false;
         frameEvents[PROJECTILE_ERASED_INDEX] = false;
-        frameEvents[TRAP_CHARGING] = false;
-        frameEvents[TRAP_ERASED] = false;
 
         hero = new Hero( this, 200, 144, 100, 10, 25 );
         enemies = new LinkedList<Enemy>();
@@ -73,8 +69,6 @@ public class Game implements Updatable {
             if( t == null )
                 continue;
             t.update(delta);
-            if( t.getState() == Trap.TrapStatus.ATTACK)
-                frameEvents[TRAP_ERASED] = true;
         }
 
         if( Math.floor( stateTime / (float)diffNextEnemy ) != Math.floor( currTime / (float)diffNextEnemy ) ) {
@@ -151,7 +145,6 @@ public class Game implements Updatable {
     }
 
     public void addTrap(Trap trap, int index) {
-        frameEvents[TRAP_CHARGING] = true;
         traps[index] = trap;
     }
 

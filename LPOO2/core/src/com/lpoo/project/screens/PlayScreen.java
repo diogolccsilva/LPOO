@@ -105,10 +105,6 @@ public class PlayScreen implements Screen {
             projectiles.add( new ProjectileAnimation( "Projectile\\projectile1.atlas" ));
         game.setFrameEvents();
 
-        //Traps' animations
-
-        //Enemies' animations
-
         /* DRAW TEXTURES ON THE SCREEN */
 
         //Clear screen with certain color
@@ -135,9 +131,11 @@ public class PlayScreen implements Screen {
         for( int i = 0; i < traps.length; i++ ) {
             if( traps[i] == null )
                 continue;
+
             Trap t = traps[i];
             if( trapAnimations[i] == null )
                 trapAnimations[i] = new TrapAnimation("Trap\\trap1.atlas", 1/10f, 1);
+
             myGame.batch.draw(trapAnimations[i].getTexture(t.getState(), delta),t.getPosition().x,t.getPosition().y);
         }
 
@@ -149,7 +147,8 @@ public class PlayScreen implements Screen {
             myGame.batch.draw(robot_text, e.getPosition().x,e.getPosition().y);
             drawLifeBard( e.getPosition().x + robot_text.getRegionWidth() / 3, e.getPosition().y + robot_text.getRegionHeight(),
                     LifeBar.getTexture( e.getStats().getHealth(), e.getStats().getMaxHealth() ));
-            if( e.getState() == Enemy.EnemyStatus.DEAD /*&& enemies.get(i).isFinished( e.getState() )*/) {
+
+            if( e.getState() == Enemy.EnemyStatus.DEAD ) {
                 enemies.remove(i);
                 game.eraseEnemy(i);
                 i--;

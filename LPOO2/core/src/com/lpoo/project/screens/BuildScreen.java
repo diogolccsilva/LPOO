@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.lpoo.project.MyGame;
@@ -25,6 +26,7 @@ public class BuildScreen implements Screen {
     private BitmapFont font;
 
     private OrthographicCamera camera;
+    private SpriteBatch hudBatch;
     private Texture grid;
     private Texture play;
     private Rectangle[] rectangles;
@@ -45,10 +47,13 @@ public class BuildScreen implements Screen {
         font = new BitmapFont();
 
         camera = new OrthographicCamera(w, h);
+        hudBatch = new SpriteBatch();
+
         trapDraw = new TrapAnimation( "Trap\\trap1.atlas", 0, 0 );
         grid = new Texture("Grid.png");
         rectangles = new Rectangle[26];
-        advance = new Rectangle( xPos + 300, yPos + 200, 18, 25);
+        System.out.println("" + (Gdx.graphics.getWidth() - 50) + "  -  " + ( Gdx.graphics.getHeight() - 50 ) );
+        advance = new Rectangle( Gdx.graphics.getWidth() - 50, Gdx.graphics.getHeight() - 50, 18, 25);
         play = new Texture("PlayButton.png");
 
         int x = 250;
@@ -94,7 +99,7 @@ public class BuildScreen implements Screen {
         xTouch = (int)pos.x;
         yTouch = (int)pos.y;
 
-        if( advance.overlaps(new Rectangle(pos.x, pos.y, 20, 20)))
+        if( advance.overlaps(new Rectangle(screenX, Gdx.graphics.getHeight() - screenY, 20, 20)))
             myGame.changeScreen(MyGame.States.PLAY);
 
         if( select && pos.y >= 144 && pos.y <= 272 && pos.x > 250 && pos.x < 3578 ) {
@@ -125,7 +130,7 @@ public class BuildScreen implements Screen {
         camera.position.set( xPos , yPos, 0 );
         camera.update();
 
-        myGame.batch.draw(map.getSky(), 0,0);
+        myGame.batch.draw( map.getSky(), 0, 0 );
         myGame.batch.draw( map.getTerrain(), 0, 0);
 
         Trap[] traps = game.getTraps();
@@ -137,13 +142,15 @@ public class BuildScreen implements Screen {
                 myGame.batch.draw(trapDraw.getTexture(Trap.TrapStatus.WAIT, 0), traps[i].getPosition().x, traps[i].getPosition().y);
         }
 
-        advance.setX( xPos + 300 );
-        advance.setY( yPos + 200 );
-        myGame.batch.draw(play, advance.getX(), advance.getY());
 
         font.draw(myGame.batch, "" + xTouch + "-" + yTouch, xPos, yPos + 100);
 
         myGame.batch.end();
+
+        hudBatch.begin();
+        hudBatch.draw(play, Gdx.graphics.getWidth() - 50 ,  Gdx.graphics.getHeight() - 50);
+        hudBatch.end();
+
     }
 
     public Vector2 getRelativePosition( int x, int y ) {
