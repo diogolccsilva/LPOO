@@ -5,8 +5,8 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
-import com.lpoo.project.MyGame;
 import com.badlogic.gdx.graphics.GL20;
+import com.lpoo.project.MyGame;
 
 /**
  * Created by Vasco on 11/05/2016.
@@ -19,7 +19,7 @@ public class Menu implements Screen{
     private Texture background;
     private final int h = 256, w = 453;
 
-    public Menu( MyGame game ) {
+    public Menu(MyGame game ) {
         this.game = game;
 
         play = new Rectangle( 235, 116, 130, 35 );

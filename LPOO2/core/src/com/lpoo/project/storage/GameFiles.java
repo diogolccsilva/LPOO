@@ -1,9 +1,9 @@
 package com.lpoo.project.storage;
 
-import java.io.*;
-//import com.google.gson.*;
 import com.lpoo.project.MyGame;
-import com.lpoo.project.logic.Hero;
+
+import java.io.*;
+
 
 /**
  * Created by Diogo on 5/20/2016.

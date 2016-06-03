@@ -1,7 +1,5 @@
 package com.lpoo.project.logic;
 
-import com.lpoo.project.MyGame;
-
 /**
  * Class that creates the heroes
  * This class extends the superclass Character and it implements the Updatable, Movable and Hitable interfaces

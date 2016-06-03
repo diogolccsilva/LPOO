@@ -1,21 +1,20 @@
 package com.lpoo.project;
 
-import com.badlogic.gdx.*;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.lpoo.project.logic.Hero;
 import com.lpoo.project.processors.Inputs;
 import com.lpoo.project.screens.Menu;
 import com.lpoo.project.screens.PlayScreen;
 
-import java.lang.*;
 import java.util.Vector;
 
-public class MyGame extends com.badlogic.gdx.Game {
+public class MyGame extends com.badlogic.gdx.Game{
 
     public SpriteBatch batch;
     public int screenWidth, screenHeight;
 
-    private Inputs inputs;
+    private static Inputs inputs;
     private PlayScreen game;
     private Menu menu;
 
@@ -24,8 +23,18 @@ public class MyGame extends com.badlogic.gdx.Game {
     public enum States { MENU, PLAY, EXIT }
     private States state;
 
+    private static MyGame ourInstance = new MyGame();
+
+    public static MyGame getInstance() {
+        return ourInstance;
+    }
+
+    public MyGame() {
+
+    }
+
     @Override
-	public void create () {
+    public void create () {
         batch = new SpriteBatch();
 
         screenWidth = Gdx.graphics.getWidth();
@@ -38,7 +47,7 @@ public class MyGame extends com.badlogic.gdx.Game {
         heroes = new Vector<Hero>();
 
         state = States.MENU;
-	}
+    }
 
     public void disposeState( ) {
         switch (state) {
@@ -100,7 +109,7 @@ public class MyGame extends com.badlogic.gdx.Game {
     }
 
     @Override
-	public void render () {
+    public void render () {
         super.render();
-	}
+    }
 }

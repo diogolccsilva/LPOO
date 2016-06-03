@@ -136,7 +136,7 @@ public class Game implements Updatable {
     }
 
     public void touchDown( float screenX, float screenY ) {
-        hero.touchDown( screenX, screenY );
+        hero.touchDown( screenX);
     }
 
     public void touchUp( ) {
