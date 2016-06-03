@@ -48,7 +48,7 @@ public class BuildScreen implements Screen {
         trapDraw = new TrapAnimation( "Trap\\trap1.atlas", 0, 0 );
         grid = new Texture("Grid.png");
         rectangles = new Rectangle[26];
-        advance = new Rectangle( xPos + 200, yPos + 100, 18, 25);
+        advance = new Rectangle( xPos + 300, yPos + 200, 18, 25);
         play = new Texture("PlayButton.png");
 
         int x = 250;
@@ -137,8 +137,8 @@ public class BuildScreen implements Screen {
                 myGame.batch.draw(trapDraw.getTexture(Trap.TrapStatus.WAIT, 0), traps[i].getPosition().x, traps[i].getPosition().y);
         }
 
-        advance.setX( xPos + 200 );
-        advance.setY( yPos + 100 );
+        advance.setX( xPos + 300 );
+        advance.setY( yPos + 200 );
         myGame.batch.draw(play, advance.getX(), advance.getY());
 
         font.draw(myGame.batch, "" + xTouch + "-" + yTouch, xPos, yPos + 100);

@@ -68,21 +68,24 @@ public class MyGame extends com.badlogic.gdx.Game {
                     game = null;
                 disposeState();
                 state = stat;
-                setScreen( new Menu(this));
+                menu = new Menu(this);
+                setScreen( menu );
                 break;
             case PLAY:
                 if( game == null )
                     game = new Game();
                 disposeState();
                 state = stat;
-                setScreen( new PlayScreen(this, game) );
+                play = new PlayScreen(this, game);
+                setScreen( play );
                 break;
             case BUILD:
                 if( game == null )
                     game = new Game();
                 disposeState();
                 state = States.BUILD;
-                setScreen(new BuildScreen(this, game));
+                build = new BuildScreen(this, game);
+                setScreen(build);
                 break;
             case EXIT:
                 Gdx.app.exit();

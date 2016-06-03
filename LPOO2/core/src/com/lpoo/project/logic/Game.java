@@ -21,7 +21,7 @@ public class Game implements Updatable {
 
     private Hero hero;
     private LinkedList<Enemy> enemies;
-    private LinkedList<Trap> traps;
+    private Trap[] traps;
     private LinkedList<Projectile> projectiles;
 
     public float stateTime;
@@ -40,7 +40,7 @@ public class Game implements Updatable {
 
         hero = new Hero( this, 200, 144, 100, 10, 25 );
         enemies = new LinkedList<Enemy>();
-        traps = new LinkedList<Trap>();
+        traps = new Trap[26];
         projectiles = new LinkedList<Projectile>();
         state = GameStatus.PLAYING;
         stateTime = 0;
@@ -70,6 +70,8 @@ public class Game implements Updatable {
                 frameEvents[PROJECTILE_ERASED_INDEX] = true;
         }
         for( Trap t : traps ) {
+            if( t == null )
+                continue;
             t.update(delta);
             if( t.getState() == Trap.TrapStatus.ATTACK)
                 frameEvents[TRAP_ERASED] = true;
@@ -119,7 +121,7 @@ public class Game implements Updatable {
         return projectiles;
     }
 
-    public final LinkedList<Trap> getTraps() {
+    public final Trap[] getTraps() {
         return traps;
     }
 
@@ -132,7 +134,7 @@ public class Game implements Updatable {
     }
 
     public void eraseTrap( int index ) {
-        traps.remove(index);
+        traps[index] = null;
     }
 
     public void touchDown( float screenX, float screenY ) {
@@ -148,9 +150,9 @@ public class Game implements Updatable {
         projectiles.add(projectile);
     }
 
-    public void addTrap(Trap trap) {
+    public void addTrap(Trap trap, int index) {
         frameEvents[TRAP_CHARGING] = true;
-        traps.add(trap);
+        traps[index] = trap;
     }
 
 }
