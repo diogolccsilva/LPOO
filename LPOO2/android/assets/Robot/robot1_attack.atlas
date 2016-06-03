@@ -1,0 +1,54 @@
+
+robot1_attack.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+Robot_Attack1
+  rotate: false
+  xy: 1, 1
+  size: 82, 128
+  orig: 82, 128
+  offset: 0, 0
+  index: -1
+Robot_Attack2
+  rotate: false
+  xy: 85, 1
+  size: 82, 128
+  orig: 82, 128
+  offset: 0, 0
+  index: -1
+Robot_Attack3
+  rotate: false
+  xy: 169, 1
+  size: 82, 128
+  orig: 82, 128
+  offset: 0, 0
+  index: -1
+Robot_Attack4
+  rotate: false
+  xy: 253, 1
+  size: 82, 128
+  orig: 82, 128
+  offset: 0, 0
+  index: -1
+Robot_Attack5
+  rotate: false
+  xy: 337, 1
+  size: 82, 128
+  orig: 82, 128
+  offset: 0, 0
+  index: -1
+Robot_Attack6
+  rotate: false
+  xy: 337, 1
+  size: 82, 128
+  orig: 82, 128
+  offset: 0, 0
+  index: -1
+Robot_Attack7
+  rotate: false
+  xy: 337, 1
+  size: 82, 128
+  orig: 82, 128
+  offset: 0, 0
+  index: -1

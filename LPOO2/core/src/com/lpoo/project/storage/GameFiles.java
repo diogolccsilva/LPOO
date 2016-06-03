@@ -1,7 +1,7 @@
 package com.lpoo.project.storage;
 
 import java.io.*;
-import com.google.gson.*;
+//import com.google.gson.*;
 import com.lpoo.project.MyGame;
 import com.lpoo.project.logic.Hero;
 

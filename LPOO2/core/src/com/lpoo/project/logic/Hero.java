@@ -1,5 +1,7 @@
 package com.lpoo.project.logic;
 
+import com.lpoo.project.MyGame;
+
 /**
  * Created by Vasco on 12/05/2016.
  */
@@ -36,6 +38,14 @@ public class Hero extends Character implements Updatable, Movable, Hitable {
 
     public HeroStatus getNextState () {
         return nextState;
+    }
+
+    public void move(HeroStatus state) {
+        nextState = state;
+    }
+
+    public void attack() {
+        nextState = HeroStatus.ATTACK;
     }
 
     public void touchDown( float screenX, float screenY ) {
@@ -80,8 +90,8 @@ public class Hero extends Character implements Updatable, Movable, Hitable {
         }
     }
 
-    public void hit(int damage) {
-        stats.setHealth(damage);
+    public void hit(Stats stats) {
+        this.stats.applyDamage(stats);
         if(stats.getHealth()<=0) {
             state = HeroStatus.DEAD;
             nextState = HeroStatus.DEAD;

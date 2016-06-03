@@ -1,0 +1,54 @@
+
+hero1_fire.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+Hero-Fire0
+  rotate: false
+  xy: 1, 1
+  size: 54, 88
+  orig: 54, 88
+  offset: 0, 0
+  index: -1
+Hero-Fire6
+  rotate: false
+  xy: 1, 1
+  size: 54, 88
+  orig: 54, 88
+  offset: 0, 0
+  index: -1
+Hero-Fire1
+  rotate: false
+  xy: 57, 1
+  size: 54, 88
+  orig: 54, 88
+  offset: 0, 0
+  index: -1
+Hero-Fire2
+  rotate: false
+  xy: 113, 1
+  size: 54, 88
+  orig: 54, 88
+  offset: 0, 0
+  index: -1
+Hero-Fire3
+  rotate: false
+  xy: 169, 1
+  size: 54, 88
+  orig: 54, 88
+  offset: 0, 0
+  index: -1
+Hero-Fire4
+  rotate: false
+  xy: 225, 1
+  size: 54, 88
+  orig: 54, 88
+  offset: 0, 0
+  index: -1
+Hero-Fire5
+  rotate: false
+  xy: 281, 1
+  size: 54, 88
+  orig: 54, 88
+  offset: 0, 0
+  index: -1
