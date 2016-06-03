@@ -92,7 +92,7 @@ public class Hero extends Character implements Updatable, Movable, Hitable {
 
     public void hit(Stats stats) {
         this.stats.applyDamage(stats);
-        if(stats.getHealth()<=0) {
+        if(this.stats.getHealth()<=0) {
             state = HeroStatus.DEAD;
             nextState = HeroStatus.DEAD;
         }
