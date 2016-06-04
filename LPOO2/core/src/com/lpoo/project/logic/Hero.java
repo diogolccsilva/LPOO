@@ -51,7 +51,7 @@ public class Hero extends Character implements Updatable, Movable, Hitable {
         nextState = state;
         move_speed = 1/3f;
         attack_speed = 0.7f;
-        velocity = 50f;
+        velocity = 80f;
         this.game = game;
     }
 

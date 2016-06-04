@@ -189,7 +189,7 @@ public class PlayScreen implements Screen {
      */
     private Vector2 calMidScreen ( Vector2 hPos, float spriteWidth ) {
         float tmp = hPos.x + spriteWidth / 2;
-        return new Vector2( (tmp < 250 ) ? 250 : (tmp > 3650 ) ? 3650 : tmp, 250);
+        return new Vector2( (tmp < 350 ) ? 350 : (tmp > 3650 ) ? 3650 : tmp, 250);
     }
 
     @Override

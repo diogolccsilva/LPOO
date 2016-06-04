@@ -64,7 +64,7 @@ public class Enemy extends Character implements Updatable, Movable, Hitable {
         attack_speed = 1.4f;
         attack_time = 0.6f;
         attacked = false;
-        velocity = 40f;
+        velocity = 50f;
     }
 
     /**

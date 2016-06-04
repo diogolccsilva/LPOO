@@ -39,7 +39,7 @@ public class Projectile extends Entity implements Updatable, Movable {
     public Projectile( Game game, float x, float y, int width, int height, int damage ) {
         super(game, x, y, width, height);
         state = ProjectileStatus.TRAVELLING;
-        this.stats = new Stats(100,0,0,damage,0);
+        this.stats = new Stats(150,0,0,damage,0);
         velocity = 100f;
     }
 
