@@ -29,8 +29,10 @@ public class BuildScreen implements Screen {
     private SpriteBatch hudBatch;
     private Texture grid;
     private Texture play;
+    private Texture exit;
     private Rectangle[] rectangles;
     private Rectangle advance;
+    private Rectangle back;
     private TrapAnimation trapDraw;
 
     private int xPos = 450;
@@ -53,8 +55,10 @@ public class BuildScreen implements Screen {
         grid = new Texture("Grid.png");
         rectangles = new Rectangle[26];
         System.out.println("" + (Gdx.graphics.getWidth() - 50) + "  -  " + ( Gdx.graphics.getHeight() - 50 ) );
-        advance = new Rectangle( Gdx.graphics.getWidth() - 50, Gdx.graphics.getHeight() - 50, 18, 25);
+        advance = new Rectangle( Gdx.graphics.getWidth() - 100, Gdx.graphics.getHeight() - 50, 20, 25);
+        back = new Rectangle( Gdx.graphics.getWidth() - 50, Gdx.graphics.getHeight() - 50, 25, 25);
         play = new Texture("PlayButton.png");
+        exit = new Texture("ExitButton.png");
 
         int x = 250;
         for( int i = 0; i < rectangles.length; i++ ) {
@@ -99,14 +103,17 @@ public class BuildScreen implements Screen {
         xTouch = (int)pos.x;
         yTouch = (int)pos.y;
 
-        if( advance.overlaps(new Rectangle(screenX, Gdx.graphics.getHeight() - screenY, 20, 20)))
+        Rectangle hitbox = new Rectangle(screenX, Gdx.graphics.getHeight() - screenY, 5, 5);
+        if( advance.overlaps(hitbox))
             myGame.changeScreen(MyGame.States.PLAY);
+        else if( back.overlaps(hitbox))
+            myGame.changeScreen(MyGame.States.MENU);
 
         if( select && pos.y >= 144 && pos.y <= 272 && pos.x > 250 && pos.x < 3578 ) {
             int tmp = (int)pos.x - 250;
             tmp /= 128;
             System.out.println("Tmp:" + tmp);
-            game.addTrap( new Trap( game, (int) rectangles[tmp].getX(), (int) rectangles[tmp].getY(), 128, 128, 20 ), tmp );
+            game.addTrap( new Trap( game, (int) rectangles[tmp].getX(), (int) rectangles[tmp].getY(), 128, 128, 3 ), tmp );
         }
         select = false;
     }
@@ -148,7 +155,8 @@ public class BuildScreen implements Screen {
         myGame.batch.end();
 
         hudBatch.begin();
-        hudBatch.draw(play, Gdx.graphics.getWidth() - 50 ,  Gdx.graphics.getHeight() - 50);
+        hudBatch.draw(play, Gdx.graphics.getWidth() - 100 ,  Gdx.graphics.getHeight() - 50);
+        hudBatch.draw(exit, Gdx.graphics.getWidth() - 50 ,  Gdx.graphics.getHeight() - 50);
         hudBatch.end();
 
     }

@@ -55,7 +55,7 @@ public class TrapAnimation {
         heatUpTexts[1] = textures.getRegions().get(1);
         waitTexture = textures.getRegions().get(4);
         attack = new Animation( attackSpeed, attackTexts );
-        heatUpAnimation = new Animation( rechargeSpeed, heatUpTexts);
+        heatUpAnimation = new Animation( 1/20f, heatUpTexts);
 
         currAnimation = null;
     }

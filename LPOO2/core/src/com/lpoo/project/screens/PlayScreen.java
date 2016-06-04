@@ -134,7 +134,7 @@ public class PlayScreen implements Screen {
 
             Trap t = traps[i];
             if( trapAnimations[i] == null )
-                trapAnimations[i] = new TrapAnimation("Trap\\trap1.atlas", 1/10f, 1);
+                trapAnimations[i] = new TrapAnimation("Trap\\trap1.atlas", 1/10f, 3);
 
             myGame.batch.draw(trapAnimations[i].getTexture(t.getState(), delta),t.getPosition().x,t.getPosition().y);
         }
