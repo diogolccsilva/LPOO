@@ -80,7 +80,7 @@ public class Hero extends Character implements Updatable, Movable, Hitable {
      * @param screenX
      */
     public void touchDown( float screenX) {
-        if( state != HeroStatus.DEAD )
+        if( state == HeroStatus.DEAD )
             return ;
         if( screenX < 50 )
             nextState = HeroStatus.MOVE_LEFT;

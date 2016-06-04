@@ -7,4 +7,6 @@ eclipse.project {
 }
 dependencies {
     compile 'com.google.code.gson:gson:2.6.2'
+
+    compile 'junit:junit:4.12'
 }
