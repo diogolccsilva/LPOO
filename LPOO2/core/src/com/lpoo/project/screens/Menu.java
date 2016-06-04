@@ -2,6 +2,7 @@ package com.lpoo.project.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
@@ -17,7 +18,8 @@ public class Menu implements Screen{
     private Rectangle play, instructions, exit;
     private OrthographicCamera camera;
     private Texture background;
-    private final int h = 256, w = 453;
+    private Music music;
+    private static final int h = 256, w = 453;
 
     public Menu(MyGame game ) {
         this.game = game;
@@ -28,6 +30,10 @@ public class Menu implements Screen{
 
         camera = new OrthographicCamera( w, h );
         background = new Texture("Back.jpg");
+
+        music = Gdx.audio.newMusic(Gdx.files.internal("A Night Of Dizzy Spells.mp3"));
+        music.setLooping(true);
+        music.play();
     }
 
     public float getRelativeY( int y ) {
@@ -81,6 +87,8 @@ public class Menu implements Screen{
 
     @Override
     public void dispose() {
+        music.stop();
+        music.dispose();
         background.dispose();
     }
 

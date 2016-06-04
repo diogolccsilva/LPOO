@@ -2,11 +2,9 @@ package com.lpoo.project.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.lpoo.project.MyGame;
@@ -32,7 +30,8 @@ public class PlayScreen implements Screen {
     private OrthographicCamera camera;
     private MyGame myGame;
     public Game game;
-    private BitmapFont font;
+
+    private Music music;
 
     private HeroAnimation hero_animations;
     private LinkedList<EnemyAnimation> enemies;
@@ -46,9 +45,12 @@ public class PlayScreen implements Screen {
         this.myGame = myGame;
         this.game = game;
         this.game.changeState(Game.GameStatus.PLAYING);
-        font = new BitmapFont();
 
         camera = new OrthographicCamera( w, h );
+
+        music = Gdx.audio.newMusic(Gdx.files.internal("We're the Resistors.mp3"));
+        music.setLooping(true);
+        music.play();
 
         hero_animations = new HeroAnimation( "Hero\\hero1_fire.atlas", "Hero\\hero1_still.atlas",
                                                     "Hero\\hero1_move_left.atlas", "Hero\\hero1_move_right.atlas", 1/10f, 1/10f );
@@ -93,8 +95,6 @@ public class PlayScreen implements Screen {
             myGame.changeScreen(MyGame.States.MENU);
         else if( game.getState() == Game.GameStatus.BUILDING )
             myGame.changeScreen(MyGame.States.BUILD);
-
-        String str = "Hero health: " + game.getHero().getStats().getHealth();
 
         /* UPDATE ALL ANIMATIONS */
         /* In development */
@@ -179,7 +179,7 @@ public class PlayScreen implements Screen {
         if( game.getHero().getState() != Hero.HeroStatus.DEAD )
             myGame.batch.draw( hero_text, hPos.x, hPos.y );
 
-        drawLifeBard( hPos.x + 10, hPos.y + hero_text.getRegionHeight(),
+        drawLifeBard( hPos.x + 10, hPos.y + hero_text.getRegionHeight() + 10,
                 LifeBar.getTexture( game.getHero().getStats().getHealth(), game.getHero().getStats().getMaxHealth() ));
 
         myGame.batch.draw( map.getTerrain(), 0, 0);
@@ -221,7 +221,15 @@ public class PlayScreen implements Screen {
     @Override
     public void dispose() {
         hero_animations.dispose();
+        for( EnemyAnimation e : enemies )
+            e.dispose();
+        for( ProjectileAnimation p : projectiles )
+            p.dispose();
+        /*for( TrapAnimation t : trapAnimations )
+            t.dispose();*/
         map.dispose();
+        music.stop();
+        music.dispose();
     }
 
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {

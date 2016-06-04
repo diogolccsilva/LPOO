@@ -2,11 +2,11 @@ package com.lpoo.project.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.lpoo.project.MyGame;
@@ -23,21 +23,24 @@ public class BuildScreen implements Screen {
     private MyGame myGame;
     private Game game;
     private Map map;
-    private BitmapFont font;
 
     private OrthographicCamera camera;
-    private SpriteBatch hudBatch;
-    private Texture grid;
-    private Texture play;
-    private Texture exit;
+    private OrthographicCamera hudCamera;
+
+    private Music music;
+
     private Rectangle[] rectangles;
     private Rectangle advance;
     private Rectangle back;
+
+    private Texture grid;
+    private Texture play;
+    private Texture exit;
     private TrapAnimation trapDraw;
 
     private int xPos = 450;
-    private final int yPos = 250;
-    private final int h = 500, w = 890;
+    private static final int yPos = 250;
+    private static final int h = 500, w = 890;
     private int screenWidth, screenHeight;
 
     private int xTouch = 0, yTouch = 0;
@@ -52,17 +55,20 @@ public class BuildScreen implements Screen {
         screenHeight = Gdx.graphics.getHeight();
 
         map = new Map();
-        font = new BitmapFont();
 
         camera = new OrthographicCamera(w, h);
-        hudBatch = new SpriteBatch();
+        hudCamera = new OrthographicCamera(w, h);
+
+        music = Gdx.audio.newMusic(Gdx.files.internal("Come and Find Me.mp3"));
+        music.setLooping(true);
+        music.play();
 
         trapDraw = new TrapAnimation( "Trap\\trap1.atlas", 0, 0 );
         grid = new Texture("Grid.png");
         rectangles = new Rectangle[26];
         System.out.println("" + (screenWidth - 50) + "  -  " + ( screenHeight - 50 ) );
-        advance = new Rectangle( screenWidth - 100, screenHeight - 50, 20, 25);
-        back = new Rectangle( screenWidth - 50, screenHeight - 50, 25, 25);
+        advance = new Rectangle( screenWidth - 100, screenHeight - 50, 50, 50);
+        back = new Rectangle( screenWidth - 50, screenHeight - 50, 50, 50);
         play = new Texture("PlayButton.png");
         exit = new Texture("ExitButton.png");
 
@@ -137,6 +143,7 @@ public class BuildScreen implements Screen {
 
         //Set batch to only draw what the camera sees
         myGame.batch.setProjectionMatrix( camera.combined );
+        //myGame.batch.setProjectionMatrix( hudCamera.combined );
         myGame.batch.begin();
 
         camera.position.set( xPos , yPos, 0 );
@@ -154,16 +161,14 @@ public class BuildScreen implements Screen {
                 myGame.batch.draw(trapDraw.getTexture(Trap.TrapStatus.WAIT, 0), traps[i].getPosition().x, traps[i].getPosition().y);
         }
 
+        myGame.batch.setProjectionMatrix( hudCamera.combined );
+        hudCamera.position.set( w / 2, h / 2, 0 );
+        hudCamera.update();
 
-        font.draw(myGame.batch, "" + screenWidth + "-" + screenHeight, xPos, yPos + 100);
+        myGame.batch.draw(play, w - 100, h - 50);
+        myGame.batch.draw(exit, w - 50, h - 50);
 
         myGame.batch.end();
-
-        hudBatch.begin();
-        hudBatch.draw(play, 540 , 430);
-        hudBatch.draw(exit, 590 , 430);
-        hudBatch.end();
-
     }
 
     public Vector2 getRelativePosition( int x, int y ) {
@@ -197,6 +202,11 @@ public class BuildScreen implements Screen {
 
     @Override
     public void dispose() {
-
+        play.dispose();
+        exit.dispose();
+        grid.dispose();
+        music.stop();
+        music.dispose();
+        map.dispose();
     }
 }
