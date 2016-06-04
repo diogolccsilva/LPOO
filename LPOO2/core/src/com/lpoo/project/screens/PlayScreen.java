@@ -29,7 +29,6 @@ import java.util.LinkedList;
  */
 public class PlayScreen implements Screen {
 
-    private SpriteBatch backgroundBatch;
     private OrthographicCamera camera;
     private MyGame myGame;
     public Game game;
@@ -47,7 +46,6 @@ public class PlayScreen implements Screen {
         this.myGame = myGame;
         this.game = game;
         this.game.changeState(Game.GameStatus.PLAYING);
-        backgroundBatch = new SpriteBatch();
         font = new BitmapFont();
 
         camera = new OrthographicCamera( w, h );
@@ -121,15 +119,9 @@ public class PlayScreen implements Screen {
         //Calculate middle of the screen according to the hero's position
         Vector2 midScreen = calMidScreen( hPos, hero_text.getRegionWidth() );
 
-        backgroundBatch.begin();
-        backgroundBatch.setProjectionMatrix( camera.combined );
-        backgroundBatch.draw(map.getSky(), 0, 0);
-        font.draw( backgroundBatch, str, w/2, h/2 );
-        backgroundBatch.end();
 
         //Set batch to only draw what the camera sees
         myGame.batch.setProjectionMatrix( camera.combined );
-
         myGame.batch.begin();
 
         //Set camera position to match hero's center position
@@ -137,7 +129,7 @@ public class PlayScreen implements Screen {
         camera.update();
 
         //Draw hero's texture
-        //myGame.batch.draw( map.getSky(), 0, 0 );
+        myGame.batch.draw( map.getSky(), 0, 0 );
 
         //Iterate throw the traps' animations
         Trap[] traps = game.getTraps();

@@ -27,7 +27,6 @@ public class BuildScreen implements Screen {
 
     private OrthographicCamera camera;
     private SpriteBatch hudBatch;
-    private SpriteBatch backgroundBatch;
     private Texture grid;
     private Texture play;
     private Texture exit;
@@ -57,7 +56,6 @@ public class BuildScreen implements Screen {
 
         camera = new OrthographicCamera(w, h);
         hudBatch = new SpriteBatch();
-        backgroundBatch = new SpriteBatch();
 
         trapDraw = new TrapAnimation( "Trap\\trap1.atlas", 0, 0 );
         grid = new Texture("Grid.png");
@@ -137,19 +135,14 @@ public class BuildScreen implements Screen {
         Gdx.gl.glClearColor((float)0.5, (float)0.5, (float)0.5, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        backgroundBatch.begin();
-        backgroundBatch.draw(map.getSky(), 0, 0);
-        backgroundBatch.end();
-
         //Set batch to only draw what the camera sees
         myGame.batch.setProjectionMatrix( camera.combined );
-
         myGame.batch.begin();
 
         camera.position.set( xPos , yPos, 0 );
         camera.update();
 
-        //myGame.batch.draw( map.getSky(), 0, 0 );
+        myGame.batch.draw( map.getSky(), 0, 0 );
         myGame.batch.draw( map.getTerrain(), 0, 0);
 
         Trap[] traps = game.getTraps();
