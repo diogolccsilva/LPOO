@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.lpoo.project.MyGame;
+import com.lpoo.project.animations.Animator;
 import com.lpoo.project.animations.Map;
 import com.lpoo.project.animations.TrapAnimation;
 import com.lpoo.project.logic.Game;
@@ -36,7 +37,7 @@ public class BuildScreen implements Screen {
     private Texture grid;
     private Texture play;
     private Texture exit;
-    private TrapAnimation trapDraw;
+    private Animator trapDraw;
 
     private int xPos = 450;
     private static final int yPos = 250;
@@ -63,14 +64,15 @@ public class BuildScreen implements Screen {
         music.setLooping(true);
         music.play();
 
-        trapDraw = new TrapAnimation( "Trap\\trap1.atlas", 0, 0 );
         grid = new Texture("Grid.png");
-        rectangles = new Rectangle[26];
-        System.out.println("" + (screenWidth - 50) + "  -  " + ( screenHeight - 50 ) );
-        advance = new Rectangle( screenWidth - 100, screenHeight - 50, 50, 50);
-        back = new Rectangle( screenWidth - 50, screenHeight - 50, 50, 50);
         play = new Texture("PlayButton.png");
         exit = new Texture("ExitButton.png");
+
+        trapDraw = new TrapAnimation( game, "Trap\\trap1.atlas", 0, 0, 0 );
+
+        advance = new Rectangle( screenWidth - 100, screenHeight - 50, 50, 50);
+        back = new Rectangle( screenWidth - 50, screenHeight - 50, 50, 50);
+        rectangles = new Rectangle[26];
 
         int x = 250;
         for( int i = 0; i < rectangles.length; i++ ) {
@@ -124,7 +126,6 @@ public class BuildScreen implements Screen {
         if( select && pos.y >= 144 && pos.y <= 272 && pos.x > 250 && pos.x < 3578 ) {
             int tmp = (int)pos.x - 250;
             tmp /= 128;
-            System.out.println("Tmp:" + tmp);
             game.addTrap( (int) rectangles[tmp].getX(), (int) rectangles[tmp].getY(), 128, 128, tmp );
         }
         select = false;
@@ -157,8 +158,11 @@ public class BuildScreen implements Screen {
         for( int i = 0; i < rectangles.length; i++ ) {
             if( traps[i] == null )
                 myGame.batch.draw(grid, rectangles[i].getX(), rectangles[i].getY());
-            else
-                myGame.batch.draw(trapDraw.getTexture(Trap.TrapStatus.WAIT, 0), traps[i].getPosition().x, traps[i].getPosition().y);
+            else {
+                trapDraw.setIndex(i);
+                System.out.println("" + i);
+                myGame.batch.draw(trapDraw.getTexture(delta), traps[i].getPosition().x, traps[i].getPosition().y);
+            }
         }
 
         myGame.batch.setProjectionMatrix( hudCamera.combined );

@@ -6,17 +6,22 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Disposable;
 import com.lpoo.project.logic.Enemy.EnemyStatus;
+import com.lpoo.project.logic.Game;
 
 /**
  * Class that creates the enemies' animation
  * This class implements the interface Disposable
  */
-public class EnemyAnimation implements Disposable {
+public class EnemyAnimation extends Animator implements Disposable {
+
+    private static final int ATTACK_INDEX = 0;
+    private static final int MOVE_INDEX = 1;
+    private static final int ARRAY_SIZE = 2;
 
     /**
      * Enemy's status
      */
-    private EnemyStatus status;
+    private EnemyStatus state;
     /**
      * Current animation of the enemy
      */
@@ -24,31 +29,31 @@ public class EnemyAnimation implements Disposable {
     /**
      * Animation which represents the attack of the enemy
      */
-    private Animation attack;
+    //private Animation attack;
     /**
      * Animation which represents the enemy moving to the right
      */
-    private Animation move_right;
+    //private Animation move_right;
     /**
      * Animation which represents the enemy's death
      */
-    private Animation dead;
+    //private Animation dead;
     /**
      *  Loads images from texture atlases that represents the attack of the enemies
      */
-    private TextureAtlas attackTextures;
+    //private TextureAtlas attackTextures;
     /**
      *  Loads images from texture atlases that represents the enemy moving to the right
      */
-    private TextureAtlas move_rightTextures;
+    //private TextureAtlas move_rightTextures;
     /**
      *  Loads images from texture atlases that represents the enemy's death
      */
-    private TextureAtlas deadTextures;
+    //private TextureAtlas deadTextures;
     /**
      * Time given to the life's status of the enemy
      */
-    private float stateTime;
+    //private float stateTime;
 
     /**
      * Constructor for the EnemyAnimator class
@@ -57,28 +62,31 @@ public class EnemyAnimation implements Disposable {
      * @param attackSpeed Enemy's velocity's attack
      * @param moveSpeed Velocity of the enemy when he is moving
      */
-    public EnemyAnimation( String attackPath, String movePath, float attackSpeed, float moveSpeed ) {
+    public EnemyAnimation( Game game, String attackPath, String movePath, float attackSpeed, float moveSpeed, int index ) {
+        super( game, ARRAY_SIZE, ARRAY_SIZE, index );
+
         stateTime = 0;
-        status = EnemyStatus.MOVE_RIGHT;
+        state = EnemyStatus.MOVE_RIGHT;
 
-        attackTextures = new TextureAtlas( Gdx.files.internal( attackPath ) );
-        attack = new Animation( attackSpeed, attackTextures.getRegions() );
+        textures[ATTACK_INDEX] = new TextureAtlas( Gdx.files.internal( attackPath ) );
+        animations[ATTACK_INDEX] = new Animation( attackSpeed, textures[ATTACK_INDEX].getRegions() );
 
-        move_rightTextures = new TextureAtlas( Gdx.files.internal( movePath ) );
-        move_right = new Animation( moveSpeed, move_rightTextures.getRegions() );
+        textures[MOVE_INDEX] = new TextureAtlas( Gdx.files.internal( movePath ) );
+        animations[MOVE_INDEX] = new Animation( moveSpeed, textures[MOVE_INDEX].getRegions() );
 
+        this.index = index;
         //deadTextures = new TextureAtlas( Gdx.files.internal( deadPath ));
-        dead = new Animation( attackSpeed, move_rightTextures.getRegions() );
+        //dead = new Animation( attackSpeed, move_rightTextures.getRegions() );
 
-        currAnimation = move_right;
+        currAnimation = animations[MOVE_INDEX];
     }
 
     /**
      * Gets the current enemy's status
      * @return the enemy's status
      */
-    public EnemyStatus getStatus() {
-        return status;
+    public EnemyStatus getState() {
+        return state;
     }
 
     /**
@@ -90,33 +98,37 @@ public class EnemyAnimation implements Disposable {
 
         switch ( stat ) {
             case ATTACK:
-                attack.setFrameDuration( speed );
+                animations[ATTACK_INDEX].setFrameDuration( speed );
                 break;
             case MOVE_RIGHT:
-                move_right.setFrameDuration( speed );
+                animations[MOVE_INDEX].setFrameDuration( speed );
                 break;
         }
     }
 
+    @Override
+    public void setIndex(int index) {
+        super.setIndex(index);
+    }
+
     /**
      * Gets the current texture of the animation
-     * @param stat Enemy's status
      * @param delta Increasing time
      * @return TextureRegion to be drawn on the screen
      */
-    public TextureRegion getTexture (EnemyStatus stat, float delta ) {
-
+    public TextureRegion getTexture( float delta ) {
         Animation nextAnimation = null;
+        EnemyStatus stat = game.getEnemies().get(index).getNextState();
 
         switch ( stat ) {
             case ATTACK:
-                nextAnimation = attack;
+                nextAnimation = animations[ATTACK_INDEX];
                 break;
             case MOVE_RIGHT:
-                nextAnimation = move_right;
+                nextAnimation = animations[MOVE_INDEX];
                 break;
             case DEAD:
-                nextAnimation = attack;
+                nextAnimation = animations[ATTACK_INDEX];
                 break;
         }
 
@@ -124,29 +136,28 @@ public class EnemyAnimation implements Disposable {
 
         if ( stat == EnemyStatus.DEAD || currAnimation.isAnimationFinished(stateTime) ) {
             stateTime = 0;
-            status = stat;
+            state = stat;
             currAnimation = nextAnimation;
         }
 
         return currAnimation.getKeyFrame( stateTime, true );
     }
 
-    /**
-     * Function that verifies if the enemy's animation is finished
-     * @param state Enemy's status
-     * @return True if the enemy's animation is finished, False if it isn't
-     */
-    public boolean isFinished( EnemyStatus state ) {
-        return state == status && currAnimation.isAnimationFinished(stateTime);
+    public void reset() {
+        stateTime = 0;
+        state = EnemyStatus.MOVE_RIGHT;
+        currAnimation = animations[MOVE_INDEX];
     }
 
     @Override
-    /**
-     * Releases all textures of the enemy
-     */
-    public void dispose() {
-        attackTextures.dispose();
-        move_rightTextures.dispose();
+    protected Object clone() {
+        Object clone = null;
+        try {
+            clone = super.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        return clone;
     }
 }
 

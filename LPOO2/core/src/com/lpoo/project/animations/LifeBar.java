@@ -18,15 +18,6 @@ public class LifeBar {
      */
     private static final TextureRegion death_bar = atlas.getRegions().get(0);
 
-    /**
-     * Constructor for the LifeBar class
-     *//*
-    public LifeBar( ) {
-        TextureAtlas atlas = new TextureAtlas( "Life-bar\\life_bar.atlas" );
-        life_bar = atlas.getRegions().get(0);
-        death_bar = atlas.getRegions().get(1);
-    }*/
-
     public static TextureRegion[] getTexture( int health, int max_health ) {
         int life_pixel = health * 38 / max_health;
 

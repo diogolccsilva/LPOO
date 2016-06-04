@@ -12,20 +12,12 @@ public class Map implements Disposable {
     /**
      * Texture which represents the map
      */
-    private Texture sky;
+    private final Texture sky = new Texture("Map\\Sky.png");
 
     /**
      * Texture that represents the spawn wall
      */
-    private Texture terrain;
-
-    /**
-     * Constructor for the Map class
-     */
-    public Map() {
-        sky = new Texture("Map\\Sky.png");
-        terrain = new Texture("Map\\Terrain.png");
-    }
+    private final Texture terrain = new Texture("Map\\Terrain.png");
 
     /**
      * Getter for the map's texture

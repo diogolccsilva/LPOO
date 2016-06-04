@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Disposable;
+import com.lpoo.project.logic.Game;
 import com.lpoo.project.logic.Hero;
 import com.lpoo.project.logic.Hero.HeroStatus;
 import com.lpoo.project.screens.PlayScreen;
@@ -13,7 +14,13 @@ import com.lpoo.project.screens.PlayScreen;
  * Class that creates the hero's animation
  * This class implements the interface Disposable
  */
-public class HeroAnimation implements Disposable {
+public class HeroAnimation extends Animator {
+
+    private static final int ATTACK_INDEX = 0;
+    private static final int MOVE_LEFT_INDEX = 1;
+    private static final int MOVE_RIGHT_INDEX = 2;
+    private static final int STILL_INDEX = 3;
+    private static final int ARRAY_SIZE = 4;
 
     /**
      * Hero status
@@ -26,35 +33,35 @@ public class HeroAnimation implements Disposable {
     /**
      * Hero's attack's animation
      */
-    private Animation attack;
+    //private Animation attack;
     /**
      * Hero's normal's animation
      */
-    private Animation still;
+    //private Animation still;
     /**
      * Animation of the hero's moving to the left
      */
-    private Animation move_left;
+    //private Animation move_left;
     /**
      * Animation of the hero's moving to the right
      */
-    private Animation move_right;
+    //private Animation move_right;
     /**
      *  Loads images from texture atlases that represents the attack of the hero
      */
-    private TextureAtlas attackTextures;
+    //private TextureAtlas attackTextures;
     /**
      *  Loads images from texture atlases that represents the "normal" position of the hero
      */
-    private TextureAtlas stillTextures;
+    //private TextureAtlas stillTextures;
     /**
      *  Loads images from texture atlases that represents the hero moving to the left
      */
-    private TextureAtlas move_leftTextures;
+    //private TextureAtlas move_leftTextures;
     /**
      *  Loads images from texture atlases that represents the hero moving to the right
      */
-    private TextureAtlas move_rightTextures;
+    //private TextureAtlas move_rightTextures;
     /**
      * Time given to the life's status of the hero
      */
@@ -69,25 +76,26 @@ public class HeroAnimation implements Disposable {
     private float move_speed;
 
 
-    public HeroAnimation( String attackPath,
-                          String stillPath, String leftPath,
-                          String rightPath, float attackSpeed, float moveSpeed ) {
+    public HeroAnimation( Game game, String attackPath,
+                         String stillPath, String leftPath,
+                         String rightPath, float attackSpeed, float moveSpeed ) {
+        super( game, ARRAY_SIZE, ARRAY_SIZE, 0 );
         stateTime = 0;
         state = HeroStatus.STILL;
 
-        attackTextures = new TextureAtlas( Gdx.files.internal( attackPath ) );
-        attack = new Animation( attackSpeed, attackTextures.getRegions() );
+        textures[ATTACK_INDEX] = new TextureAtlas( Gdx.files.internal( attackPath ) );
+        animations[ATTACK_INDEX] = new Animation( attackSpeed, textures[ATTACK_INDEX].getRegions() );
 
-        stillTextures = new TextureAtlas( Gdx.files.internal( stillPath ) );
-        still = new Animation( moveSpeed, stillTextures.getRegions() );
+        textures[STILL_INDEX] = new TextureAtlas( Gdx.files.internal( stillPath ) );
+        animations[STILL_INDEX] = new Animation( moveSpeed, textures[STILL_INDEX].getRegions() );
 
-        move_leftTextures = new TextureAtlas( Gdx.files.internal( leftPath ) );
-        move_left = new Animation( moveSpeed, move_leftTextures.getRegions() );
+        textures[MOVE_LEFT_INDEX] = new TextureAtlas( Gdx.files.internal( leftPath ) );
+        animations[MOVE_LEFT_INDEX] = new Animation( moveSpeed, textures[MOVE_LEFT_INDEX].getRegions() );
 
-        move_rightTextures = new TextureAtlas( Gdx.files.internal( rightPath ) );
-        move_right = new Animation( moveSpeed, move_rightTextures.getRegions() );
+        textures[MOVE_RIGHT_INDEX] = new TextureAtlas( Gdx.files.internal( rightPath ) );
+        animations[MOVE_RIGHT_INDEX] = new Animation( moveSpeed, textures[MOVE_RIGHT_INDEX].getRegions() );
 
-        currAnimation = still;
+        currAnimation = animations[STILL_INDEX];
 
         this.attack_speed = attackSpeed;
         this.move_speed = moveSpeed;
@@ -106,16 +114,16 @@ public class HeroAnimation implements Disposable {
 
         switch ( stat ) {
             case ATTACK:
-                attack.setFrameDuration( speed );
+                animations[ATTACK_INDEX].setFrameDuration( speed );
                 break;
             case STILL:
-                still.setFrameDuration( speed );
+                animations[STILL_INDEX].setFrameDuration( speed );
                 break;
             case MOVE_LEFT:
-                move_left.setFrameDuration( speed );
+                animations[MOVE_LEFT_INDEX].setFrameDuration( speed );
                 break;
             case MOVE_RIGHT:
-                move_right.setFrameDuration( speed );
+                animations[MOVE_RIGHT_INDEX].setFrameDuration( speed );
                 break;
         }
     }
@@ -125,24 +133,25 @@ public class HeroAnimation implements Disposable {
      * @param delta Increasing time
      * @return TextureRegion to be drawn on the screen
      */
-    public TextureRegion getTexture ( HeroStatus stat, float delta ) {
+    public TextureRegion getTexture( float delta ) {
         Animation nextAnimation = null;
+        HeroStatus stat = game.getHero().getNextState();
 
         switch ( stat ) {
             case ATTACK:
-                nextAnimation = attack;
+                nextAnimation = animations[ATTACK_INDEX];
                 break;
             case STILL:
-                nextAnimation = still;
+                nextAnimation = animations[STILL_INDEX];
                 break;
             case MOVE_LEFT:
-                nextAnimation = move_left;
+                nextAnimation = animations[MOVE_LEFT_INDEX];
                 break;
             case MOVE_RIGHT:
-                nextAnimation = move_right;
+                nextAnimation = animations[MOVE_RIGHT_INDEX];
                 break;
             case DEAD:
-                currAnimation = still;
+                currAnimation = animations[STILL_INDEX];;
                 stateTime = 0;
                 state = stat;
                 return currAnimation.getKeyFrame( stateTime, true );
@@ -150,7 +159,8 @@ public class HeroAnimation implements Disposable {
 
         stateTime += delta;
 
-        if ( currAnimation.isAnimationFinished(stateTime) || ( currAnimation == still && nextAnimation != still )) {
+        if ( currAnimation.isAnimationFinished(stateTime) ||
+                ( currAnimation == animations[STILL_INDEX] && nextAnimation != animations[STILL_INDEX] )) {
             stateTime = 0;
             state = stat;
             currAnimation = nextAnimation;
@@ -159,14 +169,4 @@ public class HeroAnimation implements Disposable {
         return currAnimation.getKeyFrame( stateTime, true );
     }
 
-    @Override
-    /**
-     * Releases all textures of the hero
-     */
-    public void dispose() {
-        attackTextures.dispose();
-        stillTextures.dispose();
-        move_leftTextures.dispose();
-        move_rightTextures.dispose();
-    }
 }

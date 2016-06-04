@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.lpoo.project.MyGame;
+import com.lpoo.project.animations.Animator;
 import com.lpoo.project.animations.EnemyAnimation;
 import com.lpoo.project.animations.HeroAnimation;
 import com.lpoo.project.animations.LifeBar;
@@ -35,8 +36,8 @@ public class PlayScreen implements Screen {
 
     private HeroAnimation hero_animations;
     private LinkedList<EnemyAnimation> enemies;
-    private TrapAnimation[] trapAnimations;
-    private LinkedList<ProjectileAnimation> projectiles;
+    private Animator[] trapAnimations;
+    private LinkedList<Animator> projectiles;
     private Map map;
 
     private final int h = 500, w = 890;
@@ -52,11 +53,11 @@ public class PlayScreen implements Screen {
         music.setLooping(true);
         music.play();
 
-        hero_animations = new HeroAnimation( "Hero\\hero1_fire.atlas", "Hero\\hero1_still.atlas",
+        hero_animations = new HeroAnimation( game, "Hero\\hero1_fire.atlas", "Hero\\hero1_still.atlas",
                                                     "Hero\\hero1_move_left.atlas", "Hero\\hero1_move_right.atlas", 1/10f, 1/10f );
-        enemies = new LinkedList<EnemyAnimation>();
+        enemies = new LinkedList<>();
         trapAnimations = new TrapAnimation[26];
-        projectiles = new LinkedList<ProjectileAnimation>();
+        projectiles = new LinkedList<>();
         map = new Map();
     }
 
@@ -100,14 +101,14 @@ public class PlayScreen implements Screen {
         /* In development */
 
         //Hero's animation
-        TextureRegion hero_text = hero_animations.getTexture( game.getHero().getNextState(), delta );
+        TextureRegion hero_text = hero_animations.getTexture( delta );
         game.getHero().AnimationStatus( hero_animations.getState() );
 
         boolean[] frameEvents = game.getFrameEvents();
         if( frameEvents[Game.ENEMY_SPAWN_INDEX] )
-            enemies.add( new EnemyAnimation( "Robot\\robot1_attack.atlas", "Robot\\robot1_walk.atlas", 1/5f, 1/2f ));
+            enemies.add( new EnemyAnimation( game, "Robot\\robot1_attack.atlas", "Robot\\robot1_walk.atlas", 1/5f, 1/2f, enemies.size() - 1 ));
         if( frameEvents[Game.PROJECTILE_FIRED_INDEX] )
-            projectiles.add( new ProjectileAnimation( "Projectile\\projectile1.atlas" ));
+            projectiles.add( new ProjectileAnimation( game, "Projectile\\projectile1.atlas", projectiles.size() - 1 ));
         game.setFrameEvents();
 
         /* DRAW TEXTURES ON THE SCREEN */
@@ -136,19 +137,19 @@ public class PlayScreen implements Screen {
         for( int i = 0; i < traps.length; i++ ) {
             if( traps[i] == null )
                 continue;
-
             Trap t = traps[i];
             if( trapAnimations[i] == null )
-                trapAnimations[i] = new TrapAnimation("Trap\\trap1.atlas", 1/10f, 3);
+                trapAnimations[i] = new TrapAnimation( game, "Trap\\trap1.atlas", 1/10f, 3, i);
 
-            myGame.batch.draw(trapAnimations[i].getTexture(t.getState(), delta),t.getPosition().x,t.getPosition().y);
+            myGame.batch.draw(trapAnimations[i].getTexture( delta ),t.getPosition().x,t.getPosition().y);
         }
 
         //Iterate throw the enemies' animations
         LinkedList<Enemy> en = game.getEnemies();
         for( int i = 0; i < enemies.size(); i++ ) {
             Enemy e = en.get(i);
-            TextureRegion robot_text = enemies.get(i).getTexture( e.getNextState(), delta );
+            enemies.get(i).setIndex(i);
+            TextureRegion robot_text = enemies.get(i).getTexture( delta );
             myGame.batch.draw(robot_text, e.getPosition().x,e.getPosition().y);
             drawLifeBard( e.getPosition().x + 10, e.getPosition().y + robot_text.getRegionHeight(),
                     LifeBar.getTexture( e.getStats().getHealth(), e.getStats().getMaxHealth() ));
@@ -157,15 +158,16 @@ public class PlayScreen implements Screen {
                 enemies.remove(i);
                 game.eraseEnemy(i);
                 i--;
-            } else e.AnimationStatus( enemies.get(i).getStatus() );
+            } else e.AnimationStatus( enemies.get(i).getState() );
         }
 
         //Iterate throw the projectiles' animations
         LinkedList<Projectile> proj = game.getProjectiles();
         for( int i = 0; i < projectiles.size(); i++ ) {
-            ProjectileAnimation p_ani = projectiles.get(i);
+            Animator p_ani = projectiles.get(i);
+            p_ani.setIndex(i);
             Projectile p = proj.get(i);
-            TextureRegion project_text = p_ani.getTexture( p.getState(), delta );
+            TextureRegion project_text = p_ani.getTexture( delta );
             myGame.batch.draw(project_text, p.getPosition().x, p.getPosition().y);
 
             //If the projectile's animation has ended or if the bullet is already out of the map
@@ -221,12 +223,10 @@ public class PlayScreen implements Screen {
     @Override
     public void dispose() {
         hero_animations.dispose();
-        for( EnemyAnimation e : enemies )
+        for( Animator e : enemies )
             e.dispose();
-        for( ProjectileAnimation p : projectiles )
+        for( Animator p : projectiles )
             p.dispose();
-        /*for( TrapAnimation t : trapAnimations )
-            t.dispose();*/
         map.dispose();
         music.stop();
         music.dispose();
