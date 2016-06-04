@@ -5,6 +5,8 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.lpoo.project.MyGame;
@@ -16,6 +18,7 @@ import com.lpoo.project.animations.ProjectileAnimation;
 import com.lpoo.project.animations.TrapAnimation;
 import com.lpoo.project.logic.Enemy;
 import com.lpoo.project.logic.Game;
+import com.lpoo.project.logic.Hero;
 import com.lpoo.project.logic.Projectile;
 import com.lpoo.project.logic.Trap;
 
@@ -26,6 +29,7 @@ import java.util.LinkedList;
  */
 public class PlayScreen implements Screen {
 
+    private SpriteBatch backgroundBatch;
     private OrthographicCamera camera;
     private MyGame myGame;
     public Game game;
@@ -40,9 +44,10 @@ public class PlayScreen implements Screen {
     private final int h = 500, w = 890;
 
     public PlayScreen( MyGame myGame, Game game ) {
-
         this.myGame = myGame;
         this.game = game;
+        this.game.changeState(Game.GameStatus.PLAYING);
+        backgroundBatch = new SpriteBatch();
         font = new BitmapFont();
 
         camera = new OrthographicCamera( w, h );
@@ -88,6 +93,8 @@ public class PlayScreen implements Screen {
 
         if( game.getState() == Game.GameStatus.LOST || game.getState() == Game.GameStatus.WON )
             myGame.changeScreen(MyGame.States.MENU);
+        else if( game.getState() == Game.GameStatus.BUILDING )
+            myGame.changeScreen(MyGame.States.BUILD);
 
         String str = "Hero health: " + game.getHero().getStats().getHealth();
 
@@ -114,6 +121,12 @@ public class PlayScreen implements Screen {
         //Calculate middle of the screen according to the hero's position
         Vector2 midScreen = calMidScreen( hPos, hero_text.getRegionWidth() );
 
+        backgroundBatch.begin();
+        backgroundBatch.setProjectionMatrix( camera.combined );
+        backgroundBatch.draw(map.getSky(), 0, 0);
+        font.draw( backgroundBatch, str, w/2, h/2 );
+        backgroundBatch.end();
+
         //Set batch to only draw what the camera sees
         myGame.batch.setProjectionMatrix( camera.combined );
 
@@ -124,7 +137,7 @@ public class PlayScreen implements Screen {
         camera.update();
 
         //Draw hero's texture
-        myGame.batch.draw( map.getSky(), 0, 0 );
+        //myGame.batch.draw( map.getSky(), 0, 0 );
 
         //Iterate throw the traps' animations
         Trap[] traps = game.getTraps();
@@ -171,12 +184,13 @@ public class PlayScreen implements Screen {
             }
         }
 
-        myGame.batch.draw( hero_text, hPos.x, hPos.y );
+        if( game.getHero().getState() != Hero.HeroStatus.DEAD )
+            myGame.batch.draw( hero_text, hPos.x, hPos.y );
+
         drawLifeBard( hPos.x + hero_text.getRegionWidth() / 3, hPos.y + hero_text.getRegionHeight(),
                 LifeBar.getTexture( game.getHero().getStats().getHealth(), game.getHero().getStats().getMaxHealth() ));
 
         myGame.batch.draw( map.getTerrain(), 0, 0);
-        font.draw( myGame.batch, str, hPos.x, hPos.y - 10 );
 
         myGame.batch.end();
     }
@@ -189,7 +203,7 @@ public class PlayScreen implements Screen {
      */
     private Vector2 calMidScreen ( Vector2 hPos, float spriteWidth ) {
         float tmp = hPos.x + spriteWidth / 2;
-        return new Vector2( (tmp < 350 ) ? 350 : (tmp > 3650 ) ? 3650 : tmp, 250);
+        return new Vector2( (tmp < 450 ) ? 450 : (tmp > 3650 ) ? 3650 : tmp, 250);
     }
 
     @Override

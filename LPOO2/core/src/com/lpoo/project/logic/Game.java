@@ -8,7 +8,7 @@ import java.util.LinkedList;
 public class Game implements Updatable {
 
     public static final int ENEMY_SPAWN_INDEX = 0;
-    public static final int ENEMY_KILLED_INDEX = 1;
+    public static final int ENEMY_ERASED_INDEX = 1;
     public static final int PROJECTILE_FIRED_INDEX = 2;
     public static final int PROJECTILE_ERASED_INDEX = 3;
 
@@ -24,13 +24,17 @@ public class Game implements Updatable {
 
     public float stateTime;
 
-    private int diffNextEnemy = 2;
-    private int enemyResist = 20, enemyHealth = 50, enemyStrength = 20;
+    private int wave = 0;
+    private int nEnemies = 10, nEnemiesWon = 0;
+    private int enemiesSpawned = 0;
+    private int diffNextEnemy = 5;
+    private final int enemyResist = 20, enemyHealth = 50, enemyStrength = 20;
+    private final int resistPerWave = 2, healthPerWave = 2, strengthPerWave = 2;
 
     public Game() {
         frameEvents = new boolean[4];
         frameEvents[ENEMY_SPAWN_INDEX] = false;
-        frameEvents[ENEMY_KILLED_INDEX] = false;
+        frameEvents[ENEMY_ERASED_INDEX] = false;
         frameEvents[PROJECTILE_FIRED_INDEX] = false;
         frameEvents[PROJECTILE_ERASED_INDEX] = false;
 
@@ -47,7 +51,8 @@ public class Game implements Updatable {
     }
 
     public void updatePlaying( float delta ) {
-        if( hero.getState() == Hero.HeroStatus.DEAD ) {
+
+        if( nEnemiesWon >= 3 ) {
             state = GameStatus.LOST;
             return ;
         }
@@ -57,7 +62,11 @@ public class Game implements Updatable {
 
         for( Enemy e : enemies ) {
             if(e.getState()== Enemy.EnemyStatus.DEAD)
-                frameEvents[ENEMY_KILLED_INDEX] = true;
+                frameEvents[ENEMY_ERASED_INDEX] = true;
+            else if(e.getPosition().x >= 4000) {
+                nEnemiesWon++;
+                frameEvents[ENEMY_ERASED_INDEX] = true;
+            }
             else e.update(delta);
         }
         for( Projectile p : projectiles ) {
@@ -71,8 +80,12 @@ public class Game implements Updatable {
             t.update(delta);
         }
 
-        if( Math.floor( stateTime / (float)diffNextEnemy ) != Math.floor( currTime / (float)diffNextEnemy ) ) {
-            Enemy e = new Enemy( this, 50, 144, enemyHealth, enemyResist, enemyStrength );
+        int nextEnemy = diffNextEnemy / wave;
+        if( enemiesSpawned < nEnemies * wave &&
+                Math.floor( stateTime / (float)nextEnemy ) != Math.floor( currTime / (float)nextEnemy ) ) {
+            enemiesSpawned++;
+            Enemy e = new Enemy( this, 50, 144, enemyHealth + healthPerWave * wave,
+                    enemyResist + resistPerWave * wave, enemyStrength + strengthPerWave * wave );
             frameEvents[ENEMY_SPAWN_INDEX] = true;
             enemies.add(e);
         }
@@ -83,7 +96,10 @@ public class Game implements Updatable {
     public void update( float delta ) {
         switch ( state ) {
             case PLAYING:
-                updatePlaying( delta );
+                if( enemiesSpawned == nEnemies * wave && enemies.size() == 0 ) {
+                    stateTime = 0;
+                    state = GameStatus.BUILDING;
+                } else updatePlaying( delta );
                 break;
             case BUILDING:
                 break;
@@ -91,6 +107,16 @@ public class Game implements Updatable {
                 break;
             case LOST:
                 break;
+        }
+    }
+
+    public void changeState( GameStatus status ) {
+        if( status == GameStatus.PLAYING ) {
+            state = status;
+            enemies.clear();
+            projectiles.clear();
+            enemiesSpawned = 0;
+            wave++;
         }
     }
 
@@ -144,8 +170,8 @@ public class Game implements Updatable {
         projectiles.add(projectile);
     }
 
-    public void addTrap(Trap trap, int index) {
-        traps[index] = trap;
+    public void addTrap(int x, int y, int width, int height, int index) {
+        traps[index] = new Trap( this, x, y, width, height, 5 );
     }
 
 }

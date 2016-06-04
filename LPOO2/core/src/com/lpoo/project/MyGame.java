@@ -45,14 +45,12 @@ public class MyGame extends com.badlogic.gdx.Game {
         screenHeight = Gdx.graphics.getHeight();
 
         inputs = new Inputs(this);
-        //menu = new Menu(this);
-        game = new Game();
-        build = new BuildScreen( this, game );
-        setScreen( build );
+        menu = new Menu(this);
+        setScreen( menu );
 
         heroes = new Vector<Hero>();
 
-        state = States.BUILD;
+        state = States.MENU;
 	}
 
     public void disposeState( ) {
@@ -91,7 +89,7 @@ public class MyGame extends com.badlogic.gdx.Game {
                 if( game == null )
                     game = new Game();
                 disposeState();
-                state = States.BUILD;
+                state = stat;
                 build = new BuildScreen(this, game);
                 setScreen(build);
                 break;

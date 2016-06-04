@@ -36,6 +36,7 @@ public class Hero extends Character implements Updatable, Movable, Hitable {
      * Enemy's velocity
      */
     private float velocity;
+    private float deadTime = 3f;
     /**
      * @brief Constructor for the class Hero
      * @param game Game where the hero will be placed
@@ -76,14 +77,16 @@ public class Hero extends Character implements Updatable, Movable, Hitable {
      * @param state New status to be saved in the nextState variable
      */
     public void move(HeroStatus state) {
-        nextState = state;
+        if( state != HeroStatus.DEAD )
+            nextState = state;
     }
 
     /**
      * Function which allows the hero to attack
      */
     public void attack() {
-        nextState = HeroStatus.ATTACK;
+        if( state != HeroStatus.DEAD )
+            nextState = HeroStatus.ATTACK;
     }
 
     /**
@@ -91,6 +94,8 @@ public class Hero extends Character implements Updatable, Movable, Hitable {
      * @param screenX
      */
     public void touchDown( float screenX) {
+        if( state != HeroStatus.DEAD )
+            return ;
         if( screenX < 50 )
             nextState = HeroStatus.MOVE_LEFT;
         else if( screenX > 840 )
@@ -103,7 +108,8 @@ public class Hero extends Character implements Updatable, Movable, Hitable {
      *
      */
     public void touchUp( ) {
-        nextState = HeroStatus.STILL;
+        if( state != HeroStatus.DEAD )
+            nextState = HeroStatus.STILL;
     }
 
     /**
@@ -111,7 +117,7 @@ public class Hero extends Character implements Updatable, Movable, Hitable {
      * @param stat hero's status
      */
     public void AnimationStatus( HeroStatus stat ) {
-        if( stat != state ) {
+        if( state != HeroStatus.DEAD && stat != state ) {
             nextState = stat;
             state = stat;
             stateTime = 0;
@@ -123,14 +129,14 @@ public class Hero extends Character implements Updatable, Movable, Hitable {
      * Updates the hero and current status
      */
     public void update(float delta) {
-        stateTime += delta;
+        float currTime = stateTime + delta;
 
         switch( state ) {
             case ATTACK:
-                if( stateTime >= attack_speed ) {
+                if( currTime >= attack_speed ) {
                     Projectile projectile = new Projectile(game, rect.x, rect.y + 46, 10, 3, 5);
                     game.addProjectile(projectile);
-                    stateTime -= attack_speed;
+                    currTime -= attack_speed;
                 }
                 break;
             case MOVE_LEFT:
@@ -139,7 +145,16 @@ public class Hero extends Character implements Updatable, Movable, Hitable {
             case MOVE_RIGHT:
                 move( 1, delta );
                 break;
+            case DEAD:
+                if( stateTime <= deadTime && currTime >= deadTime ) {
+                    state = HeroStatus.STILL;
+                    stats.setHealth(stats.getMaxHealth());
+                    stateTime = 0;
+                    return ;
+                }
+                break;
         }
+        stateTime = currTime;
     }
 
     /**
@@ -149,6 +164,7 @@ public class Hero extends Character implements Updatable, Movable, Hitable {
     public void hit(Stats stats) {
         this.stats.applyDamage(stats);
         if(this.stats.getHealth()<=0) {
+            this.stats.setHealth(0);
             state = HeroStatus.DEAD;
             nextState = HeroStatus.DEAD;
         }

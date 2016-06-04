@@ -27,6 +27,7 @@ public class BuildScreen implements Screen {
 
     private OrthographicCamera camera;
     private SpriteBatch hudBatch;
+    private SpriteBatch backgroundBatch;
     private Texture grid;
     private Texture play;
     private Texture exit;
@@ -38,6 +39,7 @@ public class BuildScreen implements Screen {
     private int xPos = 450;
     private final int yPos = 250;
     private final int h = 500, w = 890;
+    private int screenWidth, screenHeight;
 
     private int xTouch = 0, yTouch = 0;
     private boolean select = false;
@@ -45,18 +47,24 @@ public class BuildScreen implements Screen {
     public BuildScreen( MyGame myGame, Game game ) {
         this.myGame = myGame;
         this.game = game;
+        this.game.changeState(Game.GameStatus.BUILDING);
+
+        screenWidth = Gdx.graphics.getWidth();
+        screenHeight = Gdx.graphics.getHeight();
+
         map = new Map();
         font = new BitmapFont();
 
         camera = new OrthographicCamera(w, h);
         hudBatch = new SpriteBatch();
+        backgroundBatch = new SpriteBatch();
 
         trapDraw = new TrapAnimation( "Trap\\trap1.atlas", 0, 0 );
         grid = new Texture("Grid.png");
         rectangles = new Rectangle[26];
-        System.out.println("" + (Gdx.graphics.getWidth() - 50) + "  -  " + ( Gdx.graphics.getHeight() - 50 ) );
-        advance = new Rectangle( Gdx.graphics.getWidth() - 100, Gdx.graphics.getHeight() - 50, 20, 25);
-        back = new Rectangle( Gdx.graphics.getWidth() - 50, Gdx.graphics.getHeight() - 50, 25, 25);
+        System.out.println("" + (screenWidth - 50) + "  -  " + ( screenHeight - 50 ) );
+        advance = new Rectangle( screenWidth - 100, screenHeight - 50, 20, 25);
+        back = new Rectangle( screenWidth - 50, screenHeight - 50, 25, 25);
         play = new Texture("PlayButton.png");
         exit = new Texture("ExitButton.png");
 
@@ -103,7 +111,7 @@ public class BuildScreen implements Screen {
         xTouch = (int)pos.x;
         yTouch = (int)pos.y;
 
-        Rectangle hitbox = new Rectangle(screenX, Gdx.graphics.getHeight() - screenY, 5, 5);
+        Rectangle hitbox = new Rectangle(screenX,screenHeight - screenY, 5, 5);
         if( advance.overlaps(hitbox))
             myGame.changeScreen(MyGame.States.PLAY);
         else if( back.overlaps(hitbox))
@@ -113,7 +121,7 @@ public class BuildScreen implements Screen {
             int tmp = (int)pos.x - 250;
             tmp /= 128;
             System.out.println("Tmp:" + tmp);
-            game.addTrap( new Trap( game, (int) rectangles[tmp].getX(), (int) rectangles[tmp].getY(), 128, 128, 3 ), tmp );
+            game.addTrap( (int) rectangles[tmp].getX(), (int) rectangles[tmp].getY(), 128, 128, tmp );
         }
         select = false;
     }
@@ -129,6 +137,10 @@ public class BuildScreen implements Screen {
         Gdx.gl.glClearColor((float)0.5, (float)0.5, (float)0.5, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        backgroundBatch.begin();
+        backgroundBatch.draw(map.getSky(), 0, 0);
+        backgroundBatch.end();
+
         //Set batch to only draw what the camera sees
         myGame.batch.setProjectionMatrix( camera.combined );
 
@@ -137,7 +149,7 @@ public class BuildScreen implements Screen {
         camera.position.set( xPos , yPos, 0 );
         camera.update();
 
-        myGame.batch.draw( map.getSky(), 0, 0 );
+        //myGame.batch.draw( map.getSky(), 0, 0 );
         myGame.batch.draw( map.getTerrain(), 0, 0);
 
         Trap[] traps = game.getTraps();
@@ -150,24 +162,28 @@ public class BuildScreen implements Screen {
         }
 
 
-        font.draw(myGame.batch, "" + xTouch + "-" + yTouch, xPos, yPos + 100);
+        font.draw(myGame.batch, "" + screenWidth + "-" + screenHeight, xPos, yPos + 100);
 
         myGame.batch.end();
 
         hudBatch.begin();
-        hudBatch.draw(play, Gdx.graphics.getWidth() - 100 ,  Gdx.graphics.getHeight() - 50);
-        hudBatch.draw(exit, Gdx.graphics.getWidth() - 50 ,  Gdx.graphics.getHeight() - 50);
+        hudBatch.draw(play, 540 , 430);
+        hudBatch.draw(exit, 590 , 430);
         hudBatch.end();
 
     }
 
     public Vector2 getRelativePosition( int x, int y ) {
-        return new Vector2( xPos + (w * x / Gdx.graphics.getWidth()) - w / 2,
-                            yPos - (h * y / Gdx.graphics.getHeight()) + h / 2 );
+        return new Vector2( xPos + (w * x / screenWidth) - w / 2,
+                            yPos - (h * y / screenHeight) + h / 2 );
     }
 
     @Override
     public void resize(int width, int height) {
+        screenHeight = height;
+        screenWidth = width;
+        advance.setPosition(width - 100, height - 50);
+        back.setPosition(width - 50, height - 50);
 
     }
 

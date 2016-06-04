@@ -120,8 +120,8 @@ public class Enemy extends Character implements Updatable, Movable, Hitable {
         }
 
         //Change state
-        if( state != EnemyStatus.DEAD /* && stateTime >= getSpeed( state )*/ ) {
-            if ( rect.overlaps( game.getHero().getRect()) )
+        if( state != EnemyStatus.DEAD ) {
+            if ( game.getHero().getState() != Hero.HeroStatus.DEAD && rect.overlaps( game.getHero().getRect()) )
                 nextState = EnemyStatus.ATTACK;
             else
                 nextState = EnemyStatus.MOVE_RIGHT;
