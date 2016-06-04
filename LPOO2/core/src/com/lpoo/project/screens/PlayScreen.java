@@ -51,7 +51,7 @@ public class PlayScreen implements Screen {
         camera = new OrthographicCamera( w, h );
 
         hero_animations = new HeroAnimation( "Hero\\hero1_fire.atlas", "Hero\\hero1_still.atlas",
-                                                    "Hero\\hero1_still.atlas", "Hero\\hero1_still.atlas", 1/10f, 1/3f );
+                                                    "Hero\\hero1_move_left.atlas", "Hero\\hero1_move_right.atlas", 1/10f, 1/10f );
         enemies = new LinkedList<EnemyAnimation>();
         trapAnimations = new TrapAnimation[26];
         projectiles = new LinkedList<ProjectileAnimation>();
@@ -105,7 +105,7 @@ public class PlayScreen implements Screen {
 
         boolean[] frameEvents = game.getFrameEvents();
         if( frameEvents[Game.ENEMY_SPAWN_INDEX] )
-            enemies.add( new EnemyAnimation( "Robot\\robot1_attack.atlas", "Robot\\robot1_walk.atlas", 1/5f, 1/3f ));
+            enemies.add( new EnemyAnimation( "Robot\\robot1_attack.atlas", "Robot\\robot1_walk.atlas", 1/5f, 1/2f ));
         if( frameEvents[Game.PROJECTILE_FIRED_INDEX] )
             projectiles.add( new ProjectileAnimation( "Projectile\\projectile1.atlas" ));
         game.setFrameEvents();
@@ -150,7 +150,7 @@ public class PlayScreen implements Screen {
             Enemy e = en.get(i);
             TextureRegion robot_text = enemies.get(i).getTexture( e.getNextState(), delta );
             myGame.batch.draw(robot_text, e.getPosition().x,e.getPosition().y);
-            drawLifeBard( e.getPosition().x + robot_text.getRegionWidth() / 3, e.getPosition().y + robot_text.getRegionHeight(),
+            drawLifeBard( e.getPosition().x + 10, e.getPosition().y + robot_text.getRegionHeight(),
                     LifeBar.getTexture( e.getStats().getHealth(), e.getStats().getMaxHealth() ));
 
             if( e.getState() == Enemy.EnemyStatus.DEAD ) {
@@ -179,7 +179,7 @@ public class PlayScreen implements Screen {
         if( game.getHero().getState() != Hero.HeroStatus.DEAD )
             myGame.batch.draw( hero_text, hPos.x, hPos.y );
 
-        drawLifeBard( hPos.x + hero_text.getRegionWidth() / 3, hPos.y + hero_text.getRegionHeight(),
+        drawLifeBard( hPos.x + 10, hPos.y + hero_text.getRegionHeight(),
                 LifeBar.getTexture( game.getHero().getStats().getHealth(), game.getHero().getStats().getMaxHealth() ));
 
         myGame.batch.draw( map.getTerrain(), 0, 0);
@@ -194,7 +194,7 @@ public class PlayScreen implements Screen {
      * @return
      */
     private Vector2 calMidScreen ( Vector2 hPos, float spriteWidth ) {
-        float tmp = hPos.x + spriteWidth / 2;
+        float tmp = hPos.x + 10;
         return new Vector2( (tmp < 450 ) ? 450 : (tmp > 3650 ) ? 3650 : tmp, 250);
     }
 
