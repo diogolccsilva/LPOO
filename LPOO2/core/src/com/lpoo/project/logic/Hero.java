@@ -102,7 +102,7 @@ public class Hero extends Character implements Updatable, Movable, Hitable {
      * Function which represents the hero's status' animation
      * @param stat hero's status
      */
-    public void AnimationStatus( HeroStatus stat ) {
+    public void animationStatus( HeroStatus stat ) {
         if( state != HeroStatus.DEAD && stat != state ) {
             nextState = stat;
             state = stat;

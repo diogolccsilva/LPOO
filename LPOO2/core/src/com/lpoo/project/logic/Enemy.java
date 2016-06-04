@@ -68,7 +68,7 @@ public class Enemy extends Character implements Updatable, Movable, Hitable {
      * Function which represents the enemy's status' animation
      * @param stat Enemy's status
      */
-    public void AnimationStatus( EnemyStatus stat ) {
+    public void animationStatus( EnemyStatus stat ) {
         if( stat != state ) {
             nextState = stat;
             state = stat;

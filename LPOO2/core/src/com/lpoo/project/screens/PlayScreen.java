@@ -104,6 +104,7 @@ public class PlayScreen implements Screen {
         TextureRegion hero_text = hero_animations.getTexture( delta );
         game.getHero().AnimationStatus( hero_animations.getState() );
 
+
         boolean[] frameEvents = game.getFrameEvents();
         if( frameEvents[Game.ENEMY_SPAWN_INDEX] )
             enemies.add( new EnemyAnimation( game, "Robot\\robot1_attack.atlas", "Robot\\robot1_walk.atlas", 1/5f, 1/2f, enemies.size() - 1 ));
@@ -158,7 +159,7 @@ public class PlayScreen implements Screen {
                 enemies.remove(i);
                 game.eraseEnemy(i);
                 i--;
-            } else e.AnimationStatus( enemies.get(i).getState() );
+            } else e.animationStatus( enemies.get(i).getStatus() );
         }
 
         //Iterate throw the projectiles' animations
