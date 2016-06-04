@@ -6,6 +6,7 @@ import com.lpoo.project.logic.Hero;
 import com.lpoo.project.processors.Inputs;
 import com.lpoo.project.screens.Menu;
 import com.lpoo.project.screens.PlayScreen;
+import com.lpoo.project.storage.GameFiles;
 
 import java.lang.*;
 import java.util.Vector;
@@ -88,6 +89,15 @@ public class MyGame extends com.badlogic.gdx.Game {
 
     public void addHero(Hero h){
         heroes.add(h);
+    }
+
+    public void newHero() {
+        Hero h = new Hero(null,0,0,100,1,1);
+        addHero(h);
+    }
+
+    public void saveGame() {
+        GameFiles.saveHeroes(heroes);
     }
 
     @Override

@@ -12,7 +12,6 @@ public class Hero extends Character implements Updatable, Movable, Hitable {
     private float stateTime;
 
     private float move_speed, attack_speed;
-    private float velocity;
 
     /**
      * @brief Constructor for the class Hero
@@ -20,15 +19,15 @@ public class Hero extends Character implements Updatable, Movable, Hitable {
      * @param y
      * @param health
      * @param resistance
-     * @param strength
+     * @param damage
      */
-    public Hero( Game game, int x, int y, int health, int resistance, int strength )  {
-        super( game, x, y, 45, 88, health, resistance, strength );
+    public Hero( Game game, int x, int y, int health, int resistance, int damage )  {
+        super( game, x, y, 45, 88);
         state = HeroStatus.STILL;
         nextState = state;
         move_speed = 1/3f;
         attack_speed = 0.7f;
-        velocity = 50f;
+        this.stats = new Stats(health, resistance, 60f,damage);
         this.game = game;
     }
 
@@ -99,11 +98,11 @@ public class Hero extends Character implements Updatable, Movable, Hitable {
     }
 
     public void move( int dir, float delta ) {
-        rect.x += velocity * delta * dir;
+        rect.x += getVelocity() * delta * dir;
     }
 
     @Override
     public String toString(){
-        return "Hero [stats=" + stats + "]";
+        return "Hero [stats=" + stats + ", velocity=" + getVelocity() + "]";
     }
 }

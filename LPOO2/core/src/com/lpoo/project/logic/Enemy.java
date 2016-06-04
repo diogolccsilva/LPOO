@@ -11,7 +11,6 @@ public class Enemy extends Character implements Updatable, Movable, Hitable {
     private float stateTime;
 
     private float move_speed, attack_speed, attack_time;
-    private float velocity;
     private boolean attacked;
 
     /**
@@ -20,10 +19,10 @@ public class Enemy extends Character implements Updatable, Movable, Hitable {
      * @param y
      * @param health
      * @param resistance
-     * @param strength
+     * @param damage
      */
-    public Enemy( Game game, int x, int y, int health, int resistance, int strength )  {
-        super( game, x, y, 80, 124, health, resistance, strength );
+    public Enemy( Game game, int x, int y, int health, int resistance, int damage )  {
+        super( game, x, y, 80, 124);
         stateTime = 0;
         state = EnemyStatus.MOVE_RIGHT;
         nextState = EnemyStatus.MOVE_RIGHT;
@@ -31,7 +30,7 @@ public class Enemy extends Character implements Updatable, Movable, Hitable {
         attack_speed = 1.4f;
         attack_time = 0.6f;
         attacked = false;
-        velocity = 40f;
+        stats = new Stats(health, resistance, 40f, damage);
     }
 
     public EnemyStatus getState() {
@@ -90,6 +89,6 @@ public class Enemy extends Character implements Updatable, Movable, Hitable {
 
     @Override
     public void move(int dir, float delta) {
-        rect.x += velocity * dir * delta;
+        rect.x += stats.getVelocity() * dir * delta;
     }
 }

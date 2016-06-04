@@ -1,6 +1,7 @@
 package com.lpoo.project.logic;
 
 import java.util.LinkedList;
+import java.util.Random;
 
 /**
  * Created by asus1 on 31/05/2016.
@@ -11,13 +12,11 @@ public class Projectile extends Entity implements Updatable, Movable {
     private ProjectileStatus state;
 
     private Stats stats;
-    private float velocity;
 
     public Projectile( Game game, float x, float y, int width, int height, int damage ) {
         super(game, x, y, width, height);
         state = ProjectileStatus.TRAVELLING;
-        this.stats = new Stats(100,0,0,damage,0);
-        velocity = 100f;
+        this.stats = new Stats(100,10,100f,damage,80);
     }
 
     public ProjectileStatus getState() {
@@ -35,7 +34,10 @@ public class Projectile extends Entity implements Updatable, Movable {
         LinkedList<Enemy> enemies = game.getEnemies();
         for( Enemy e : enemies ) {
             if(rect.overlaps(e.getRect())) {
-                state = ProjectileStatus.HIT_TARGET;
+                Random rand = new Random();
+                if (rand.nextInt(100)>=stats.getPenetration()) {
+                    state = ProjectileStatus.HIT_TARGET;
+                }
                 e.hit(stats);
                 return ;
             }
@@ -43,6 +45,6 @@ public class Projectile extends Entity implements Updatable, Movable {
     }
 
     public void move( int dir, float delta ) {
-        rect.x += dir * velocity * delta;
+        rect.x += dir * stats.getVelocity() * delta;
     }
 }

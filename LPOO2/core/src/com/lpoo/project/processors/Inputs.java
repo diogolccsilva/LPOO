@@ -48,6 +48,12 @@ public class Inputs implements InputProcessor {
                     case Keys.SPACE:
                         game.getPlayScreen().getGame().getHero().attack();
                         break;
+                    case Keys.S:
+                        game.saveGame();
+                        break;
+                    case Keys.N:
+                        game.newHero();
+                        break;
                     default:
                         break;
                 }

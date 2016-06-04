@@ -14,7 +14,7 @@ public class Trap extends Entity implements Updatable {
     public Trap ( Game game, int x, int y, int width, int height, int damage ) {
         super( game, x, y, width, height );
         currStatus = TrapStatus.WAIT;
-        this.stats = new Stats(0,0,0,damage,0);
+        this.stats = new Stats(0,0,damage,0);
     }
 
 
