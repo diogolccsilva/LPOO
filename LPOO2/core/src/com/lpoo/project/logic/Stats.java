@@ -1,14 +1,23 @@
 package com.lpoo.project.logic;
 
 /**
- * Created by Vasco on 12/05/2016.
- */
+ * Class that creates objects of type Stats (properties of a character)
+ * */
 public class Stats {
 
+    /**
+     * Character's health
+     */
     private int health;
 
+    /**
+     * Character's max health
+     */
     private int maxHealth;
 
+    /**
+     * Character's resistance
+     */
     private int resistance;
 
     private float movSpeed;
@@ -50,8 +59,16 @@ public class Stats {
         return resistance;
     }
 
+    public void setHealth(int health) {
+        this.health = health;
+    }
+
     @Override
     public String toString() {
         return super.toString();
+    }
+
+    public void applyDamage(Stats stats) {
+        this.health -= stats.getAttDamage();
     }
 }

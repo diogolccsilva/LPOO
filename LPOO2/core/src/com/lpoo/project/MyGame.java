@@ -1,9 +1,11 @@
 package com.lpoo.project;
 
-import com.badlogic.gdx.*;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.lpoo.project.logic.Game;
 import com.lpoo.project.logic.Hero;
 import com.lpoo.project.processors.Inputs;
+import com.lpoo.project.screens.BuildScreen;
 import com.lpoo.project.screens.Menu;
 import com.lpoo.project.screens.PlayScreen;
 import com.lpoo.project.storage.GameFiles;
@@ -17,13 +19,24 @@ public class MyGame extends com.badlogic.gdx.Game {
     public int screenWidth, screenHeight;
 
     private Inputs inputs;
-    private PlayScreen game;
+    private PlayScreen play;
+    private BuildScreen build;
     private Menu menu;
+
+    private Game game;
 
     private Vector<Hero> heroes;
 
-    public enum States { MENU, PLAY, EXIT }
+    public enum States { MENU, PLAY, BUILD, EXIT }
     private States state;
+
+    private static MyGame ourInstance = new MyGame();
+
+    public static MyGame getInstance() {
+        return ourInstance;
+    }
+
+    private MyGame() {}
 
     @Override
 	public void create () {
@@ -47,7 +60,10 @@ public class MyGame extends com.badlogic.gdx.Game {
                 menu.dispose();
                 break;
             case PLAY:
-                game.dispose();
+                play.dispose();
+                break;
+            case BUILD:
+                build.dispose();
                 break;
         }
     }
@@ -55,16 +71,28 @@ public class MyGame extends com.badlogic.gdx.Game {
     public void changeScreen( States stat ) {
         switch ( stat ) {
             case MENU:
+                if( state == States.PLAY )
+                    game = null;
                 disposeState();
                 state = stat;
                 menu = new Menu(this);
-                setScreen( new Menu(this) );
+                setScreen( menu );
                 break;
             case PLAY:
+                if( game == null )
+                    game = new Game();
                 disposeState();
                 state = stat;
-                game = new PlayScreen(this);
-                setScreen( game );
+                play = new PlayScreen(this, game);
+                setScreen( play );
+                break;
+            case BUILD:
+                if( game == null )
+                    game = new Game();
+                disposeState();
+                state = stat;
+                build = new BuildScreen(this, game);
+                setScreen(build);
                 break;
             case EXIT:
                 Gdx.app.exit();
@@ -80,7 +108,11 @@ public class MyGame extends com.badlogic.gdx.Game {
     }
 
     public PlayScreen getPlayScreen(){
-        return game;
+        return play;
+    }
+
+    public BuildScreen getBuildScreen() {
+        return build;
     }
 
     public Vector<Hero> getHeroes(){
@@ -102,10 +134,12 @@ public class MyGame extends com.badlogic.gdx.Game {
 
     @Override
     public void dispose() {
-        if( game != null )
-            game.dispose();
+        if( play != null )
+            play.dispose();
         else if( menu != null )
             menu.dispose();
+        else if( build != null )
+            build.dispose();
         batch.dispose();
     }
 

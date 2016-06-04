@@ -1,17 +1,19 @@
 package com.lpoo.project.logic;
 
-import java.awt.Rectangle;
-
 /**
- * Created by Vasco on 10/05/2016.
+ * Class that creates the game's characters
+ * This class extends the superclass Entity
  */
 public class Character extends Entity {
 
     /**
-     * @brief Maximum velocity per second
+     * Maximum velocity per second
      */
     protected static final int max_velocity = 20;
 
+    /**
+     * Character's properties
+     */
     protected Stats stats;
 
     /**
@@ -41,18 +43,18 @@ public class Character extends Entity {
     }
 
     /**
+     * Getter for stats
      * @return character's current stats
-     * @brief Getter for stats
      */
     public Stats getStats() {
         return stats;
     }
 
     /**
+     * Getter for velocity
      * @return character's velocity
-     * @brief Getter for velocity
      */
     public float getVelocity() {
-        return stats.getVelocity();
+        return stats.getMovSpeed();
     }
 }

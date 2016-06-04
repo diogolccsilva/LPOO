@@ -1,30 +1,30 @@
 package com.lpoo.project.logic;
 
 /**
- * Created by Vasco on 12/05/2016.
+ * Class that creates the accessories to be used
  */
 public class Accessory {
 
     /**
-     * @brief Accessory's damage
+     * Accessory's damage
      */
     private int damage;
 
     /**
-     * @brief Accessory's defense
+     * Accessory's defense
      */
     private int defense;
 
     /**
-     * @brief Accessory's durability
+     * Accessory's durability
      */
     private int durability;
 
     /**
-     * @brief Constructor for the class Accessory
-     * @param damage
-     * @param defense
-     * @param durability
+     * Constructor for the class Accessory
+     * @param damage Acessory's damage
+     * @param defense Acessory's defense
+     * @param durability Acessory's durability
      */
     public Accessory( int damage, int defense, int durability ) {
 
@@ -34,24 +34,24 @@ public class Accessory {
     }
 
     /**
-     * @brief Getter for damage
-     * @return accessory's damge
+     * Getter for damage
+     * @return Accessory's damage
      */
     public int getDamage() {
         return damage;
     }
 
     /**
-     * @brief Getter for defense
-     * @return accessory's defense
+     * Getter for defense
+     * @return Accessory's defense
      */
     public int getDefense() {
         return defense;
     }
 
     /**
-     * @brief Getter for durability
-     * @return accessory's durability
+     * Getter for durability
+     * @return Accessory's durability
      */
     public int getDurability() {
         return durability;

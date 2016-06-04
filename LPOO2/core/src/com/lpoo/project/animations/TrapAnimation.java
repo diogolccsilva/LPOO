@@ -5,73 +5,59 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Disposable;
-import com.lpoo.project.logic.Trap;
+import com.lpoo.project.logic.Trap.TrapStatus;
 import com.lpoo.project.screens.PlayScreen;
 
 /**
  * Class that creates the trap's animation
  * This class implements the interface Disposable
  */
-public class TrapAnimation implements Disposable {
-
-    /**
-     * PlayScreen where the game will be played
-     */
-    private PlayScreen game;
-
+public class TrapAnimation {
     /**
      * Trap's status
      */
-    private Trap.TrapStatus status;
+    private TrapStatus status;
     /**
      * Current animation of the trap
      */
     private Animation currAnimation;
+
+    private Animation heatUpAnimation;
     /**
      * Trap's animation when it is attacking
      */
     private Animation attack;
     /**
-     * Trap's animation when it is waiting
-     */
-    private Animation wait;
-    /**
-     * Trap's animation when it is recharging
-     */
-    private Animation recharge;
-    /**
-     *  Loads images from texture atlases that represents the attack of the trap
-     */
-    private TextureAtlas attackTextures;
-    /**
-     *  Loads images from texture atlases that represents the trap waiting
-     */
-    private TextureAtlas waitTextures;
-    /**
      *  Loads images from texture atlases that represents the trap recharging
      */
-    private TextureAtlas rechargeTextures;
+    private TextureRegion waitTexture;
     /**
      * Trap's "time of life"
      */
     private float stateTime;
 
     /**
-     * @brief Constructor for the TrapAnimator class
-     * @param attackPath Path where is saved the TextureAtlas of the trap's attack
-     * @param movePath Path where is saved the TextureAtlas of the trap's moving
+     * Constructor for the TrapAnimator class
+     * @param path Path where is saved the TextureAtlas of the trap
      * @param attackSpeed Trap's velocity of the attack
-     * @param moveSpeed Trap's velocity of moving
+     * @param rechargeSpeed Trap's velocity of moving
      */
-    public TrapAnimation( PlayScreen game, String attackPath, String movePath, float attackSpeed, float moveSpeed ) {
-        this.game = game;
+    public TrapAnimation( String path, float attackSpeed, float rechargeSpeed ) {
         stateTime = 0;
-        status = Trap.TrapStatus.WAIT;
+        status = TrapStatus.WAIT;
 
-        attackTextures = new TextureAtlas( Gdx.files.internal( attackPath ) );
-        attack = new Animation( attackSpeed, attackTextures.getRegions() );
+        TextureAtlas textures = new TextureAtlas( Gdx.files.internal( path ) );
+        TextureRegion[] attackTexts = new TextureRegion[2]; //textures.getRegions()
+        attackTexts[0] = textures.getRegions().get(2);
+        attackTexts[1] = textures.getRegions().get(3);
+        TextureRegion[] heatUpTexts = new TextureRegion[2];
+        heatUpTexts[0] = textures.getRegions().get(0);
+        heatUpTexts[1] = textures.getRegions().get(1);
+        waitTexture = textures.getRegions().get(4);
+        attack = new Animation( attackSpeed, attackTexts );
+        heatUpAnimation = new Animation( 1/20f, heatUpTexts);
 
-        currAnimation = wait;
+        currAnimation = null;
     }
 
     /**
@@ -79,17 +65,13 @@ public class TrapAnimation implements Disposable {
      * @param stat Trap's status
      * @param speed Trap's velocity
      */
-    public void setAttackSpeed ( Trap.TrapStatus stat, float speed ) {
-
+    public void setAttackSpeed ( TrapStatus stat, float speed ) {
         switch ( stat ) {
             case ATTACK:
                 attack.setFrameDuration( speed );
                 break;
-            case WAIT:
-                wait.setFrameDuration( speed );
-                break;
-            case RECHARGE:
-                recharge.setFrameDuration( speed );
+            case HEATUP:
+                heatUpAnimation.setFrameDuration( speed );
                 break;
         }
     }
@@ -100,39 +82,33 @@ public class TrapAnimation implements Disposable {
      * @param delta Increasing time
      * @return TextureRegion to be drawn on the screen
      */
-    public TextureRegion getTexture (Trap.TrapStatus stat, float delta ) {
+    public TextureRegion getTexture (TrapStatus stat, float delta ) {
         Animation nextAnimation = null;
+        stateTime += delta;
 
-        switch ( stat ) {
+        switch (stat) {
             case ATTACK:
                 nextAnimation = attack;
                 break;
-            case WAIT:
-                nextAnimation = wait;
-                break;
-            case RECHARGE:
-                nextAnimation = recharge;
+            case HEATUP:
+                nextAnimation = heatUpAnimation;
                 break;
         }
 
-        stateTime += delta;
-
-        if (currAnimation.isAnimationFinished(stateTime) || ( currAnimation == wait && nextAnimation != wait )) {
-            stateTime = 0;
-            status = stat;
-            currAnimation = nextAnimation;
+        if ((currAnimation != null && currAnimation.isAnimationFinished(stateTime)) ||
+                currAnimation == null) {
+            if (nextAnimation == null) {
+                status = stat;
+                stateTime = 0;
+                currAnimation = null;
+                return waitTexture;
+            } else {
+                status = stat;
+                stateTime = 0;
+                currAnimation = nextAnimation;
+            }
         }
 
-        return currAnimation.getKeyFrame( stateTime, true );
-    }
-
-    @Override
-    /**
-     * Releases all textures of the trap
-     */
-    public void dispose() {
-        attackTextures.dispose();
-        waitTextures.dispose();
-        rechargeTextures.dispose();
+        return currAnimation.getKeyFrame(stateTime, true);
     }
 }

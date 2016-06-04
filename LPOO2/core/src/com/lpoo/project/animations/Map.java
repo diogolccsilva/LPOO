@@ -12,35 +12,35 @@ public class Map implements Disposable {
     /**
      * Texture which represents the map
      */
-    private Texture map;
+    private Texture sky;
 
     /**
      * Texture that represents the spawn wall
      */
-    private Texture spawnWall;
+    private Texture terrain;
 
     /**
      * Constructor for the Map class
      */
     public Map() {
-        map = new Texture("Map\\Map.png");
-        spawnWall = new Texture("Map\\SpawnWall.png");
+        sky = new Texture("Map\\Sky.png");
+        terrain = new Texture("Map\\Terrain.png");
     }
 
     /**
      * Getter for the map's texture
      * @return The map's texture
      */
-    public final Texture getMap() {
-        return map;
+    public final Texture getSky() {
+        return sky;
     }
 
     /**
      * Getter for the spawn wall's texture
      * @return The spawn wall's texture
      */
-    public final Texture getSpawnWall() {
-        return spawnWall;
+    public final Texture getTerrain() {
+        return terrain;
     }
 
     @Override
@@ -48,7 +48,7 @@ public class Map implements Disposable {
      * Releases all textures of the map
      */
     public void dispose() {
-        map.dispose();
-        spawnWall.dispose();
+        sky.dispose();
+        terrain.dispose();
     }
 }
