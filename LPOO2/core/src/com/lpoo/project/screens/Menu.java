@@ -14,7 +14,7 @@ import com.lpoo.project.MyGame;
  */
 public class Menu implements Screen{
 
-    private MyGame game;
+    private MyGame myGame;
     private Rectangle play, instructions, exit;
     private OrthographicCamera menuCamera;
     private Texture background;
@@ -22,8 +22,8 @@ public class Menu implements Screen{
 
     private static final int menuH = 256, menuW = 453;
 
-    public Menu(MyGame game ) {
-        this.game = game;
+    public Menu(MyGame myGame) {
+        this.myGame = myGame;
 
         play = new Rectangle( 235, 116, 130, 35 );
         instructions = new Rectangle( 235, 163, 130, 35 );
@@ -35,9 +35,14 @@ public class Menu implements Screen{
 
         background = new Texture("Back.jpg");
 
-        music = Gdx.audio.newMusic(Gdx.files.internal("A Night Of Dizzy Spells.mp3"));
+        Music m = myGame.cache.getMenuAudio();
+        if( m == null ) {
+            music = Gdx.audio.newMusic(Gdx.files.internal("A Night Of Dizzy Spells.mp3"));
+            myGame.cache.setMenuAudio(music);
+        } else music = m;
+
         music.setLooping(true);
-        music.setVolume(game.getVolume()/100f);
+        music.setVolume(myGame.getVolume()/100f);
         music.play();
     }
 
@@ -60,14 +65,14 @@ public class Menu implements Screen{
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         //Set batch to only draw what the camera sees
-        game.batch.setProjectionMatrix( menuCamera.combined );
+        myGame.batch.setProjectionMatrix( menuCamera.combined );
 
         //menuCamera.position.set( menuW / 2, menuH / 2, 0 );
         //menuCamera.update();
 
-        game.batch.begin();
-        game.batch.draw(background, 0, 0);
-        game.batch.end();
+        myGame.batch.begin();
+        myGame.batch.draw(background, 0, 0);
+        myGame.batch.end();
     }
 
     @Override
@@ -104,9 +109,9 @@ public class Menu implements Screen{
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         Rectangle rect = new Rectangle( getRelativeX(screenX), getRelativeY(screenY), 20, 20 );
         if( rect.overlaps(play))
-            game.changeScreen(MyGame.States.BUILD);
+            myGame.changeScreen(MyGame.States.BUILD);
         else if ( rect.overlaps(exit))
-            game.changeScreen(MyGame.States.EXIT);
+            myGame.changeScreen(MyGame.States.EXIT);
         return true;
     }
 

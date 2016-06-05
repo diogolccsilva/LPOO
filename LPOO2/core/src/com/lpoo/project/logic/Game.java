@@ -200,7 +200,7 @@ public class Game implements Updatable {
     }
 
     public void setTrap(int x, int y, int width, int height, int index) {
-        if( traps[index] == null && money >= 100 ) {
+        if( traps[index] == null && money >= trapCost ) {
             money -= trapCost;
             trapCost += 20;
             traps[index] = new Trap(this, x, y, width, height, 5);

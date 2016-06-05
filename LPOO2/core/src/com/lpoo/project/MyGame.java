@@ -9,6 +9,7 @@ import com.lpoo.project.processors.Inputs;
 import com.lpoo.project.screens.BuildScreen;
 import com.lpoo.project.screens.Menu;
 import com.lpoo.project.screens.PlayScreen;
+import com.lpoo.project.storage.Cache;
 import com.lpoo.project.storage.GameFiles;
 
 import java.lang.*;
@@ -20,6 +21,8 @@ public class MyGame extends com.badlogic.gdx.Game {
 
     public OrthographicCamera camera;
     public OrthographicCamera hudCamera;
+
+    public Cache cache;
 
     public static final int h = 765, w = 1360;
 
@@ -48,6 +51,7 @@ public class MyGame extends com.badlogic.gdx.Game {
     @Override
 	public void create () {
         batch = new SpriteBatch();
+        cache = Cache.getInstance();
 
         camera = new OrthographicCamera(w, h);
         hudCamera = new OrthographicCamera(w, h);

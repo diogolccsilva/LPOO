@@ -54,11 +54,11 @@ public class PlayScreen implements Screen {
         this.game.changeState(Game.GameStatus.PLAYING);
 
         //Initialize custom font
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Font\\slkscr.ttf"));
-        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = 30;
-        font = generator.generateFont(parameter);
-        generator.dispose();
+        //FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Font\\slkscr.ttf"));
+        //FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        //parameter.size = 30;
+        font = myGame.cache.getFont();
+        //generator.dispose();
 
         gold = new Texture("Gold.png");
         robotIcon = new Texture("Robot_Icon.png");
@@ -66,7 +66,12 @@ public class PlayScreen implements Screen {
         myGame.hudCamera.position.set( myGame.w / 2, myGame.h / 2, 0 );
         myGame.hudCamera.update();
 
-        music = Gdx.audio.newMusic(Gdx.files.internal("We're the Resistors.mp3"));
+        Music m = myGame.cache.getPlayAudio();
+        if( m == null ) {
+            music = Gdx.audio.newMusic(Gdx.files.internal("We're the Resistors.mp3"));
+            myGame.cache.setPlayAudio(music);
+        } else music = m;
+
         music.setLooping(true);
         music.setVolume(myGame.getVolume()/100f);
         music.play();

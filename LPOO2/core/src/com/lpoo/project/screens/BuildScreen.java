@@ -85,13 +85,25 @@ public class BuildScreen implements Screen {
         myGame.hudCamera.update();
 
         //Initialize custom font
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Font\\slkscr.ttf"));
-        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = 30;
-        font = generator.generateFont(parameter);
-        generator.dispose();
+        BitmapFont f = myGame.cache.getFont();
+        if( f == null ) {
+            //Initialize font and store it in cache
+            FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Font\\slkscr.ttf"));
+            FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+            parameter.size = 30;
+            font = generator.generateFont(parameter);
+            generator.dispose();
+            myGame.cache.setFont(font);
+        } else
+            font = f;
 
-        music = Gdx.audio.newMusic(Gdx.files.internal("Come and Find Me.mp3"));
+        Music m = myGame.cache.getBuildAudio();
+        if( m == null ) {
+            music = Gdx.audio.newMusic(Gdx.files.internal("Come and Find Me.mp3"));
+            myGame.cache.setBuildAudio(music);
+        }
+        else music = m;
+
         music.setLooping(true);
         music.setVolume(myGame.getVolume()/100f);
         music.play();
