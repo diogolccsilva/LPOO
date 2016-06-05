@@ -109,6 +109,15 @@ public class CharacterStats extends Stats {
     }
 
     /**
+     * Setter for the character's attack speed
+     *
+     * @param attSpeed
+     */
+    public void setAttSpeed(float attSpeed) {
+        this.attSpeed = attSpeed;
+    }
+
+    /**
      * Function that applies the damage to the character
      *
      * @param stats Character's properties
