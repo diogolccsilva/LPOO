@@ -5,7 +5,7 @@ package com.lpoo.project.logic;
  * Class that creates the enemies
  * This class extends the superclass Character and it implements the Updatable, Movable and Hitable interfaces
  */
-public class Enemy extends Character implements Updatable, Movable, Hitable {
+public class Enemy extends Character {
 
     /**
      * Enumeration for the enemy's status
@@ -73,10 +73,12 @@ public class Enemy extends Character implements Updatable, Movable, Hitable {
     public void setStates(EnemyStatus state) {
         setState(state);
         setNextState(state);
+        stateTime = 0;
     }
 
     public void setState(EnemyStatus state) {
         this.state = state;
+        stateTime = 0;
     }
 
     public void setNextState(EnemyStatus nextState) {
@@ -105,38 +107,10 @@ public class Enemy extends Character implements Updatable, Movable, Hitable {
         }
     }
 
-    @Override
     /**
      * Updates the enemy and current status
      */
-    public void update(float delta) {
-        stateTime += delta;
-
-        switch (state) {
-            case DEAD:
-                break;
-            case MOVE_RIGHT:
-                move(1, delta);
-                break;
-            case ATTACK:
-                if (stateTime >= stats.getAttSpeed()) {
-                    stateTime -= stats.getAttSpeed();
-                    attacked = false;
-                } else if (stateTime >= attack_time && !attacked) {
-                    attacked = true;
-                    game.getHero().hit(stats);
-                }
-                break;
-        }
-
-        //Change state
-        if (state != EnemyStatus.DEAD) {
-            if (game.getHero().getState() != Hero.HeroStatus.DEAD && rect.overlaps(game.getHero().getRect()))
-                nextState = EnemyStatus.ATTACK;
-            else
-                nextState = EnemyStatus.MOVE_RIGHT;
-        }
-    }
+    public void update(float delta) { }
 
     /**
      * Verifies if the enemy was hit by a projectile and if its life is 0 or less the enemy dies
@@ -149,15 +123,5 @@ public class Enemy extends Character implements Updatable, Movable, Hitable {
             state = EnemyStatus.DEAD;
             nextState = EnemyStatus.DEAD;
         }
-    }
-
-    @Override
-    /**
-     * Represents the way the enemy moves
-     * @param dir Movement's direction
-     * @param delta Increasing value
-     */
-    public void move(int dir, float delta) {
-        rect.x += stats.getMovSpeed() * dir * delta;
     }
 }

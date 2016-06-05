@@ -24,7 +24,8 @@ public class MeleeEnemy extends Enemy {
                     attacked = false;
                 } else if( stateTime >= attack_time && !attacked ) {
                     attacked = true;
-                    game.getHero().hit(stats);
+                    if( rect.overlaps( game.getHero().getRect()) )
+                        game.getHero().hit(stats);
                 }
                 break;
         }

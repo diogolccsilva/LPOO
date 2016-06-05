@@ -17,6 +17,10 @@ public abstract class Stats {
         return 0;
     }
 
+    public void setAttSpeed(float attSpeed) {
+        this.attSpeed = attSpeed;
+    }
+
     @Override
     /**
      * Creates a string with the character's properties

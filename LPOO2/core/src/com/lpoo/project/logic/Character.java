@@ -4,7 +4,7 @@ package com.lpoo.project.logic;
  * Class that creates the game's characters
  * This class extends the superclass Entity
  */
-public class Character extends Entity {
+public class Character extends Entity implements Updatable, Hitable, Movable {
 
     /**
      * Maximum velocity per second
@@ -56,5 +56,25 @@ public class Character extends Entity {
      */
     public float getVelocity() {
         return stats.getMovSpeed();
+    }
+
+    /**
+     * Updates the enemy and current status
+     */
+    public void update(float delta) { }
+
+    /**
+     * Verifies if the enemy was hit by a projectile and if its life is 0 or less the enemy dies
+     * @param stats Enemy's properties
+     */
+    public void hit(Stats stats) { }
+
+    /**
+     * Allows the hero to move
+     * @param dir Movement's direction
+     * @param delta Increasing value
+     */
+    public void move( int dir, float delta ) {
+        rect.x += getVelocity() * delta * dir;
     }
 }

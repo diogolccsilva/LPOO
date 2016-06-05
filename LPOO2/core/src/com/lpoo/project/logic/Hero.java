@@ -4,7 +4,7 @@ package com.lpoo.project.logic;
  * Class that creates the heroes
  * This class extends the superclass Character and it implements the Updatable, Movable and Hitable interfaces
  */
-public class Hero extends Character implements Updatable, Movable, Hitable {
+public class Hero extends Character {
 
     /**
      * Enumeration for the heros status
@@ -72,7 +72,7 @@ public class Hero extends Character implements Updatable, Movable, Hitable {
      * @param state New status to be saved in the nextState variable
      */
     public void move(HeroStatus state) {
-        if (state != HeroStatus.DEAD)
+        if( this.state != HeroStatus.DEAD )
             nextState = state;
     }
 
@@ -141,10 +141,12 @@ public class Hero extends Character implements Updatable, Movable, Hitable {
                 move(1, delta);
                 break;
             case DEAD:
-                if (stateTime <= deadTime && currTime >= deadTime) {
-                    state = HeroStatus.STILL;
-                    stats.setHealth(stats.getMaxHealth());
+                if( currTime >= deadTime ) {
                     stateTime = 0;
+                    rect.x = 3700;
+                    state = HeroStatus.STILL;
+                    nextState = HeroStatus.STILL;
+                    stats.setHealth(stats.getMaxHealth());
                     return;
                 }
                 break;
@@ -161,6 +163,7 @@ public class Hero extends Character implements Updatable, Movable, Hitable {
         this.stats.applyDamage(stats);
         if (this.stats.getHealth() <= 0) {
             this.stats.setHealth(0);
+            stateTime = 0;
             state = HeroStatus.DEAD;
             nextState = HeroStatus.DEAD;
         }
