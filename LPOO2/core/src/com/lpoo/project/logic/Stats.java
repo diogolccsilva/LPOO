@@ -108,6 +108,10 @@ public class Stats {
         this.health = health;
     }
 
+    public void setAttSpeed(float attSpeed) {
+        this.attSpeed = attSpeed;
+    }
+
     @Override
     /**
      * Creates a string with the character's properties

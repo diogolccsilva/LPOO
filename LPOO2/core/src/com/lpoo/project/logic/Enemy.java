@@ -53,7 +53,7 @@ public class Enemy extends Character {
         nextState = EnemyStatus.MOVE_RIGHT;
         attack_time = 0.6f;
         attacked = false;
-        stats = new Stats(health, resistance, 40f, 1f,damage);
+        stats = new Stats(health, resistance, 40f, 1.4f,damage);
     }
 
     /**
@@ -67,10 +67,12 @@ public class Enemy extends Character {
     public void setStates( EnemyStatus state ) {
         setState(state);
         setNextState(state);
+        stateTime = 0;
     }
 
     public void setState(EnemyStatus state) {
         this.state = state;
+        stateTime = 0;
     }
 
     public void setNextState(EnemyStatus nextState) {
@@ -100,34 +102,7 @@ public class Enemy extends Character {
     /**
      * Updates the enemy and current status
      */
-    public void update(float delta) {
-        stateTime += delta;
-
-        switch( state ) {
-            case DEAD:
-                break;
-            case MOVE_RIGHT:
-                move( 1, delta );
-                break;
-            case ATTACK:
-                if( stateTime >= stats.getAttSpeed() ) {
-                    stateTime -= stats.getAttSpeed();
-                    attacked = false;
-                } else if( stateTime >= attack_time && !attacked ) {
-                    attacked = true;
-                    game.getHero().hit(stats);
-                }
-                break;
-        }
-
-        //Change state
-        if( state != EnemyStatus.DEAD ) {
-            if ( game.getHero().getState() != Hero.HeroStatus.DEAD && rect.overlaps( game.getHero().getRect()) )
-                nextState = EnemyStatus.ATTACK;
-            else
-                nextState = EnemyStatus.MOVE_RIGHT;
-        }
-    }
+    public void update(float delta) { }
 
     /**
      * Verifies if the enemy was hit by a projectile and if its life is 0 or less the enemy dies

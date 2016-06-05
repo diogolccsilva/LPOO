@@ -141,7 +141,7 @@ public class HeroAnimation extends Animator {
                 nextAnimation = animations[MOVE_RIGHT_INDEX];
                 break;
             case DEAD:
-                currAnimation = animations[STILL_INDEX];;
+                currAnimation = animations[STILL_INDEX];
                 stateTime = 0;
                 state = stat;
                 return currAnimation.getKeyFrame( stateTime, true );
@@ -150,7 +150,8 @@ public class HeroAnimation extends Animator {
         stateTime += delta;
 
         if ( currAnimation.isAnimationFinished(stateTime) ||
-                ( currAnimation == animations[STILL_INDEX] && nextAnimation != animations[STILL_INDEX] )) {
+                ( currAnimation == animations[STILL_INDEX] && nextAnimation != animations[STILL_INDEX] ||
+                        state == HeroStatus.DEAD)) {
             stateTime = 0;
             state = stat;
             currAnimation = nextAnimation;
