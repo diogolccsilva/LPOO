@@ -12,7 +12,6 @@ public class Tests {
      * Tests the hero
      */
     public void testHeroStatus() {
-
         Game game = new Game();
         Hero hero = new Hero(game, 0, 0, 100, 50, 75);
 
