@@ -30,7 +30,9 @@ public class Inputs implements InputProcessor {
 
     @Override
     /**
-     *
+     * Called when a key was pressed
+     * @param keycode Code of the key pressed
+     * @return True if the input was processed, False if it wasn't
      */
     public boolean keyDown(int keycode) {
         switch(keycode){
@@ -94,6 +96,11 @@ public class Inputs implements InputProcessor {
     }
 
     @Override
+    /**
+     * Called when a key was released
+     * @param keycode Code of the key released
+     * @return True if the input was processed, False if it wasn't
+     */
     public boolean keyUp(int keycode) {
         switch (game.getState()){
             case MENU:
@@ -120,6 +127,11 @@ public class Inputs implements InputProcessor {
     }
 
     @Override
+    /**
+     * Called when a key was typed
+     * @param character Character typed
+     * @return True if the input was processed, False if it wasn't
+     */
     public boolean keyTyped(char character) {
         switch (game.getState()){
             case MENU:
@@ -133,6 +145,14 @@ public class Inputs implements InputProcessor {
     }
 
     @Override
+    /**
+     * Called when the screen was touched or a mouse button was pressed
+     * @param screenX The x coordinate, origin is in the upper left corner
+     * @param screenY The y coordinate, origin is in the upper left corner
+     * @param pointer The pointer for the event
+     * @param button The button
+     * @return True if the input was processed, False if it wasn't
+     */
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         switch (game.getState()){
             case MENU:
@@ -151,6 +171,14 @@ public class Inputs implements InputProcessor {
     }
 
     @Override
+    /**
+     * Called when a finger was lifted or a mouse button was released
+     * @param screenX The x coordinate, origin is in the upper left corner
+     * @param screenY The y coordinate, origin is in the upper left corner
+     * @param pointer The pointer for the event
+     * @param button The button
+     * @return True if the input was processed, False if it wasn't
+     */
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         switch (game.getState()){
             case MENU:
@@ -169,6 +197,13 @@ public class Inputs implements InputProcessor {
     }
 
     @Override
+    /**
+     * Called when a finger or the mouse was dragged
+     * @param screenX The x coordinate, origin is in the upper left corner
+     * @param screenY The y coordinate, origin is in the upper left corner
+     * @param pointer The pointer for the event
+     * @return True if the input was processed, False if it wasn't
+     */
     public boolean touchDragged(int screenX, int screenY, int pointer) {
 
         switch (game.getState()){
@@ -188,12 +223,23 @@ public class Inputs implements InputProcessor {
     }
 
     @Override
+    /**
+     * Called when the mouse was moved without any buttons being pressed
+     * @param screenX The x coordinate, origin is in the upper left corner
+     * @param screenY The y coordinate, origin is in the upper left corner
+     * @return True if the input was processed, False if it wasn't
+     */
     public boolean mouseMoved(int screenX, int screenY) {
         // TODO Auto-generated method stub
         return false;
     }
 
     @Override
+    /**
+     * Called when the mouse wheel was scrolled
+     * @param amount
+     * @return True if the input was processed, False if it wasn't
+     */
     public boolean scrolled(int amount) {
         // TODO Auto-generated method stub
         return false;

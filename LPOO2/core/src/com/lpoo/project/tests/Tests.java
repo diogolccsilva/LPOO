@@ -8,6 +8,9 @@ import com.lpoo.project.logic.*;
 public class Tests {
 
     @Test
+    /**
+     * Tests the hero
+     */
     public void testHeroStatus() {
 
         Game game = new Game();
@@ -37,6 +40,9 @@ public class Tests {
     }
 
     @Test
+    /**
+     * Tests the enemies
+     */
     public void testEnemyStatus() {
         Game game = new Game();
         Enemy enemy = new Enemy(game, 0, 0, 100, 50, 75);
@@ -52,6 +58,9 @@ public class Tests {
     }
 
     @Test
+    /**
+     * Tests the game
+     */
     public void TestGame() {
         Game game = new Game();
 
@@ -64,6 +73,9 @@ public class Tests {
     }
 
     @Test
+    /**
+     * Tests the projectiles
+     */
     public void TestProjectiles() {
         Game game = new Game();
         Projectile projectile = new Projectile(game, 0, 0, 30, 40, 6, 500, true);

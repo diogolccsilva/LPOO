@@ -3,7 +3,6 @@ package com.lpoo.project.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -17,18 +16,36 @@ import com.lpoo.project.logic.Game;
 import com.lpoo.project.logic.Trap;
 
 /**
- * Class that "builds" the screen
+ * Class that creates the screen where the player can build the traps
  * This class implements the interface Screen
  */
 public class BuildScreen implements Screen {
 
+    /**
+     *
+     */
     private MyGame myGame;
+    /**
+     * Game where the build screen will be placed
+     */
     private Game game;
+    /**
+     * Build screen's map
+     */
     private Map map;
 
+    /**
+     * A camera with orthographic projection
+     */
     private OrthographicCamera camera;
+    /**
+     *
+     */
     private OrthographicCamera hudCamera;
 
+    /**
+     * Music of the build screen
+     */
     private Music music;
 
     private Rectangle[] rectangles;
