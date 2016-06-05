@@ -92,7 +92,7 @@ public class Projectile extends Entity implements Updatable, Movable {
             }
         } else {
             Hero hero = game.getHero();
-            if( rect.overlaps(hero.getRect())) {
+            if( hero.getState() != Hero.HeroStatus.DEAD && rect.overlaps(hero.getRect()) ) {
                 state = ProjectileStatus.HIT_TARGET;
                 hero.hit(stats);
             }

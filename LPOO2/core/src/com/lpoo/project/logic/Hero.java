@@ -134,6 +134,8 @@ public class Hero extends Character implements Updatable, Movable, Hitable {
             case DEAD:
                 if( stateTime <= deadTime && currTime >= deadTime ) {
                     state = HeroStatus.STILL;
+                    nextState = HeroStatus.STILL;
+                    rect.x = 3700;
                     stats.setHealth(stats.getMaxHealth());
                     stateTime = 0;
                     return ;
