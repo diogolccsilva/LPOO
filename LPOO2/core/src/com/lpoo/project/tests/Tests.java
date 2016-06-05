@@ -66,7 +66,7 @@ public class Tests {
     @Test
     public void TestProjectiles() {
         Game game = new Game();
-        Projectile projectile = new Projectile(game, 0, 0, 30, 40, 6);
+        Projectile projectile = new Projectile(game, 0, 0, 30, 40, 6, 500, true);
         assertEquals(Projectile.ProjectileStatus.TRAVELLING, projectile.getState());
     }
 }

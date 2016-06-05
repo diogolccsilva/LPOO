@@ -1,5 +1,7 @@
 package com.lpoo.project.logic;
 
+import com.badlogic.gdx.math.Vector2;
+
 import java.util.LinkedList;
 import java.util.Random;
 
@@ -24,6 +26,12 @@ public class Projectile extends Entity implements Updatable, Movable {
      */
     private Stats stats;
 
+    private boolean heroSide;
+
+    private final Vector2 initPosition;
+
+    private final int maxRange;
+
     /**
      *
      * @param game
@@ -33,10 +41,13 @@ public class Projectile extends Entity implements Updatable, Movable {
      * @param height
      * @param damage
      */
-    public Projectile( Game game, float x, float y, int width, int height, int damage ) {
+    public Projectile( Game game, float x, float y, int width, int height, int damage, int maxRange, boolean side ) {
         super(game, x, y, width, height);
+        initPosition = new Vector2(x, y);
         state = ProjectileStatus.TRAVELLING;
-        this.stats = new Stats(100,10,100f,0,damage);
+        this.stats = new Stats(100,10,150f ,0,damage);
+        heroSide = side;
+        this.maxRange = maxRange;
     }
 
     /**
@@ -52,8 +63,12 @@ public class Projectile extends Entity implements Updatable, Movable {
      * @param delta Increasing values
      */
     public void update( float delta ) {
-        if( state != ProjectileStatus.HIT_TARGET) {
-            move( -1, delta );
+        //The projectiles move horizontally so the only difference will only be in x
+        if( !heroSide && rect.x - initPosition.x >= maxRange ||
+                heroSide && initPosition.x - rect.x >= maxRange )
+            state = ProjectileStatus.HIT_TARGET;
+        else if( state != ProjectileStatus.HIT_TARGET ) {
+            move( heroSide ? -1 : 1 , delta );
             collision();
         }
     }
@@ -62,16 +77,24 @@ public class Projectile extends Entity implements Updatable, Movable {
      * Function which treats the collisions between the projectiles and the enemies
      */
     public void collision( ) {
-        LinkedList<Enemy> enemies = game.getEnemies();
-        for( Enemy e : enemies ) {
-            if(rect.overlaps(e.getRect())) {
-                Random rand = new Random();
-                /*if (rand.nextInt(100)>=stats.getPenetration()) {
-                    state = ProjectileStatus.HIT_TARGET;
+        if( heroSide ) {
+            LinkedList<Enemy> enemies = game.getEnemies();
+            for (Enemy e : enemies) {
+                if (rect.overlaps(e.getRect())) {
+                 /* Random rand = new Random();
+                    if (rand.nextInt(100)>=stats.getPenetration()) {
+                        state = ProjectileStatus.HIT_TARGET;
                 }*/
+                    state = ProjectileStatus.HIT_TARGET;
+                    e.hit(stats);
+                    return;
+                }
+            }
+        } else {
+            Hero hero = game.getHero();
+            if( rect.overlaps(hero.getRect())) {
                 state = ProjectileStatus.HIT_TARGET;
-                e.hit(stats);
-                return ;
+                hero.hit(stats);
             }
         }
     }

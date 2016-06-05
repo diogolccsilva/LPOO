@@ -15,27 +15,27 @@ public class Enemy extends Character implements Updatable, Movable, Hitable {
     /**
      * Enemy's current status
      */
-    private EnemyStatus state;
+    protected EnemyStatus state;
 
     /**
      * Enemy's next status
      */
-    private EnemyStatus nextState;
+    protected EnemyStatus nextState;
 
     /**
      * Status "time of life"
      */
-    private float stateTime;
+    protected float stateTime;
 
     /**
      * Attack's time
      */
-    private float attack_time;
+    protected float attack_time;
 
     /**
      * Boolean which represents if the enemy was attacked or not
      */
-    private boolean attacked;
+    protected boolean attacked;
 
 
     public Enemy( Game game, int x, int y, int health, int resistance, int damage )  {

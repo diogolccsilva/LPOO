@@ -120,8 +120,8 @@ public class Hero extends Character implements Updatable, Movable, Hitable {
         switch( state ) {
             case ATTACK:
                 if( currTime >= stats.getAttSpeed() ) {
-                    Projectile projectile = new Projectile(game, rect.x, rect.y + 46, 10, 3, 5);
-                    game.addProjectile(projectile);
+                    Projectile projectile = new Projectile(game, rect.x, rect.y + 46, 10, 3, 5, 550, true);
+                    game.addProjectile(projectile, true);
                     currTime -= stats.getAttSpeed();
                 }
                 break;
@@ -163,8 +163,8 @@ public class Hero extends Character implements Updatable, Movable, Hitable {
      */
     public void move( int dir, float delta ) {
         float x = rect.x + getVelocity() * delta * dir;
-        if( x <= 100 || x >= 3500)
-        rect.x += getVelocity() * delta * dir;
+        if( x >= 200 && x <= 3700 )
+            rect.x += getVelocity() * delta * dir;
     }
 
     @Override

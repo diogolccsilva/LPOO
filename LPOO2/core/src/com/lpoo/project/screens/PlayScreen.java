@@ -107,10 +107,14 @@ public class PlayScreen implements Screen {
 
 
         boolean[] frameEvents = game.getFrameEvents();
-        if( frameEvents[Game.ENEMY_SPAWN_INDEX] )
+        if( frameEvents[Game.ENEMY_MELEE_SPAWN_INDEX] )
             enemies.add( new EnemyAnimation( game, "Robot\\robot1_attack.atlas", "Robot\\robot1_walk.atlas", 1/5f, 1/2f, enemies.size() - 1 ));
-        if( frameEvents[Game.PROJECTILE_FIRED_INDEX] )
+        else if( frameEvents[Game.ENEMY_RANGED_SPAWN_INDEX] )
+            enemies.add( new EnemyAnimation( game, "Robot\\robot2_attack.atlas", "Robot\\robot2_walk.atlas", 1/10f, 1/5f, enemies.size() - 1 ));
+        if( frameEvents[Game.HERO_PROJECTILE_FIRED_INDEX] )
             projectiles.add( new ProjectileAnimation( game, "Projectile\\projectile1.atlas", projectiles.size() - 1 ));
+        if( frameEvents[Game.ENEMY_PROJECTILE_FIRED_INDEX] )
+            projectiles.add( new ProjectileAnimation( game, "Projectile\\projectile2.atlas", projectiles.size() - 1));
         game.setFrameEvents();
 
         /* DRAW TEXTURES ON THE SCREEN */

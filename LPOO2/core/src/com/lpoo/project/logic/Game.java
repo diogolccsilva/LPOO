@@ -1,16 +1,17 @@
 package com.lpoo.project.logic;
 
 import java.util.LinkedList;
+import java.util.Random;
 
 /**
  * Created by Vasco on 10/05/2016.
  */
 public class Game implements Updatable {
 
-    public static final int ENEMY_SPAWN_INDEX = 0;
-    public static final int ENEMY_ERASED_INDEX = 1;
-    public static final int PROJECTILE_FIRED_INDEX = 2;
-    public static final int PROJECTILE_ERASED_INDEX = 3;
+    public static final int ENEMY_MELEE_SPAWN_INDEX = 0;
+    public static final int ENEMY_RANGED_SPAWN_INDEX = 1;
+    public static final int HERO_PROJECTILE_FIRED_INDEX = 2;
+    public static final int ENEMY_PROJECTILE_FIRED_INDEX = 3;
 
     private boolean[] frameEvents;
 
@@ -33,12 +34,12 @@ public class Game implements Updatable {
 
     public Game() {
         frameEvents = new boolean[4];
-        frameEvents[ENEMY_SPAWN_INDEX] = false;
-        frameEvents[ENEMY_ERASED_INDEX] = false;
-        frameEvents[PROJECTILE_FIRED_INDEX] = false;
-        frameEvents[PROJECTILE_ERASED_INDEX] = false;
+        frameEvents[ENEMY_MELEE_SPAWN_INDEX] = false;
+        frameEvents[ENEMY_RANGED_SPAWN_INDEX] = false;
+        frameEvents[HERO_PROJECTILE_FIRED_INDEX] = false;
+        frameEvents[ENEMY_PROJECTILE_FIRED_INDEX] = false;
 
-        hero = new Hero( this, 200, 144, 100, 10, 25 );
+        hero = new Hero( this, 300, 144, 100, 10, 25 );
         enemies = new LinkedList<>();
         traps = new Trap[26];
         projectiles = new LinkedList<>();
@@ -61,19 +62,19 @@ public class Game implements Updatable {
         hero.update( delta );
 
         for( Enemy e : enemies ) {
-            if(e.getState()== Enemy.EnemyStatus.DEAD)
-                frameEvents[ENEMY_ERASED_INDEX] = true;
-            else if(e.getPosition().x >= 4000) {
+            /*if(e.getState()== Enemy.EnemyStatus.DEAD)
+                frameEvents[ENEMY_ERASED_INDEX] = true;*/
+            if(e.getPosition().x >= 4000) {
                 nEnemiesWon++;
                 e.setStates(Enemy.EnemyStatus.DEAD);
-                frameEvents[ENEMY_ERASED_INDEX] = true;
+                //frameEvents[ENEMY_ERASED_INDEX] = true;
             }
             else e.update(delta);
         }
         for( Projectile p : projectiles ) {
             p.update(delta);
-            if( p.getState() == Projectile.ProjectileStatus.HIT_TARGET)
-                frameEvents[PROJECTILE_ERASED_INDEX] = true;
+            /*if( p.getState() == Projectile.ProjectileStatus.HIT_TARGET)
+                frameEvents[PROJECTILE_ERASED_INDEX] = true;*/
         }
         for( Trap t : traps ) {
             if( t == null )
@@ -85,9 +86,18 @@ public class Game implements Updatable {
         if( enemiesSpawned < nEnemies * wave &&
                 Math.floor( stateTime / (float)nextEnemy ) != Math.floor( currTime / (float)nextEnemy ) ) {
             enemiesSpawned++;
-            Enemy e = new Enemy( this, 50, 144, enemyHealth + healthPerWave * wave,
-                    enemyResist + resistPerWave * wave, enemyStrength + strengthPerWave * wave );
-            frameEvents[ENEMY_SPAWN_INDEX] = true;
+            Enemy e;
+            Random rand = new Random();
+            int type = rand.nextInt(2);
+            if( type == 0 ) {
+                e = new MeleeEnemy(this, 50, 144, enemyHealth + healthPerWave * wave,
+                        enemyResist + resistPerWave * wave, enemyStrength + strengthPerWave * wave);
+                frameEvents[ENEMY_MELEE_SPAWN_INDEX] = true;
+            } else {
+                e = new RangedEnemy(this, 50, 144, enemyHealth + healthPerWave * wave,
+                        enemyResist + resistPerWave * wave, enemyStrength + strengthPerWave * wave);
+                frameEvents[ENEMY_RANGED_SPAWN_INDEX] = true;
+            }
             enemies.add(e);
         }
 
@@ -162,8 +172,11 @@ public class Game implements Updatable {
         hero.touchUp();
     }
 
-    public void addProjectile(Projectile projectile) {
-        frameEvents[PROJECTILE_FIRED_INDEX] = true;
+    public void addProjectile(Projectile projectile, boolean heroSide) {
+        if( heroSide )
+            frameEvents[HERO_PROJECTILE_FIRED_INDEX] = true;
+        else
+            frameEvents[ENEMY_PROJECTILE_FIRED_INDEX] = true;
         projectiles.add(projectile);
     }
 
