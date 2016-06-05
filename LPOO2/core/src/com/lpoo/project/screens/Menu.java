@@ -33,6 +33,7 @@ public class Menu implements Screen{
 
         music = Gdx.audio.newMusic(Gdx.files.internal("A Night Of Dizzy Spells.mp3"));
         music.setLooping(true);
+        music.setVolume(game.getVolume()/100f);
         music.play();
     }
 
@@ -105,11 +106,7 @@ public class Menu implements Screen{
         return true;
     }
 
-    public void volumeUp() {
-        music.setVolume(music.getVolume()+0.1f);
-    }
-
-    public void volumeDown() {
-        music.setVolume(music.getVolume()-0.1f);
+    public void setVolume(float v) {
+        music.setVolume(v);
     }
 }

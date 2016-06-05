@@ -62,6 +62,7 @@ public class BuildScreen implements Screen {
 
         music = Gdx.audio.newMusic(Gdx.files.internal("Come and Find Me.mp3"));
         music.setLooping(true);
+        music.setVolume(myGame.getVolume()/100f);
         music.play();
 
         grid = new Texture("Grid.png");
@@ -214,11 +215,7 @@ public class BuildScreen implements Screen {
         map.dispose();
     }
 
-    public void volumeUp() {
-        music.setVolume(music.getVolume()+0.1f);
-    }
-
-    public void volumeDown() {
-        music.setVolume(music.getVolume()-0.1f);
+    public void setVolume(float v) {
+        music.setVolume(v);
     }
 }

@@ -51,6 +51,7 @@ public class PlayScreen implements Screen {
 
         music = Gdx.audio.newMusic(Gdx.files.internal("We're the Resistors.mp3"));
         music.setLooping(true);
+        music.setVolume(myGame.getVolume()/100f);
         music.play();
 
         hero_animations = new HeroAnimation( game, "Hero\\hero1_fire.atlas", "Hero\\hero1_still.atlas",
@@ -243,12 +244,8 @@ public class PlayScreen implements Screen {
         return true;
     }
 
-    public void volumeUp(){
-        music.setVolume(music.getVolume()+0.1f);
-    }
-
-    public void volumeDown(){
-        music.setVolume(music.getVolume()-0.1f);
+    public void setVolume(float v) {
+        music.setVolume(v);
     }
 
     public Game getGame(){

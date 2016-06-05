@@ -23,6 +23,8 @@ public class MyGame extends com.badlogic.gdx.Game {
     private BuildScreen build;
     private Menu menu;
 
+    private int volume;
+
     private Game game;
 
     private Vector<Hero> heroes;
@@ -41,6 +43,8 @@ public class MyGame extends com.badlogic.gdx.Game {
     @Override
 	public void create () {
         batch = new SpriteBatch();
+
+        volume = 50;
 
         screenWidth = Gdx.graphics.getWidth();
         screenHeight = Gdx.graphics.getHeight();
@@ -133,31 +137,43 @@ public class MyGame extends com.badlogic.gdx.Game {
     }
 
     public void volumeUp() {
+        if (volume<100){
+            volume++;
+        }
+        System.out.println(volume);
         switch(state){
             case MENU:
-                menu.volumeUp();
+                menu.setVolume(volume/100f);
                 break;
             case PLAY:
-                play.volumeUp();
+                play.setVolume(volume/100f);
                 break;
             case BUILD:
-                build.volumeUp();
+                build.setVolume(volume/100f);
                 break;
         }
     }
 
     public void volumeDown() {
+        if (volume>0){
+            volume--;
+        }
+        System.out.println(volume);
         switch(state){
             case MENU:
-                menu.volumeDown();
+                menu.setVolume(volume/100f);
                 break;
             case PLAY:
-                play.volumeDown();
+                play.setVolume(volume/100f);
                 break;
             case BUILD:
-                build.volumeDown();
+                build.setVolume(volume/100f);
                 break;
         }
+    }
+
+    public int getVolume(){
+        return volume;
     }
 
     @Override

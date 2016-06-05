@@ -16,6 +16,7 @@ public class Trap extends Entity implements Updatable {
      * Trap's status
      */
     private TrapStatus currStatus;
+
     /**
      * Trap's properties
      */
