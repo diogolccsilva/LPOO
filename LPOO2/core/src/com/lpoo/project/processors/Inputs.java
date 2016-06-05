@@ -20,6 +20,15 @@ public class Inputs implements InputProcessor {
 
     @Override
     public boolean keyDown(int keycode) {
+        switch(keycode){
+            case Keys.PLUS:
+                game.volumeUp();
+                break;
+            case Keys.MINUS:
+                game.volumeDown();
+                break;
+        }
+
         switch (game.getState()){
             case MENU:
                 switch(keycode){

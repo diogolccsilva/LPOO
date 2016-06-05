@@ -213,4 +213,12 @@ public class BuildScreen implements Screen {
         music.dispose();
         map.dispose();
     }
+
+    public void volumeUp() {
+        music.setVolume(music.getVolume()+0.1f);
+    }
+
+    public void volumeDown() {
+        music.setVolume(music.getVolume()-0.1f);
+    }
 }

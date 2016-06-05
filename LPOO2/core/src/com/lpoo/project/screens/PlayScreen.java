@@ -243,6 +243,14 @@ public class PlayScreen implements Screen {
         return true;
     }
 
+    public void volumeUp(){
+        music.setVolume(music.getVolume()+0.1f);
+    }
+
+    public void volumeDown(){
+        music.setVolume(music.getVolume()-0.1f);
+    }
+
     public Game getGame(){
         return game;
     }

@@ -104,4 +104,12 @@ public class Menu implements Screen{
             game.changeScreen(MyGame.States.EXIT);
         return true;
     }
+
+    public void volumeUp() {
+        music.setVolume(music.getVolume()+0.1f);
+    }
+
+    public void volumeDown() {
+        music.setVolume(music.getVolume()-0.1f);
+    }
 }

@@ -132,6 +132,34 @@ public class MyGame extends com.badlogic.gdx.Game {
         GameFiles.saveHeroes(heroes);
     }
 
+    public void volumeUp() {
+        switch(state){
+            case MENU:
+                menu.volumeUp();
+                break;
+            case PLAY:
+                play.volumeUp();
+                break;
+            case BUILD:
+                build.volumeUp();
+                break;
+        }
+    }
+
+    public void volumeDown() {
+        switch(state){
+            case MENU:
+                menu.volumeDown();
+                break;
+            case PLAY:
+                play.volumeDown();
+                break;
+            case BUILD:
+                build.volumeDown();
+                break;
+        }
+    }
+
     @Override
     public void dispose() {
         if( play != null )
