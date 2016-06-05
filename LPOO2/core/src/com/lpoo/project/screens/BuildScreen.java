@@ -271,8 +271,6 @@ public class BuildScreen implements Screen {
         exit.dispose();
         grid.dispose();
         music.stop();
-        //music.dispose();
-        //map.dispose();
     }
 
     public void setVolume(float v) {

@@ -329,9 +329,7 @@ public class PlayScreen implements Screen {
             e.dispose();
         for( Animator p : projectiles )
             p.dispose();
-        //map.dispose();
         music.stop();
-        //music.dispose();
     }
 
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
