@@ -11,7 +11,11 @@ public class Trap extends Entity implements Updatable {
     /**
      * Enumeration that creates the trap's status
      */
-    public enum TrapStatus { WAIT, HEATUP, ATTACK, RECHARGE };
+    public enum TrapStatus {
+        WAIT, HEATUP, ATTACK, RECHARGE
+    }
+
+    ;
     /**
      * Trap's status
      */
@@ -20,28 +24,13 @@ public class Trap extends Entity implements Updatable {
     /**
      * Trap's properties
      */
-    private Stats stats;
+    private TrapStats stats;
 
     /**
      * Trap's number of attacks
      */
     private int nAttacks;
-    /**
-     * Trap's speed of attack
-     */
-    private float attackSpeed;
-    /**
-     * Trap's speed of recharge
-     */
-    private float rechargeSpeed;
-    /**
-     * Trap's speed of heat up
-     */
-    private float heatUpSpeed;
-    /**
-     * Trap's time of attack
-     */
-    private float timeAttack;
+
     /**
      * Trap's status' "time of life"
      */
@@ -49,26 +38,28 @@ public class Trap extends Entity implements Updatable {
 
     /**
      * Constructor for the class Trap
-     * @param game Game where will be placed the trap
-     * @param x Trap's x position
-     * @param y Trap's y position
-     * @param width Trap's width
+     *
+     * @param game   Game where will be placed the trap
+     * @param x      Trap's x position
+     * @param y      Trap's y position
+     * @param width  Trap's width
      * @param height Trap's height
      * @param damage Trap's damage
      */
-    public Trap ( Game game, int x, int y, int width, int height, int damage ) {
-        super( game, x, y, width, height );
+    public Trap(Game game, int x, int y, int width, int height, int damage) {
+        super(game, x, y, width, height);
         currStatus = TrapStatus.WAIT;
-        this.stats = new Stats(0,0,0,1f,damage);
-        attackSpeed = 1f;
-        rechargeSpeed = 3f;
-        heatUpSpeed = 1/10f;
+        float attackSpeed = 1f;
+        float rechargeSpeed = 3f;
+        float heatUpSpeed = 1 / 10f;
         nAttacks = 1;
-        timeAttack = attackSpeed / 3;
+        float timeAttack = attackSpeed / 3f;
+        this.stats = new TrapStats(damage,attackSpeed, rechargeSpeed, timeAttack, timeAttack);
     }
 
     /**
      * Getter for the current trap's status
+     *
      * @return Current trap'sstatus
      */
     public TrapStatus getState() {
@@ -85,14 +76,13 @@ public class Trap extends Entity implements Updatable {
 
         switch (currStatus) {
             case ATTACK:
-                float aT = timeAttack * nAttacks;
-                if( stateTime <= attackSpeed && tmp >= attackSpeed ) {
+                float aT = stats.getTimeAttack() * nAttacks;
+                if (stateTime <= stats.getAttackSpeed() && tmp >= stats.getAttackSpeed()) {
                     currStatus = TrapStatus.RECHARGE;
                     stateTime = 0.0f;
                     nAttacks = 1;
-                    return ;
-                }
-                else if( stateTime <= aT && tmp >= aT ) {
+                    return;
+                } else if (stateTime <= aT && tmp >= aT) {
                     nAttacks++;
                     collision();
                 }
@@ -100,10 +90,10 @@ public class Trap extends Entity implements Updatable {
                 stateTime = tmp;
                 break;
             case RECHARGE:
-                if( stateTime <= rechargeSpeed && tmp >= rechargeSpeed ) {
+                if (stateTime <= stats.getRechargeSpeed() && tmp >= stats.getRechargeSpeed()) {
                     currStatus = TrapStatus.WAIT;
                     stateTime = 0.0f;
-                    return ;
+                    return;
                 }
 
                 stateTime = tmp;
@@ -113,10 +103,10 @@ public class Trap extends Entity implements Updatable {
                 collision();
                 break;
             case HEATUP:
-                if( stateTime <= heatUpSpeed && tmp >= heatUpSpeed ) {
+                if (stateTime <= stats.getHeatUpSpeed() && tmp >= stats.getHeatUpSpeed()) {
                     currStatus = TrapStatus.ATTACK;
                     stateTime = 0.0f;
-                    return ;
+                    return;
                 }
 
                 stateTime = tmp;
@@ -127,13 +117,13 @@ public class Trap extends Entity implements Updatable {
     /**
      * Function which analyzes the collisions between the trap and the enemies
      */
-    public void collision( ) {
+    public void collision() {
         LinkedList<Enemy> enemies = game.getEnemies();
-        for( Enemy e : enemies ) {
-            if( currStatus == TrapStatus.ATTACK && rect.overlaps(e.getRect()) )
+        for (Enemy e : enemies) {
+            if (currStatus == TrapStatus.ATTACK && rect.overlaps(e.getRect()))
                 e.hit(stats);
-            else if( currStatus == TrapStatus.WAIT && e.getRect().getX() >= rect.getX() &&
-                    e.getRect().getX() + e.getRect().getWidth() <= rect.getX() + rect.getWidth() ) {
+            else if (currStatus == TrapStatus.WAIT && e.getRect().getX() >= rect.getX() &&
+                    e.getRect().getX() + e.getRect().getWidth() <= rect.getX() + rect.getWidth()) {
                 //In heatUpMode the trap doesn't attack, it just gets ready to attack
                 currStatus = TrapStatus.HEATUP;
                 stateTime = 0;

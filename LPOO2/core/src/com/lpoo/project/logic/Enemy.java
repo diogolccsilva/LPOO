@@ -10,7 +10,9 @@ public class Enemy extends Character implements Updatable, Movable, Hitable {
     /**
      * Enumeration for the enemy's status
      */
-    public enum EnemyStatus { ATTACK, MOVE_RIGHT, DEAD }
+    public enum EnemyStatus {
+        ATTACK, MOVE_RIGHT, DEAD
+    }
 
     /**
      * Enemy's current status
@@ -39,32 +41,36 @@ public class Enemy extends Character implements Updatable, Movable, Hitable {
 
     /**
      * Constructor for the class Enemy
-     * @param game Game where will be placed the enemy
-     * @param x Enemy's x position
-     * @param y Enemy's y position
-     * @param health Enemy's health
+     *
+     * @param game       Game where will be placed the enemy
+     * @param x          Enemy's x position
+     * @param y          Enemy's y position
+     * @param health     Enemy's health
      * @param resistance Enemy's resistance
-     * @param damage Enemy's damage
+     * @param damage     Enemy's damage
      */
-    public Enemy( Game game, int x, int y, int health, int resistance, int damage )  {
-        super( game, x, y, 80, 124);
+    public Enemy(Game game, int x, int y, int health, int resistance, int damage) {
+        super(game, x, y, 80, 124);
         stateTime = 0;
         state = EnemyStatus.MOVE_RIGHT;
         nextState = EnemyStatus.MOVE_RIGHT;
         attack_time = 0.6f;
         attacked = false;
-        stats = new Stats(health, resistance, 40f, 1f,damage);
+        float movSpeed = 40f;
+        float attSpeed = 1f;
+        stats = new CharacterStats(health, resistance, movSpeed, attSpeed, damage);
     }
 
     /**
      * Getter for the status
+     *
      * @return enemy's currents status
      */
     public EnemyStatus getState() {
         return state;
     }
 
-    public void setStates( EnemyStatus state ) {
+    public void setStates(EnemyStatus state) {
         setState(state);
         setNextState(state);
     }
@@ -79,18 +85,20 @@ public class Enemy extends Character implements Updatable, Movable, Hitable {
 
     /**
      * Getter for the status
+     *
      * @return enemy's next status
      */
-    public EnemyStatus getNextState () {
+    public EnemyStatus getNextState() {
         return nextState;
     }
 
     /**
      * Function which represents the enemy's status' animation
+     *
      * @param stat Enemy's status
      */
-    public void animationStatus( EnemyStatus stat ) {
-        if( stat != state ) {
+    public void animationStatus(EnemyStatus stat) {
+        if (stat != state) {
             nextState = stat;
             state = stat;
             stateTime = 0;
@@ -104,17 +112,17 @@ public class Enemy extends Character implements Updatable, Movable, Hitable {
     public void update(float delta) {
         stateTime += delta;
 
-        switch( state ) {
+        switch (state) {
             case DEAD:
                 break;
             case MOVE_RIGHT:
-                move( 1, delta );
+                move(1, delta);
                 break;
             case ATTACK:
-                if( stateTime >= stats.getAttSpeed() ) {
+                if (stateTime >= stats.getAttSpeed()) {
                     stateTime -= stats.getAttSpeed();
                     attacked = false;
-                } else if( stateTime >= attack_time && !attacked ) {
+                } else if (stateTime >= attack_time && !attacked) {
                     attacked = true;
                     game.getHero().hit(stats);
                 }
@@ -122,8 +130,8 @@ public class Enemy extends Character implements Updatable, Movable, Hitable {
         }
 
         //Change state
-        if( state != EnemyStatus.DEAD ) {
-            if ( game.getHero().getState() != Hero.HeroStatus.DEAD && rect.overlaps( game.getHero().getRect()) )
+        if (state != EnemyStatus.DEAD) {
+            if (game.getHero().getState() != Hero.HeroStatus.DEAD && rect.overlaps(game.getHero().getRect()))
                 nextState = EnemyStatus.ATTACK;
             else
                 nextState = EnemyStatus.MOVE_RIGHT;
@@ -132,11 +140,12 @@ public class Enemy extends Character implements Updatable, Movable, Hitable {
 
     /**
      * Verifies if the enemy was hit by a projectile and if its life is 0 or less the enemy dies
+     *
      * @param stats Enemy's properties
      */
     public void hit(Stats stats) {
         this.stats.applyDamage(stats);
-        if(this.stats.getHealth()<=0) {
+        if (this.stats.getHealth() <= 0) {
             state = EnemyStatus.DEAD;
             nextState = EnemyStatus.DEAD;
         }

@@ -4,6 +4,7 @@ import java.io.*;
 
 import java.util.Arrays;
 import java.util.Vector;
+
 import com.google.gson.*;
 import com.lpoo.project.logic.Enemy;
 import com.lpoo.project.logic.Hero;
@@ -28,18 +29,18 @@ public class GameFiles {
             for (int i = 0; i < heroes.size(); i++) {
                 gson.toJson(heroes.elementAt(i), writer);
             }
-        } catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     public static Vector<Hero> loadHeroes() {
         Vector<Hero> heroes = new Vector<Hero>();
-        try (Reader reader = new InputStreamReader(GameFiles.class.getResourceAsStream(heroesPath), "UTF-8")){
+        try (Reader reader = new InputStreamReader(GameFiles.class.getResourceAsStream(heroesPath), "UTF-8")) {
             Gson gson = new GsonBuilder().create();
             Hero[] h = gson.fromJson(reader, Hero[].class);
             heroes.addAll(Arrays.asList(h));
-        } catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return heroes;
@@ -57,18 +58,18 @@ public class GameFiles {
             for (int i = 0; i < enemies.size(); i++) {
                 gson.toJson(enemies.elementAt(i), writer);
             }
-        } catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     public static Vector<Enemy> loadEnemies() {
         Vector<Enemy> enemies = new Vector<Enemy>();
-        try (Reader reader = new InputStreamReader(GameFiles.class.getResourceAsStream(enemiesPath), "UTF-8")){
+        try (Reader reader = new InputStreamReader(GameFiles.class.getResourceAsStream(enemiesPath), "UTF-8")) {
             Gson gson = new GsonBuilder().create();
             Enemy[] ve = gson.fromJson(reader, Enemy[].class);
             enemies.addAll(Arrays.asList(ve));
-        } catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return enemies;

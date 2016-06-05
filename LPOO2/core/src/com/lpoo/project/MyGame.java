@@ -44,7 +44,7 @@ public class MyGame extends com.badlogic.gdx.Game {
 	public void create () {
         batch = new SpriteBatch();
 
-        volume = 50;
+        volume = 100;
 
         screenWidth = Gdx.graphics.getWidth();
         screenHeight = Gdx.graphics.getHeight();

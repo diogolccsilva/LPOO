@@ -14,7 +14,9 @@ public class Projectile extends Entity implements Updatable, Movable {
     /**
      * Enumeration of the projectile's status
      */
-    public enum ProjectileStatus { TRAVELLING, HIT_TARGET}
+    public enum ProjectileStatus {
+        TRAVELLING, HIT_TARGET
+    }
 
     /**
      * Projectile's status
@@ -24,7 +26,7 @@ public class Projectile extends Entity implements Updatable, Movable {
     /**
      * Projectile's properties
      */
-    private Stats stats;
+    private ProjectileStats stats;
 
     private boolean heroSide;
 
@@ -34,24 +36,26 @@ public class Projectile extends Entity implements Updatable, Movable {
 
     /**
      * Constructor for the class Projectile
-     * @param game Game where will be placed the projectile
-     * @param x Projectile's x position
-     * @param y Projectile's y position
-     * @param width Projectile's width
+     *
+     * @param game   Game where will be placed the projectile
+     * @param x      Projectile's x position
+     * @param y      Projectile's y position
+     * @param width  Projectile's width
      * @param height Projectile's height
      * @param damage Projectile's damage
      */
-    public Projectile( Game game, float x, float y, int width, int height, int damage, int maxRange, boolean side ) {
+    public Projectile(Game game, float x, float y, int width, int height, int damage, int maxRange, boolean side) {
         super(game, x, y, width, height);
         initPosition = new Vector2(x, y);
         state = ProjectileStatus.TRAVELLING;
-        this.stats = new Stats(100,10,150f ,0,damage);
+        this.stats = new ProjectileStats(damage, 150f);
         heroSide = side;
         this.maxRange = maxRange;
     }
 
     /**
      * Getter for the projectile's status
+     *
      * @return the projectile's status
      */
     public ProjectileStatus getState() {
@@ -60,15 +64,16 @@ public class Projectile extends Entity implements Updatable, Movable {
 
     /**
      * Updates the projectile (movement and collisions)
+     *
      * @param delta Increasing values
      */
-    public void update( float delta ) {
+    public void update(float delta) {
         //The projectiles move horizontally so the only difference will only be in x
-        if( !heroSide && rect.x - initPosition.x >= maxRange ||
-                heroSide && initPosition.x - rect.x >= maxRange )
+        if (!heroSide && rect.x - initPosition.x >= maxRange ||
+                heroSide && initPosition.x - rect.x >= maxRange)
             state = ProjectileStatus.HIT_TARGET;
-        else if( state != ProjectileStatus.HIT_TARGET ) {
-            move( heroSide ? -1 : 1 , delta );
+        else if (state != ProjectileStatus.HIT_TARGET) {
+            move(heroSide ? -1 : 1, delta);
             collision();
         }
     }
@@ -76,8 +81,8 @@ public class Projectile extends Entity implements Updatable, Movable {
     /**
      * Function which treats the collisions between the projectiles and the enemies
      */
-    public void collision( ) {
-        if( heroSide ) {
+    public void collision() {
+        if (heroSide) {
             LinkedList<Enemy> enemies = game.getEnemies();
             for (Enemy e : enemies) {
                 if (rect.overlaps(e.getRect())) {
@@ -92,7 +97,7 @@ public class Projectile extends Entity implements Updatable, Movable {
             }
         } else {
             Hero hero = game.getHero();
-            if( rect.overlaps(hero.getRect())) {
+            if (rect.overlaps(hero.getRect())) {
                 state = ProjectileStatus.HIT_TARGET;
                 hero.hit(stats);
             }
@@ -101,10 +106,11 @@ public class Projectile extends Entity implements Updatable, Movable {
 
     /**
      * Function that moves the projectile
-     * @param dir Direction to move
+     *
+     * @param dir   Direction to move
      * @param delta Increasing value
      */
-    public void move( int dir, float delta ) {
+    public void move(int dir, float delta) {
         rect.x += dir * stats.getMovSpeed() * delta;
     }
 }

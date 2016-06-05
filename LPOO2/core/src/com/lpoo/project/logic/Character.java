@@ -14,7 +14,7 @@ public class Character extends Entity {
     /**
      * Character's properties
      */
-    protected Stats stats;
+    protected CharacterStats stats;
 
     /**
      * Constructor for the class Constructor
@@ -25,7 +25,7 @@ public class Character extends Entity {
      * @param height Character's height
      * @param stats Character's properties
      */
-    public Character(Game game, int x, int y, int width, int height, Stats stats) {
+    public Character(Game game, int x, int y, int width, int height, CharacterStats stats) {
         super(game, x, y, width, height);
         this.stats = stats;
     }
@@ -46,7 +46,7 @@ public class Character extends Entity {
      * Getter for stats
      * @return character's current stats
      */
-    public Stats getStats() {
+    public CharacterStats getStats() {
         return stats;
     }
 
