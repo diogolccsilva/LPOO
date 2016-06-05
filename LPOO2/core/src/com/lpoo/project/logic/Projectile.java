@@ -25,13 +25,13 @@ public class Projectile extends Entity implements Updatable, Movable {
     private Stats stats;
 
     /**
-     *
-     * @param game
-     * @param x
-     * @param y
-     * @param width
-     * @param height
-     * @param damage
+     * Constructor for the class Projectile
+     * @param game Game where will be placed the projectile
+     * @param x Projectile's x position
+     * @param y Projectile's y position
+     * @param width Projectile's width
+     * @param height Projectile's height
+     * @param damage Projectile's damage
      */
     public Projectile( Game game, float x, float y, int width, int height, int damage ) {
         super(game, x, y, width, height);

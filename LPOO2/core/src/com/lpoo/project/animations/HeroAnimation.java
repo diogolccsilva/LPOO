@@ -4,64 +4,45 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.utils.Disposable;
 import com.lpoo.project.logic.Game;
-import com.lpoo.project.logic.Hero;
 import com.lpoo.project.logic.Hero.HeroStatus;
-import com.lpoo.project.screens.PlayScreen;
 
 /**
  * Class that creates the hero's animation
- * This class implements the interface Disposable
+ * This class extends the class Animator
  */
 public class HeroAnimation extends Animator {
 
+    /**
+     * Hero's attack index
+     */
     private static final int ATTACK_INDEX = 0;
+    /**
+     * Hero's movement to the left's index
+     */
     private static final int MOVE_LEFT_INDEX = 1;
+    /**
+     * Hero's movement to the right's index
+     */
     private static final int MOVE_RIGHT_INDEX = 2;
+    /**
+     * Hero stopped's index
+     */
     private static final int STILL_INDEX = 3;
+    /**
+     * Size of the hero's array
+     */
     private static final int ARRAY_SIZE = 4;
 
     /**
-     * Hero status
+     * Hero's status
      */
     private HeroStatus state;
     /**
      * Current animation of the hero
      */
     private Animation currAnimation;
-    /**
-     * Hero's attack's animation
-     */
-    //private Animation attack;
-    /**
-     * Hero's normal's animation
-     */
-    //private Animation still;
-    /**
-     * Animation of the hero's moving to the left
-     */
-    //private Animation move_left;
-    /**
-     * Animation of the hero's moving to the right
-     */
-    //private Animation move_right;
-    /**
-     *  Loads images from texture atlases that represents the attack of the hero
-     */
-    //private TextureAtlas attackTextures;
-    /**
-     *  Loads images from texture atlases that represents the "normal" position of the hero
-     */
-    //private TextureAtlas stillTextures;
-    /**
-     *  Loads images from texture atlases that represents the hero moving to the left
-     */
-    //private TextureAtlas move_leftTextures;
-    /**
-     *  Loads images from texture atlases that represents the hero moving to the right
-     */
-    //private TextureAtlas move_rightTextures;
+
     /**
      * Time given to the life's status of the hero
      */
@@ -75,7 +56,16 @@ public class HeroAnimation extends Animator {
      */
     private float move_speed;
 
-
+    /**
+     * Constructor for the class HeroAnimation
+     * @param game Game where will be placed the animation
+     * @param attackPath Path where is saved the TextureAtlas of the hero's attack
+     * @param stillPath Path where is saved the TextureAtlas of the hero stopped
+     * @param leftPath Path where is saved the TextureAtlas of the hero's movement to the left
+     * @param rightPath Path where is saved the TextureAtlas of the hero's movement to the right
+     * @param attackSpeed Hero's attack's speed
+     * @param moveSpeed Hero's movement's speed
+     */
     public HeroAnimation( Game game, String attackPath,
                          String stillPath, String leftPath,
                          String rightPath, float attackSpeed, float moveSpeed ) {
@@ -130,7 +120,7 @@ public class HeroAnimation extends Animator {
 
     /**
      * Getter for the current texture of the animation
-     * @param delta Increasing time
+     * @param delta Increasing value
      * @return TextureRegion to be drawn on the screen
      */
     public TextureRegion getTexture( float delta ) {

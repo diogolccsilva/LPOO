@@ -6,7 +6,6 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.lpoo.project.MyGame;
@@ -17,7 +16,8 @@ import com.lpoo.project.logic.Game;
 import com.lpoo.project.logic.Trap;
 
 /**
- * Created by Vasco on 03/06/2016.
+ * Class that "builds" the screen
+ * This class implements the interface Screen
  */
 public class BuildScreen implements Screen {
 
@@ -69,7 +69,7 @@ public class BuildScreen implements Screen {
         play = new Texture("PlayButton.png");
         exit = new Texture("ExitButton.png");
 
-        trapDraw = new TrapAnimation( game, "Trap\\trap1.atlas", 0, 0, 0 );
+        trapDraw = new TrapAnimation( game, "Trap\\trap1.atlas", 0, 0 );
 
         advance = new Rectangle( screenWidth - 100, screenHeight - 50, 50, 50);
         back = new Rectangle( screenWidth - 50, screenHeight - 50, 50, 50);

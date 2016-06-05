@@ -4,18 +4,26 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.utils.Disposable;
 import com.lpoo.project.logic.Enemy.EnemyStatus;
 import com.lpoo.project.logic.Game;
 
 /**
  * Class that creates the enemies' animation
- * This class implements the interface Disposable
+ * This class extends the class Animator
  */
-public class EnemyAnimation extends Animator implements Disposable {
+public class EnemyAnimation extends Animator {
 
+    /**
+     * Enemy's attack's index
+     */
     private static final int ATTACK_INDEX = 0;
+    /**
+     * Enemy's movement's index
+     */
     private static final int MOVE_INDEX = 1;
+    /**
+     * Size of the enemy's array
+     */
     private static final int ARRAY_SIZE = 2;
 
     /**
@@ -26,34 +34,6 @@ public class EnemyAnimation extends Animator implements Disposable {
      * Current animation of the enemy
      */
     private Animation currAnimation;
-    /**
-     * Animation which represents the attack of the enemy
-     */
-    //private Animation attack;
-    /**
-     * Animation which represents the enemy moving to the right
-     */
-    //private Animation move_right;
-    /**
-     * Animation which represents the enemy's death
-     */
-    //private Animation dead;
-    /**
-     *  Loads images from texture atlases that represents the attack of the enemies
-     */
-    //private TextureAtlas attackTextures;
-    /**
-     *  Loads images from texture atlases that represents the enemy moving to the right
-     */
-    //private TextureAtlas move_rightTextures;
-    /**
-     *  Loads images from texture atlases that represents the enemy's death
-     */
-    //private TextureAtlas deadTextures;
-    /**
-     * Time given to the life's status of the enemy
-     */
-    //private float stateTime;
 
     /**
      * Constructor for the EnemyAnimator class
@@ -61,6 +41,7 @@ public class EnemyAnimation extends Animator implements Disposable {
      * @param movePath Path where is saved the TextureAtlas of the enemy moving to the right
      * @param attackSpeed Enemy's velocity's attack
      * @param moveSpeed Velocity of the enemy when he is moving
+     * @param index Enemy's index
      */
     public EnemyAnimation( Game game, String attackPath, String movePath, float attackSpeed, float moveSpeed, int index ) {
         super( game, ARRAY_SIZE, ARRAY_SIZE, index );
@@ -107,6 +88,10 @@ public class EnemyAnimation extends Animator implements Disposable {
     }
 
     @Override
+    /**
+     * Setter for the enemy's index
+     * @param index Enemy's index
+     */
     public void setIndex(int index) {
         super.setIndex(index);
     }
@@ -143,6 +128,9 @@ public class EnemyAnimation extends Animator implements Disposable {
         return currAnimation.getKeyFrame( stateTime, true );
     }
 
+    /**
+     * Resets the animation and changes the values of stateTime, state and currAnimation
+     */
     public void reset() {
         stateTime = 0;
         state = EnemyStatus.MOVE_RIGHT;
@@ -150,6 +138,9 @@ public class EnemyAnimation extends Animator implements Disposable {
     }
 
     @Override
+    /**
+     * Clones the enemy's animation
+     */
     protected Object clone() {
         Object clone = null;
         try {

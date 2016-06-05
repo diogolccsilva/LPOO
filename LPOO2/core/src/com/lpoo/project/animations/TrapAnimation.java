@@ -4,53 +4,52 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.utils.Disposable;
 import com.lpoo.project.logic.Game;
 import com.lpoo.project.logic.Trap.TrapStatus;
-import com.lpoo.project.screens.PlayScreen;
 
 /**
  * Class that creates the trap's animation
- * This class implements the interface Disposable
+ * This class extends the class Animator
  */
 public class TrapAnimation extends Animator {
 
-    private static final int ATTACK_INDEX = 0;
-    private static final int HEAT_UP_INDEX = 1;
-    private static final int ANIMATIONS_SIZE = 2;
-    private static final int TEXTURES_SIZE = 1;
     /**
-     * Trap's status
+     * Trap's attack's index
      */
-    //private TrapStatus state;
+    private static final int ATTACK_INDEX = 0;
+    /**
+     * Trap's heat up's index
+     */
+    private static final int HEAT_UP_INDEX = 1;
+    /**
+     * Size of the trap's animations' array
+     */
+    private static final int ANIMATIONS_SIZE = 2;
+    /**
+     * Size of the trap's textures' array
+     */
+    private static final int TEXTURES_SIZE = 1;
+
     /**
      * Current animation of the trap
      */
     private Animation currAnimation;
 
-   //private Animation heatUpAnimation;
-    /**
-     * Trap's animation when it is attacking
-     */
     //private Animation attack;
     /**
      *  Loads images from texture atlases that represents the trap recharging
      */
     private TextureRegion waitTexture;
-    /**
-     * Trap's "time of life"
-     */
-    //private float stateTime;
 
     /**
      * Constructor for the TrapAnimator class
+     * @param game Game where will be placed the animation
      * @param path Path where is saved the TextureAtlas of the trap
      * @param attackSpeed Trap's velocity of the attack
-     * @param rechargeSpeed Trap's velocity of moving
+     * @param index Trap's index
      */
-    public TrapAnimation(Game game, String path, float attackSpeed, float rechargeSpeed, int index ) {
+    public TrapAnimation(Game game, String path, float attackSpeed, int index ) {
         super(game, ANIMATIONS_SIZE, TEXTURES_SIZE, index );
-        //state = TrapStatus.WAIT;
 
         textures[TEXTURES_SIZE - 1] = new TextureAtlas( Gdx.files.internal( path ) );
 
@@ -88,7 +87,7 @@ public class TrapAnimation extends Animator {
 
     /**
      * Getter for the current texture of the animation
-     * @param delta Increasing time
+     * @param delta Increasing value
      * @return TextureRegion to be drawn on the screen
      */
     public TextureRegion getTexture( float delta ) {

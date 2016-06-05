@@ -17,13 +17,13 @@ public class Character extends Entity {
     protected Stats stats;
 
     /**
-     *
-     * @param game
-     * @param x
-     * @param y
-     * @param width
-     * @param height
-     * @param stats
+     * Constructor for the class Constructor
+     * @param game Game where will be placed the character
+     * @param x Character's x position
+     * @param y Character's y position
+     * @param width Character's width
+     * @param height Character's height
+     * @param stats Character's properties
      */
     public Character(Game game, int x, int y, int width, int height, Stats stats) {
         super(game, x, y, width, height);
@@ -31,12 +31,12 @@ public class Character extends Entity {
     }
 
     /**
-     *
-     * @param game
-     * @param x
-     * @param y
-     * @param width
-     * @param height
+     * Constructor for the class Constructor
+     * @param game Game where will be placed the character
+     * @param x Character's x position
+     * @param y Character's y position
+     * @param width Character's width
+     * @param height Character's height
      */
     public Character(Game game, int x, int y, int width, int height) {
         super(game, x, y, width, height);

@@ -37,7 +37,15 @@ public class Enemy extends Character implements Updatable, Movable, Hitable {
      */
     private boolean attacked;
 
-
+    /**
+     * Constructor for the class Enemy
+     * @param game Game where will be placed the enemy
+     * @param x Enemy's x position
+     * @param y Enemy's y position
+     * @param health Enemy's health
+     * @param resistance Enemy's resistance
+     * @param damage Enemy's damage
+     */
     public Enemy( Game game, int x, int y, int health, int resistance, int damage )  {
         super( game, x, y, 80, 124);
         stateTime = 0;

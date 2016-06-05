@@ -4,17 +4,22 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.utils.Disposable;
 import com.lpoo.project.logic.Game;
 import com.lpoo.project.logic.Projectile.ProjectileStatus;
 
 /**
  * Class that creates the projectile's animation
- * This class implements the interface Disposable
+ * This class extends the class Animator
  */
 public class ProjectileAnimation extends Animator {
 
+    /**
+     * Projectile's explosion's index
+     */
     private static final int EXPLODE_INDEX = 0;
+    /**
+     * Size of the projectile's array
+     */
     private static final int ARRAY_SIZE = 1;
     /**
      * Velocity of the projectile's explosion
@@ -22,22 +27,10 @@ public class ProjectileAnimation extends Animator {
     private final float explode_speed = 1/10f;
 
     /**
-     * Projectile's "time of life"
-     */
-    //private float stateTime;
-
-    /**
-     * Animation which represents the explosion of the projectile
-     */
-    //private Animation explode;
-    /**
-     *  Loads images from texture atlases that represents the movement of the bullet / projectile
-     */
-    //private TextureAtlas bullet;
-
-    /**
      * Constructor for the ProjectileAnimator class
+     * @param game Game where will be placed the animation
      * @param path Path where is saved the TextureAtlas of the projectile's movement
+     * @param index Projectile's index
      */
     public ProjectileAnimation(Game game, String path, int index ) {
         super(game, ARRAY_SIZE, ARRAY_SIZE, index);
@@ -56,7 +49,7 @@ public class ProjectileAnimation extends Animator {
 
     /**
      * Gets the current texture of the animation
-     * @param delta Increasing time
+     * @param delta Increasing value
      * @return TextureRegion to be drawn on the screen
      */
     public TextureRegion getTexture( float delta ) {
