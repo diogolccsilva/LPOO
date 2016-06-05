@@ -4,7 +4,7 @@ import java.util.LinkedList;
 
 /**
  * Class that creates the game's traps
- * This class extends the superclass Entity and implements the interfaces Updatable
+ * This class extends the superclass Entity and it implements the interfaces Updatable
  */
 public class Trap extends Entity implements Updatable {
 
@@ -22,8 +22,29 @@ public class Trap extends Entity implements Updatable {
      */
     private Stats stats;
 
+    /**
+     * Trap's number of attacks
+     */
     private int nAttacks;
-    private float attackSpeed, rechargeSpeed, heatUpSpeed, timeAttack;
+    /**
+     * Trap's speed of attack
+     */
+    private float attackSpeed;
+    /**
+     * Trap's speed of recharge
+     */
+    private float rechargeSpeed;
+    /**
+     * Trap's speed of heat up
+     */
+    private float heatUpSpeed;
+    /**
+     * Trap's time of attack
+     */
+    private float timeAttack;
+    /**
+     * Trap's status' "time of life"
+     */
     private float stateTime;
 
     /**
@@ -48,7 +69,7 @@ public class Trap extends Entity implements Updatable {
 
     /**
      * Getter for the current trap's status
-     * @return
+     * @return Current trap'sstatus
      */
     public TrapStatus getState() {
         return currStatus;

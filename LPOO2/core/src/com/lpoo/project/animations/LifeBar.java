@@ -8,6 +8,9 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
  */
 public class LifeBar {
 
+    /**
+     * TextureAtlas for the life's bar
+     */
     private static final TextureAtlas atlas = new TextureAtlas( "Life-bar\\life_bar.atlas" );
     /**
      * Rectangular area of the life's bar's texture
@@ -18,6 +21,12 @@ public class LifeBar {
      */
     private static final TextureRegion death_bar = atlas.getRegions().get(0);
 
+    /**
+     * Getter for the TextureRegion of the life's bar
+     * @param health Current "health" of the life's bar
+     * @param max_health Max "health" of the life's bar
+     * @return TextureRegion to be drawn on the screen
+     */
     public static TextureRegion[] getTexture( int health, int max_health ) {
         int life_pixel = health * 38 / max_health;
 

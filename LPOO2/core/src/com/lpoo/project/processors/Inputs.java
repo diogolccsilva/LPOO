@@ -5,12 +5,22 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Input.Keys;
 import com.lpoo.project.MyGame;
 import com.lpoo.project.logic.Hero;
-import com.lpoo.project.screens.PlayScreen;
 
+/**
+ * Class that deals with the inputs
+ * This class implements the interface InputProcessor
+ */
 public class Inputs implements InputProcessor {
 
+    /**
+     * Game where the inputs will be treated
+     */
     MyGame game;
 
+    /**
+     * Constructor for the class Inputs
+     * @param game Game where the inputs will be treated
+     */
     public Inputs(MyGame game){
         this.game = game;
 
@@ -19,6 +29,9 @@ public class Inputs implements InputProcessor {
     }
 
     @Override
+    /**
+     *
+     */
     public boolean keyDown(int keycode) {
         switch(keycode){
             case Keys.PLUS:
