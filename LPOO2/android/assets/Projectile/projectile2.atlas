@@ -1,0 +1,40 @@
+
+projectile2.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+robot2_shot1
+  rotate: false
+  xy: 1, 1
+  size: 11, 11
+  orig: 11, 11
+  offset: 0, 0
+  index: -1
+robot2_shot2
+  rotate: false
+  xy: 14, 1
+  size: 11, 11
+  orig: 11, 11
+  offset: 0, 0
+  index: -1
+robot2_shot3
+  rotate: false
+  xy: 27, 1
+  size: 11, 11
+  orig: 11, 11
+  offset: 0, 0
+  index: -1
+robot2_shot4
+  rotate: false
+  xy: 40, 1
+  size: 11, 11
+  orig: 11, 11
+  offset: 0, 0
+  index: -1
+robot2_shot5
+  rotate: false
+  xy: 53, 1
+  size: 11, 11
+  orig: 11, 11
+  offset: 0, 0
+  index: -1

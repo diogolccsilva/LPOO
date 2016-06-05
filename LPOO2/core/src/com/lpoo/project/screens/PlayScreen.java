@@ -40,7 +40,7 @@ public class PlayScreen implements Screen {
     private LinkedList<Animator> projectiles;
     private Map map;
 
-    private final int h = 500, w = 890;
+    private static final int h = 765, w = 1360;
 
     public PlayScreen( MyGame myGame, Game game ) {
         this.myGame = myGame;
@@ -120,8 +120,7 @@ public class PlayScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         //Calculate middle of the screen according to the hero's position
-        Vector2 midScreen = calMidScreen( hPos, hero_text.getRegionWidth() );
-
+        Vector2 midScreen = calMidScreen( hPos );
 
         //Set batch to only draw what the camera sees
         myGame.batch.setProjectionMatrix( camera.combined );
@@ -194,12 +193,11 @@ public class PlayScreen implements Screen {
     /**
      * @brief Calculates the center of the screen according to the hero's position
      * @param hPos
-     * @param spriteWidth
      * @return
      */
-    private Vector2 calMidScreen ( Vector2 hPos, float spriteWidth ) {
-        float tmp = hPos.x + 10;
-        return new Vector2( (tmp < 450 ) ? 450 : (tmp > 3650 ) ? 3650 : tmp, 250);
+    private Vector2 calMidScreen ( Vector2 hPos ) {
+        float tmp = hPos.x - w / 2 + 200;
+        return new Vector2( (tmp < 700 ) ? 700 : (tmp > 3400 ) ? 3400 : tmp, 400);
     }
 
     @Override

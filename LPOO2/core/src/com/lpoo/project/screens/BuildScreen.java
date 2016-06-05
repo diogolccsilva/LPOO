@@ -3,6 +3,7 @@ package com.lpoo.project.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -39,9 +40,9 @@ public class BuildScreen implements Screen {
     private Texture exit;
     private Animator trapDraw;
 
-    private int xPos = 450;
-    private static final int yPos = 250;
-    private static final int h = 500, w = 890;
+    private int xPos = 700;
+    private static final int yPos = 400;
+    private static final int h = 765, w = 1360;
     private int screenWidth, screenHeight;
 
     private int xTouch = 0, yTouch = 0;
@@ -71,8 +72,8 @@ public class BuildScreen implements Screen {
 
         trapDraw = new TrapAnimation( game, "Trap\\trap1.atlas", 0, 0, 0 );
 
-        advance = new Rectangle( screenWidth - 100, screenHeight - 50, 50, 50);
-        back = new Rectangle( screenWidth - 50, screenHeight - 50, 50, 50);
+        advance = new Rectangle( w - 105, h - 55, 35, 35);
+        back = new Rectangle( w - 55, h - 55, 35, 35);
         rectangles = new Rectangle[26];
 
         int x = 250;
@@ -106,7 +107,7 @@ public class BuildScreen implements Screen {
             select = false;
 
         int tmp = xPos + deltaX;
-        if( tmp >= 450f && tmp <= 3650f )
+        if( tmp >= 700 && tmp <= 3400 )
             xPos = tmp;
 
         xTouch = (int)pos.x;
@@ -118,16 +119,17 @@ public class BuildScreen implements Screen {
         xTouch = (int)pos.x;
         yTouch = (int)pos.y;
 
-        Rectangle hitbox = new Rectangle(screenX,screenHeight - screenY, 5, 5);
+        pos = getRelativePositionScreen( screenX, screenY );
+        Rectangle hitbox = new Rectangle(pos.x,pos.y, 5, 5);
         if( advance.overlaps(hitbox))
             myGame.changeScreen(MyGame.States.PLAY);
         else if( back.overlaps(hitbox))
             myGame.changeScreen(MyGame.States.MENU);
 
-        if( select && pos.y >= 144 && pos.y <= 272 && pos.x > 250 && pos.x < 3578 ) {
-            int tmp = (int)pos.x - 250;
+        if( select && yTouch >= 144 && yTouch <= 272 && xTouch > 250 && xTouch < 3578 ) {
+            int tmp = xTouch - 250;
             tmp /= 128;
-            game.addTrap( (int) rectangles[tmp].getX(), (int) rectangles[tmp].getY(), 128, 128, tmp );
+            game.setTrap( (int) rectangles[tmp].getX(), (int) rectangles[tmp].getY(), 128, 128, tmp );
         }
         select = false;
     }
@@ -145,7 +147,6 @@ public class BuildScreen implements Screen {
 
         //Set batch to only draw what the camera sees
         myGame.batch.setProjectionMatrix( camera.combined );
-        //myGame.batch.setProjectionMatrix( hudCamera.combined );
         myGame.batch.begin();
 
         camera.position.set( xPos , yPos, 0 );
@@ -161,7 +162,6 @@ public class BuildScreen implements Screen {
                 myGame.batch.draw(grid, rectangles[i].getX(), rectangles[i].getY());
             else {
                 trapDraw.setIndex(i);
-                System.out.println("" + i);
                 myGame.batch.draw(trapDraw.getTexture(delta), traps[i].getPosition().x, traps[i].getPosition().y);
             }
         }
@@ -181,13 +181,15 @@ public class BuildScreen implements Screen {
                             yPos - (h * y / screenHeight) + h / 2 );
     }
 
+    public Vector2 getRelativePositionScreen( int x, int y ) {
+        return new Vector2( w * x / screenWidth, h  - h * y / screenHeight );
+    }
+
+
     @Override
     public void resize(int width, int height) {
         screenHeight = height;
         screenWidth = width;
-        advance.setPosition(width - 100, height - 50);
-        back.setPosition(width - 50, height - 50);
-
     }
 
     @Override

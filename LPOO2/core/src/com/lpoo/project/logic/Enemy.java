@@ -56,6 +56,19 @@ public class Enemy extends Character implements Updatable, Movable, Hitable {
         return state;
     }
 
+    public void setStates( EnemyStatus state ) {
+        setState(state);
+        setNextState(state);
+    }
+
+    public void setState(EnemyStatus state) {
+        this.state = state;
+    }
+
+    public void setNextState(EnemyStatus nextState) {
+        this.nextState = nextState;
+    }
+
     /**
      * Getter for the status
      * @return enemy's next status

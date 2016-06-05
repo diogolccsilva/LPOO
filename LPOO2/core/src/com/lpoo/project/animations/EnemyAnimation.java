@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Disposable;
+import com.lpoo.project.logic.Enemy;
 import com.lpoo.project.logic.Enemy.EnemyStatus;
 import com.lpoo.project.logic.Game;
 
@@ -159,5 +160,7 @@ public class EnemyAnimation extends Animator implements Disposable {
         }
         return clone;
     }
+
+
 }
 

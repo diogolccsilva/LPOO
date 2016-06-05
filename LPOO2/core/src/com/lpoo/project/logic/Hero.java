@@ -162,6 +162,8 @@ public class Hero extends Character implements Updatable, Movable, Hitable {
      * @param delta Increasing value
      */
     public void move( int dir, float delta ) {
+        float x = rect.x + getVelocity() * delta * dir;
+        if( x <= 100 || x >= 3500)
         rect.x += getVelocity() * delta * dir;
     }
 

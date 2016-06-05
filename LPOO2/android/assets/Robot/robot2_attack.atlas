@@ -1,0 +1,47 @@
+
+robot2_attack.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+robot2_attack1
+  rotate: false
+  xy: 1, 1
+  size: 40, 20
+  orig: 40, 20
+  offset: 0, 0
+  index: -1
+robot2_attack2
+  rotate: false
+  xy: 43, 1
+  size: 40, 20
+  orig: 40, 20
+  offset: 0, 0
+  index: -1
+robot2_attack3
+  rotate: false
+  xy: 85, 1
+  size: 40, 20
+  orig: 40, 20
+  offset: 0, 0
+  index: -1
+robot2_attack4
+  rotate: false
+  xy: 127, 1
+  size: 40, 20
+  orig: 40, 20
+  offset: 0, 0
+  index: -1
+robot2_attack5
+  rotate: false
+  xy: 169, 1
+  size: 40, 20
+  orig: 40, 20
+  offset: 0, 0
+  index: -1
+robot2_attack6
+  rotate: false
+  xy: 211, 1
+  size: 40, 20
+  orig: 40, 20
+  offset: 0, 0
+  index: -1
