@@ -16,10 +16,11 @@ public class Menu implements Screen{
 
     private MyGame game;
     private Rectangle play, instructions, exit;
-    private OrthographicCamera camera;
+    private OrthographicCamera menuCamera;
     private Texture background;
     private Music music;
-    private static final int h = 256, w = 453;
+
+    private static final int menuH = 256, menuW = 453;
 
     public Menu(MyGame game ) {
         this.game = game;
@@ -28,7 +29,10 @@ public class Menu implements Screen{
         instructions = new Rectangle( 235, 163, 130, 35 );
         exit = new Rectangle( 235, 210, 130, 35 );
 
-        camera = new OrthographicCamera( w, h );
+        menuCamera = new OrthographicCamera( menuW, menuH );
+        menuCamera.position.set( menuW / 2, menuH / 2, 0 );
+        menuCamera.update();
+
         background = new Texture("Back.jpg");
 
         music = Gdx.audio.newMusic(Gdx.files.internal("A Night Of Dizzy Spells.mp3"));
@@ -38,11 +42,11 @@ public class Menu implements Screen{
     }
 
     public float getRelativeY( int y ) {
-        return h * y / Gdx.graphics.getHeight();
+        return menuH * y / Gdx.graphics.getHeight();
     }
 
     public float getRelativeX( int x ) {
-        return w * x / Gdx.graphics.getWidth();
+        return menuW * x / Gdx.graphics.getWidth();
     }
 
     @Override
@@ -56,10 +60,10 @@ public class Menu implements Screen{
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         //Set batch to only draw what the camera sees
-        game.batch.setProjectionMatrix( camera.combined );
+        game.batch.setProjectionMatrix( menuCamera.combined );
 
-        camera.position.set( w / 2, h / 2, 0 );
-        camera.update();
+        //menuCamera.position.set( menuW / 2, menuH / 2, 0 );
+        //menuCamera.update();
 
         game.batch.begin();
         game.batch.draw(background, 0, 0);

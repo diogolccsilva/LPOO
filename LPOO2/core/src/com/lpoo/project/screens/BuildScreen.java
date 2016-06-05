@@ -3,9 +3,12 @@ package com.lpoo.project.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.lpoo.project.MyGame;
@@ -37,29 +40,32 @@ public class BuildScreen implements Screen {
     /**
      * A camera with orthographic projection
      */
-    private OrthographicCamera camera;
+    //private OrthographicCamera camera;
     /**
      *
      */
-    private OrthographicCamera hudCamera;
+    //private OrthographicCamera hudCamera;
 
     /**
      * Music of the build screen
      */
     private Music music;
 
+    private BitmapFont font;
+
     private Rectangle[] rectangles;
     private Rectangle advance;
     private Rectangle back;
 
     private Texture grid;
+    private Texture gold;
+    private Texture robotIcon;
     private Texture play;
     private Texture exit;
     private Animator trapDraw;
 
     private int xPos = 700;
     private static final int yPos = 400;
-    private static final int h = 765, w = 1360;
     private int screenWidth, screenHeight;
 
     private int xTouch = 0, yTouch = 0;
@@ -75,8 +81,15 @@ public class BuildScreen implements Screen {
 
         map = new Map();
 
-        camera = new OrthographicCamera(w, h);
-        hudCamera = new OrthographicCamera(w, h);
+        myGame.hudCamera.position.set( myGame.w / 2, myGame.h / 2, 0 );
+        myGame.hudCamera.update();
+
+        //Initialize custom font
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Font\\slkscr.ttf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        parameter.size = 30;
+        font = generator.generateFont(parameter);
+        generator.dispose();
 
         music = Gdx.audio.newMusic(Gdx.files.internal("Come and Find Me.mp3"));
         music.setLooping(true);
@@ -84,13 +97,15 @@ public class BuildScreen implements Screen {
         music.play();
 
         grid = new Texture("Grid.png");
+        gold = new Texture("Gold.png");
+        robotIcon = new Texture("Robot_Icon.png");
         play = new Texture("PlayButton.png");
         exit = new Texture("ExitButton.png");
 
         trapDraw = new TrapAnimation( game, "Trap\\trap1.atlas", 0, 0 );
 
-        advance = new Rectangle( w - 105, h - 55, 35, 35);
-        back = new Rectangle( w - 55, h - 55, 35, 35);
+        advance = new Rectangle( myGame.w - 105, myGame.h - 55, 35, 35);
+        back = new Rectangle( myGame.w - 55, myGame.h - 55, 35, 35);
         rectangles = new Rectangle[26];
 
         int x = 250;
@@ -163,11 +178,11 @@ public class BuildScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         //Set batch to only draw what the camera sees
-        myGame.batch.setProjectionMatrix( camera.combined );
+        myGame.batch.setProjectionMatrix( myGame.camera.combined );
         myGame.batch.begin();
 
-        camera.position.set( xPos , yPos, 0 );
-        camera.update();
+        myGame.camera.position.set( xPos , yPos, 0 );
+        myGame.camera.update();
 
         myGame.batch.draw( map.getSky(), 0, 0 );
         myGame.batch.draw( map.getTerrain(), 0, 0);
@@ -183,23 +198,27 @@ public class BuildScreen implements Screen {
             }
         }
 
-        myGame.batch.setProjectionMatrix( hudCamera.combined );
-        hudCamera.position.set( w / 2, h / 2, 0 );
-        hudCamera.update();
+        myGame.batch.setProjectionMatrix( myGame.hudCamera.combined );
 
-        myGame.batch.draw(play, w - 100, h - 50);
-        myGame.batch.draw(exit, w - 50, h - 50);
+        int drawY = myGame.h - 50;
+        int hudY = myGame.h - 70;
+        myGame.batch.draw(gold, 50, hudY);
+        font.draw(myGame.batch, "" + game.getMoney(), 100, drawY);
+        myGame.batch.draw(robotIcon, 200, hudY);
+        font.draw(myGame.batch, "" + game.getnEnemiesWon(), 250, drawY);
+        myGame.batch.draw(play, myGame.w - 100, drawY);
+        myGame.batch.draw(exit, myGame.w - 50, drawY);
 
         myGame.batch.end();
     }
 
     public Vector2 getRelativePosition( int x, int y ) {
-        return new Vector2( xPos + (w * x / screenWidth) - w / 2,
-                            yPos - (h * y / screenHeight) + h / 2 );
+        return new Vector2( xPos + (myGame.w * x / screenWidth) - myGame.w / 2,
+                            yPos - (myGame.h * y / screenHeight) + myGame.h / 2 );
     }
 
     public Vector2 getRelativePositionScreen( int x, int y ) {
-        return new Vector2( w * x / screenWidth, h  - h * y / screenHeight );
+        return new Vector2( myGame.w * x / screenWidth, myGame.h  - myGame.h * y / screenHeight );
     }
 
 

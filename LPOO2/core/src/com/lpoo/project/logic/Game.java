@@ -31,7 +31,10 @@ public class Game implements Updatable {
     private int enemiesSpawned = 0;
     private int diffNextEnemy = 5;
     private final int enemyResist = 20, enemyHealth = 50, enemyStrength = 20;
-    private final int resistPerWave = 2, healthPerWave = 2, strengthPerWave = 2;
+    private final int resistPerWave = 5, healthPerWave = 10, strengthPerWave = 2;
+
+    private int money = 0;
+    private int trapCost = 100;
 
     public Game() {
         frameEvents = new boolean[4];
@@ -64,27 +67,21 @@ public class Game implements Updatable {
         hero.update( delta );
 
         for( Enemy e : enemies ) {
-            /*if(e.getState()== Enemy.EnemyStatus.DEAD)
-                frameEvents[ENEMY_ERASED_INDEX] = true;*/
             if(e.getPosition().x >= 4000) {
                 nEnemiesWon++;
                 e.setStates(Enemy.EnemyStatus.DEAD);
-                //frameEvents[ENEMY_ERASED_INDEX] = true;
             }
             else e.update(delta);
         }
-        for( Projectile p : projectiles ) {
+        for( Projectile p : projectiles )
             p.update(delta);
-            /*if( p.getState() == Projectile.ProjectileStatus.HIT_TARGET)
-                frameEvents[PROJECTILE_ERASED_INDEX] = true;*/
-        }
         for( Trap t : traps ) {
             if( t == null )
                 continue;
             t.update(delta);
         }
 
-        int nextEnemy = diffNextEnemy / wave;
+        int nextEnemy = wave >= 5 ? 1 : diffNextEnemy / wave;
         if( enemiesSpawned < nEnemies * wave &&
                 Math.floor( stateTime / (float)nextEnemy ) != Math.floor( currTime / (float)nextEnemy ) ) {
             enemiesSpawned++;
@@ -147,6 +144,18 @@ public class Game implements Updatable {
         return hero;
     }
 
+    /**
+     * Getter for the hero's amount of money
+     * @return the hero's current amount of money
+     */
+    public int getMoney() {
+        return money;
+    }
+
+    public int getnEnemiesWon() {
+        return nEnemiesWon;
+    }
+
     public LinkedList<Enemy> getEnemies() {
         return enemies;
     }
@@ -164,6 +173,7 @@ public class Game implements Updatable {
     }
 
     public void eraseEnemy( int index ) {
+        money += 20;
         enemies.remove(index);
     }
 
@@ -190,10 +200,16 @@ public class Game implements Updatable {
     }
 
     public void setTrap(int x, int y, int width, int height, int index) {
-        if( traps[index] == null)
-            traps[index] = new Trap( this, x, y, width, height, 5 );
-        else
+        if( traps[index] == null && money >= 100 ) {
+            money -= trapCost;
+            trapCost += 20;
+            traps[index] = new Trap(this, x, y, width, height, 5);
+        }
+        else if( traps[index] != null ){
+            money += trapCost;
+            trapCost -= 20;
             traps[index] = null;
+        }
     }
 
 }

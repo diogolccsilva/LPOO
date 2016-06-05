@@ -1,6 +1,7 @@
 package com.lpoo.project;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.lpoo.project.logic.Game;
 import com.lpoo.project.logic.Hero;
@@ -16,7 +17,11 @@ import java.util.Vector;
 public class MyGame extends com.badlogic.gdx.Game {
 
     public SpriteBatch batch;
-    public int screenWidth, screenHeight;
+
+    public OrthographicCamera camera;
+    public OrthographicCamera hudCamera;
+
+    public static final int h = 765, w = 1360;
 
     private Inputs inputs;
     private PlayScreen play;
@@ -44,16 +49,16 @@ public class MyGame extends com.badlogic.gdx.Game {
 	public void create () {
         batch = new SpriteBatch();
 
-        volume = 50;
+        camera = new OrthographicCamera(w, h);
+        hudCamera = new OrthographicCamera(w, h);
 
-        screenWidth = Gdx.graphics.getWidth();
-        screenHeight = Gdx.graphics.getHeight();
+        volume = 50;
 
         inputs = new Inputs(this);
         menu = new Menu(this);
         setScreen( menu );
 
-        heroes = new Vector<Hero>();
+        heroes = new Vector<>();
 
         state = States.MENU;
 	}

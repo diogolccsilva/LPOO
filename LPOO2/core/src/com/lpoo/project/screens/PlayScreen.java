@@ -5,7 +5,10 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Vector2;
 import com.lpoo.project.MyGame;
 import com.lpoo.project.animations.Animator;
@@ -28,9 +31,10 @@ import java.util.LinkedList;
  */
 public class PlayScreen implements Screen {
 
-    private OrthographicCamera camera;
     private MyGame myGame;
     public Game game;
+
+    private BitmapFont font;
 
     private Music music;
 
@@ -39,6 +43,8 @@ public class PlayScreen implements Screen {
     private Animator[] trapAnimations;
     private LinkedList<Animator> projectiles;
     private Map map;
+    private Texture gold;
+    private Texture robotIcon;
 
     private static final int h = 765, w = 1360;
 
@@ -47,7 +53,18 @@ public class PlayScreen implements Screen {
         this.game = game;
         this.game.changeState(Game.GameStatus.PLAYING);
 
-        camera = new OrthographicCamera( w, h );
+        //Initialize custom font
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Font\\slkscr.ttf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        parameter.size = 30;
+        font = generator.generateFont(parameter);
+        generator.dispose();
+
+        gold = new Texture("Gold.png");
+        robotIcon = new Texture("Robot_Icon.png");
+
+        myGame.hudCamera.position.set( myGame.w / 2, myGame.h / 2, 0 );
+        myGame.hudCamera.update();
 
         music = Gdx.audio.newMusic(Gdx.files.internal("We're the Resistors.mp3"));
         music.setLooping(true);
@@ -112,7 +129,7 @@ public class PlayScreen implements Screen {
         if( frameEvents[Game.HERO_PROJECTILE_FIRED_INDEX] )
             projectiles.add( new ProjectileAnimation( game, "Projectile\\projectile1.atlas", projectiles.size() - 1 ));
         if( frameEvents[Game.ENEMY_PROJECTILE_FIRED_INDEX] )
-            for( int i = 0; i < game.getnNewProjectiles(); i++ )
+            for(int i = 0; i < game.getnNewProjectiles(); i++ )
                 projectiles.add(new ProjectileAnimation(game, "Projectile\\projectile2.atlas", projectiles.size() - 1));
         game.setFrameEvents();
 
@@ -126,12 +143,12 @@ public class PlayScreen implements Screen {
         Vector2 midScreen = calMidScreen( hPos );
 
         //Set batch to only draw what the camera sees
-        myGame.batch.setProjectionMatrix( camera.combined );
+        myGame.batch.setProjectionMatrix( myGame.camera.combined );
         myGame.batch.begin();
 
         //Set camera position to match hero's center position
-        camera.position.set( midScreen.x, midScreen.y, 0 );
-        camera.update();
+        myGame.camera.position.set( midScreen.x, midScreen.y, 0 );
+        myGame.camera.update();
 
         //Draw hero's texture
         myGame.batch.draw( map.getSky(), 0, 0 );
@@ -200,6 +217,15 @@ public class PlayScreen implements Screen {
                 LifeBar.getTexture( game.getHero().getStats().getHealth(), game.getHero().getStats().getMaxHealth() ));
 
         myGame.batch.draw( map.getTerrain(), 0, 0);
+
+        myGame.batch.setProjectionMatrix( myGame.hudCamera.combined );
+
+        int drawY = myGame.h - 50;
+        int hudY = myGame.h - 70;
+        myGame.batch.draw(gold, 50, hudY);
+        font.draw(myGame.batch, "" + game.getMoney(), 100, drawY);
+        myGame.batch.draw(robotIcon, 200, hudY);
+        font.draw(myGame.batch, "" + game.getnEnemiesWon(), 250, drawY);
 
         myGame.batch.end();
     }
