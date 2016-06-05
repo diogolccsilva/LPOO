@@ -77,4 +77,12 @@ public class Character extends Entity implements Updatable, Hitable, Movable {
     public void move( int dir, float delta ) {
         rect.x += getVelocity() * delta * dir;
     }
+
+    public void reset( int x, int y, int width, int height ) {
+        super.reset( x, y, width, height );
+    }
+
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
 }

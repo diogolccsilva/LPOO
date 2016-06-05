@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Rectangle;
 /**
  * Class that creates the game's entities
  */
-public class Entity {
+public class Entity implements Cloneable {
 
     /**
      * Game where will be placed the entity
@@ -54,4 +54,15 @@ public class Entity {
         return new Vector2( rect.width, rect.height );
     }
 
+    public void reset( int x, int y, int width, int height ) {
+        rect.x = x;
+        rect.y = y;
+        rect.width = width;
+        rect.height = height;
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
 }

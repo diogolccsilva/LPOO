@@ -14,9 +14,7 @@ public class Projectile extends Entity implements Updatable, Movable {
     /**
      * Enumeration of the projectile's status
      */
-    public enum ProjectileStatus {
-        TRAVELLING, HIT_TARGET
-    }
+    public enum ProjectileStatus { TRAVELLING, HIT_TARGET }
 
     /**
      * Projectile's status
@@ -30,7 +28,7 @@ public class Projectile extends Entity implements Updatable, Movable {
 
     private boolean heroSide;
 
-    private final Vector2 initPosition;
+    private Vector2 initPosition;
 
     private final int maxRange;
 
@@ -112,5 +110,23 @@ public class Projectile extends Entity implements Updatable, Movable {
      */
     public void move(int dir, float delta) {
         rect.x += dir * stats.getMovSpeed() * delta;
+    }
+
+    public void reset( int x, int y, int width, int height, boolean side ) {
+        super.reset( x, y, width, height );
+        if( heroSide != side ) {
+            stats.movSpeed *= -1;
+            heroSide = side;
+        }
+        state = ProjectileStatus.TRAVELLING;
+        initPosition.x = x;
+        initPosition.y = y;
+    }
+
+    /**
+     * Clones the hero's animation
+     */
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 }

@@ -22,7 +22,7 @@ public class MyGame extends com.badlogic.gdx.Game {
     public OrthographicCamera camera;
     public OrthographicCamera hudCamera;
 
-    public Cache cache;
+    private Cache cache;
 
     public static final int h = 765, w = 1360;
 
@@ -108,6 +108,7 @@ public class MyGame extends com.badlogic.gdx.Game {
                 setScreen(build);
                 break;
             case EXIT:
+                cache.dispose();
                 Gdx.app.exit();
         }
     }
@@ -130,6 +131,10 @@ public class MyGame extends com.badlogic.gdx.Game {
 
     public Vector<Hero> getHeroes(){
         return heroes;
+    }
+
+    public Cache getCache() {
+        return cache;
     }
 
     public void addHero(Hero h){
@@ -194,6 +199,7 @@ public class MyGame extends com.badlogic.gdx.Game {
         else if( build != null )
             build.dispose();
         batch.dispose();
+        cache.dispose();
     }
 
     @Override

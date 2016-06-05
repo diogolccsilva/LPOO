@@ -49,7 +49,7 @@ public class Enemy extends Character {
      * @param resistance Enemy's resistance
      * @param damage     Enemy's damage
      */
-    public Enemy(Game game, int x, int y, int health, int resistance, int damage) {
+    public Enemy(Game game, int x, int y, int width, int height, int health, int resistance, int damage) {
         super(game, x, y, 80, 124);
         stateTime = 0;
         state = EnemyStatus.MOVE_RIGHT;
@@ -123,5 +123,23 @@ public class Enemy extends Character {
             state = EnemyStatus.DEAD;
             nextState = EnemyStatus.DEAD;
         }
+    }
+
+    public void reset( int x, int y, int width, int height, int health, int resistance, int damage ) {
+        super.reset( x, y, width, height );
+        stats.setHealth(health);
+        stats.setMaxHealth(health);
+        stats.setResistance(resistance);
+        stats.setAttDamage(damage);
+        stateTime = 0;
+        state = EnemyStatus.MOVE_RIGHT;
+        nextState = EnemyStatus.MOVE_RIGHT;
+    }
+
+    /**
+     * Clones the hero's animation
+     */
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 }

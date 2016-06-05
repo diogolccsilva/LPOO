@@ -6,11 +6,15 @@ import com.badlogic.gdx.math.Rectangle;
  * Created by Vasco on 05/06/2016.
  */
 public class RangedEnemy extends Enemy {
+
+    public static final int width = 60;
+    public static final int height = 124;
+
     private static final int range = 500;
     private Rectangle shotRange;
 
     public RangedEnemy(Game game, int x, int y, int health, int resistance, int damage) {
-        super(game, x, y, health, resistance, damage);
+        super(game, x, y, width, height, health, resistance, damage);
         shotRange = new Rectangle( rect.x + rect.width / 2 - 5, rect.y, range, rect.height);
         attack_time = 0.3f;
         stats.setAttSpeed(0.7f);
@@ -56,5 +60,16 @@ public class RangedEnemy extends Enemy {
         float dist = stats.getMovSpeed() * dir * delta;
         rect.x += dist;
         shotRange.x += dist;
+    }
+
+    public void reset( int x, int y, int health, int resistance, int damage ) {
+        super.reset( x, y, width, height, health, resistance, damage );
+    }
+
+    /**
+     * Clones the hero's animation
+     */
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 }

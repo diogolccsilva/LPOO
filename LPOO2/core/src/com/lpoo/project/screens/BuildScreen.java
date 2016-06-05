@@ -85,7 +85,7 @@ public class BuildScreen implements Screen {
         myGame.hudCamera.update();
 
         //Initialize custom font
-        BitmapFont f = myGame.cache.getFont();
+        BitmapFont f = myGame.getCache().getFont();
         if( f == null ) {
             //Initialize font and store it in cache
             FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Font\\slkscr.ttf"));
@@ -93,14 +93,14 @@ public class BuildScreen implements Screen {
             parameter.size = 30;
             font = generator.generateFont(parameter);
             generator.dispose();
-            myGame.cache.setFont(font);
+            myGame.getCache().setFont(font);
         } else
             font = f;
 
-        Music m = myGame.cache.getBuildAudio();
+        Music m = myGame.getCache().getBuildAudio();
         if( m == null ) {
             music = Gdx.audio.newMusic(Gdx.files.internal("Come and Find Me.mp3"));
-            myGame.cache.setBuildAudio(music);
+            myGame.getCache().setBuildAudio(music);
         }
         else music = m;
 
@@ -109,8 +109,18 @@ public class BuildScreen implements Screen {
         music.play();
 
         grid = new Texture("Grid.png");
-        gold = new Texture("Gold.png");
-        robotIcon = new Texture("Robot_Icon.png");
+
+        Texture g = myGame.getCache().getGoldIcon();
+        if( g == null ) {
+            gold = new Texture("Gold.png");
+            myGame.getCache().setGoldIcon(gold);
+        } else gold = g;
+        g = myGame.getCache().getRobotIcon();
+        if( g == null ) {
+            robotIcon = new Texture("Robot_Icon.png");
+            myGame.getCache().setRobotIcon(robotIcon);
+        } else robotIcon = g;
+
         play = new Texture("PlayButton.png");
         exit = new Texture("ExitButton.png");
 
@@ -261,8 +271,8 @@ public class BuildScreen implements Screen {
         exit.dispose();
         grid.dispose();
         music.stop();
-        music.dispose();
-        map.dispose();
+        //music.dispose();
+        //map.dispose();
     }
 
     public void setVolume(float v) {

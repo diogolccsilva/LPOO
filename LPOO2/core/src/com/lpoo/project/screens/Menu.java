@@ -33,12 +33,16 @@ public class Menu implements Screen{
         menuCamera.position.set( menuW / 2, menuH / 2, 0 );
         menuCamera.update();
 
-        background = new Texture("Back.jpg");
+        Texture b = myGame.getCache().getMenuBackground();
+        if( b == null ) {
+            background = new Texture("Back.jpg");
+            myGame.getCache().setMenuBackground(background);
+        } else background = b;
 
-        Music m = myGame.cache.getMenuAudio();
+        Music m = myGame.getCache().getMenuAudio();
         if( m == null ) {
             music = Gdx.audio.newMusic(Gdx.files.internal("A Night Of Dizzy Spells.mp3"));
-            myGame.cache.setMenuAudio(music);
+            myGame.getCache().setMenuAudio(music);
         } else music = m;
 
         music.setLooping(true);
@@ -98,8 +102,8 @@ public class Menu implements Screen{
     @Override
     public void dispose() {
         music.stop();
-        music.dispose();
-        background.dispose();
+        //music.dispose();
+        //background.dispose();
     }
 
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {

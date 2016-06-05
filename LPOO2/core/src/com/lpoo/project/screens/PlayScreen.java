@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -53,35 +52,57 @@ public class PlayScreen implements Screen {
         this.game = game;
         this.game.changeState(Game.GameStatus.PLAYING);
 
-        //Initialize custom font
-        //FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Font\\slkscr.ttf"));
-        //FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        //parameter.size = 30;
-        font = myGame.cache.getFont();
-        //generator.dispose();
+        BitmapFont f = myGame.getCache().getFont();
+        if( f == null ) {
+            //Initialize font and store it in cache
+            FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Font\\slkscr.ttf"));
+            FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+            parameter.size = 30;
+            font = generator.generateFont(parameter);
+            generator.dispose();
+            myGame.getCache().setFont(font);
+        } else font = f;
 
-        gold = new Texture("Gold.png");
-        robotIcon = new Texture("Robot_Icon.png");
+        Texture g = myGame.getCache().getGoldIcon();
+        if( g == null ) {
+            gold = new Texture("Gold.png");
+            myGame.getCache().setGoldIcon(gold);
+        } else gold = g;
+        g = myGame.getCache().getRobotIcon();
+        if( g == null ) {
+            robotIcon = new Texture("Robot_Icon.png");
+            myGame.getCache().setRobotIcon(robotIcon);
+        } else robotIcon = g;
 
         myGame.hudCamera.position.set( myGame.w / 2, myGame.h / 2, 0 );
         myGame.hudCamera.update();
 
-        Music m = myGame.cache.getPlayAudio();
+        Music m = myGame.getCache().getPlayAudio();
         if( m == null ) {
             music = Gdx.audio.newMusic(Gdx.files.internal("We're the Resistors.mp3"));
-            myGame.cache.setPlayAudio(music);
+            myGame.getCache().setPlayAudio(music);
         } else music = m;
 
         music.setLooping(true);
         music.setVolume(myGame.getVolume()/100f);
         music.play();
 
-        hero_animations = new HeroAnimation( game, "Hero\\hero1_fire.atlas", "Hero\\hero1_still.atlas",
-                                                    "Hero\\hero1_move_left.atlas", "Hero\\hero1_move_right.atlas", 1/10f, 1/10f );
+        HeroAnimation h = myGame.getCache().getHeroAnimation();
+        if( h == null ) {
+            hero_animations = new HeroAnimation(game, "Hero\\hero1_fire.atlas", "Hero\\hero1_still.atlas",
+                    "Hero\\hero1_move_left.atlas", "Hero\\hero1_move_right.atlas", 1 / 10f, 1 / 10f);
+            myGame.getCache().setHeroAnimation(hero_animations);
+        } else hero_animations = h;
+
         enemies = new LinkedList<>();
         trapAnimations = new TrapAnimation[26];
         projectiles = new LinkedList<>();
-        map = new Map();
+
+        Map mp = myGame.getCache().getMap();
+        if( mp == null ) {
+            map = new Map();
+            myGame.getCache().setMap(map);
+        } else map = mp;
     }
 
 
@@ -127,10 +148,46 @@ public class PlayScreen implements Screen {
         game.getHero().animationStatus( hero_animations.getState() );
 
         boolean[] frameEvents = game.getFrameEvents();
-        if( frameEvents[Game.ENEMY_MELEE_SPAWN_INDEX] )
-            enemies.add( new EnemyAnimation( game, "Robot\\robot1_attack.atlas", "Robot\\robot1_walk.atlas", 1/5f, 1/2f, enemies.size() - 1 ));
-        else if( frameEvents[Game.ENEMY_RANGED_SPAWN_INDEX] )
-            enemies.add( new EnemyAnimation( game, "Robot\\robot2_attack.atlas", "Robot\\robot2_walk.atlas", 1/10f, 1/5f, enemies.size() - 1 ));
+        if( frameEvents[Game.ENEMY_MELEE_SPAWN_INDEX] ) {
+            if( myGame.getCache().getEnemyMeleeAnimation() == null ) {
+                EnemyAnimation e = new EnemyAnimation(game, "Robot\\robot1_attack.atlas", "Robot\\robot1_walk.atlas", 1 / 5f, 1 / 2f, enemies.size());
+                enemies.add(e);
+                myGame.getCache().setEnemyMeleeAnimation(e);
+            }
+            else {
+                //Clone an existing enemy
+                EnemyAnimation e = null;
+                try {
+                    e = (EnemyAnimation) myGame.getCache().getEnemyMeleeAnimation().clone();
+                } catch (CloneNotSupportedException c) {
+                    enemies.add(new EnemyAnimation(game, "Robot\\robot1_attack.atlas", "Robot\\robot1_walk.atlas", 1 / 5f, 1 / 2f, enemies.size()));
+                }
+                if( e != null ) {
+                    e.reset( enemies.size() );
+                    enemies.add(e);
+                }
+            }
+        }
+        else if( frameEvents[Game.ENEMY_RANGED_SPAWN_INDEX] ) {
+            if( myGame.getCache().getEnemyRangedAnimation() == null ) {
+                EnemyAnimation e = new EnemyAnimation(game, "Robot\\robot2_attack.atlas", "Robot\\robot2_walk.atlas", 1 / 10f, 1 / 5f, enemies.size());
+                enemies.add(e);
+                myGame.getCache().setEnemyRangedAnimation(e);
+            }
+            else {
+                //Clone an existing enemy
+                EnemyAnimation e = null;
+                try {
+                    e = (EnemyAnimation) myGame.getCache().getEnemyRangedAnimation().clone();
+                } catch (CloneNotSupportedException c) {
+                    enemies.add(new EnemyAnimation(game, "Robot\\robot2_attack.atlas", "Robot\\robot2_walk.atlas", 1 / 10f, 1 / 5f, enemies.size()));
+                }
+                if (e != null) {
+                    e.reset( enemies.size() );
+                    enemies.add(e);
+                }
+            }
+        }
         if( frameEvents[Game.HERO_PROJECTILE_FIRED_INDEX] )
             projectiles.add( new ProjectileAnimation( game, "Projectile\\projectile1.atlas", projectiles.size() - 1 ));
         if( frameEvents[Game.ENEMY_PROJECTILE_FIRED_INDEX] )
@@ -267,14 +324,14 @@ public class PlayScreen implements Screen {
 
     @Override
     public void dispose() {
-        hero_animations.dispose();
+        //hero_animations.dispose();
         for( Animator e : enemies )
             e.dispose();
         for( Animator p : projectiles )
             p.dispose();
-        map.dispose();
+        //map.dispose();
         music.stop();
-        music.dispose();
+        //music.dispose();
     }
 
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {

@@ -60,4 +60,11 @@ public class ProjectileAnimation extends Animator {
         }
         return animations[EXPLODE_INDEX].getKeyFrames()[0];
     }
+
+    /**
+     * Clones the hero's animation
+     */
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
 }

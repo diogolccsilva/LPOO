@@ -5,8 +5,11 @@ package com.lpoo.project.logic;
  */
 public class MeleeEnemy extends Enemy {
 
+    public static final int width = 80;
+    public static final int height = 124;
+
     public MeleeEnemy(Game game, int x, int y, int health, int resistance, int damage) {
-        super(game, x, y, health, resistance, damage);
+        super(game, x, y, width, height, health, resistance, damage);
     }
 
     public void update(float delta) {
@@ -37,5 +40,16 @@ public class MeleeEnemy extends Enemy {
             else
                 nextState = EnemyStatus.MOVE_RIGHT;
         }
+    }
+
+    public void reset( int x, int y, int health, int resistance, int damage) {
+        super.reset( x, y, width, height, health, resistance, damage );
+    }
+
+    /**
+     * Clones the hero's animation
+     */
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 }

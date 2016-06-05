@@ -44,7 +44,7 @@ public class Tests {
      */
     public void testEnemyStatus() {
         Game game = new Game();
-        Enemy enemy = new Enemy(game, 0, 0, 100, 50, 75);
+        Enemy enemy = new Enemy(game, 0, 0, 80, 125, 100, 50, 75);
 
         assertEquals(Enemy.EnemyStatus.MOVE_RIGHT, enemy.getState());
 

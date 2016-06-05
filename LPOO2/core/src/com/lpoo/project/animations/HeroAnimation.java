@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.lpoo.project.logic.Enemy;
 import com.lpoo.project.logic.Game;
 import com.lpoo.project.logic.Hero.HeroStatus;
 
@@ -158,6 +159,22 @@ public class HeroAnimation extends Animator {
         }
 
         return currAnimation.getKeyFrame( stateTime, true );
+    }
+
+    /**
+     * Resets the animation and changes the values of stateTime, state and currAnimation
+     */
+    public void reset( ) {
+        stateTime = 0;
+        state = HeroStatus.MOVE_LEFT;
+        currAnimation = animations[MOVE_LEFT_INDEX];
+    }
+
+    /**
+     * Clones the hero's animation
+     */
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 
 }

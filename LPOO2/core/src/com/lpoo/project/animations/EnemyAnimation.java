@@ -131,26 +131,17 @@ public class EnemyAnimation extends Animator {
     /**
      * Resets the animation and changes the values of stateTime, state and currAnimation
      */
-    public void reset() {
-        stateTime = 0;
+    public void reset( int index ) {
+        super.reset( index );
         state = EnemyStatus.MOVE_RIGHT;
         currAnimation = animations[MOVE_INDEX];
     }
 
-    @Override
     /**
      * Clones the enemy's animation
      */
-    protected Object clone() {
-        Object clone = null;
-        try {
-            clone = super.clone();
-        } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
-        }
-        return clone;
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
-
-
 }
 

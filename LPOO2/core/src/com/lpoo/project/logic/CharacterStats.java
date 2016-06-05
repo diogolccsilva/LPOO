@@ -118,6 +118,33 @@ public class CharacterStats extends Stats {
     }
 
     /**
+     * Setter for the character's resistance
+     *
+     * @param resistance
+     */
+    public void setResistance(int resistance) {
+        this.resistance = resistance;
+    }
+
+    /**
+     * Setter for the character's maximum health
+     *
+     * @param maxHealth
+     */
+    public void setMaxHealth(int maxHealth) {
+        this.maxHealth = maxHealth;
+    }
+
+    /**
+     * Setter for the character's attack damage
+     *
+     * @param attDamage
+     */
+    public void setAttDamage(int attDamage) {
+        this.attDamage = attDamage;
+    }
+
+    /**
      * Function that applies the damage to the character
      *
      * @param stats Character's properties

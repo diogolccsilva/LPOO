@@ -10,7 +10,7 @@ import com.lpoo.project.logic.Game;
  * Class that creates the animations
  * This class implements the interface Disposable
  */
-public abstract class Animator implements Disposable{
+public abstract class Animator implements Disposable, Cloneable {
 
     /**
      * Time given to the animation's life;
@@ -85,5 +85,15 @@ public abstract class Animator implements Disposable{
     public void dispose() {
         for( int i = 0; i < textures.length; i++ )
             textures[i].dispose();
+    }
+
+    public void reset( int index ) {
+        stateTime = 0;
+        this.index = index;
+    }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 }
