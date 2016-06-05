@@ -11,7 +11,7 @@ public class RangedEnemy extends Enemy {
 
     public RangedEnemy(Game game, int x, int y, int health, int resistance, int damage) {
         super(game, x, y, health, resistance, damage);
-        shotRange = new Rectangle( rect.x + rect.width, rect.y, range, rect.height);
+        shotRange = new Rectangle( rect.x + rect.width / 2, rect.y, range, rect.height);
         attack_time = 0.3f;
     }
 
@@ -29,7 +29,7 @@ public class RangedEnemy extends Enemy {
                     stateTime -= stats.getAttSpeed();
                     attacked = false;
                 } else if( stateTime >= attack_time && !attacked ) {
-                    Projectile projectile = new Projectile(game, rect.x + rect.width, rect.y + 15, 10, 10, 5, range, false);
+                    Projectile projectile = new Projectile(game, rect.x + rect.width / 2, rect.y + 15, 10, 10, 5, range, false);
                     game.addProjectile(projectile, false);
                     attacked = true;
                 }

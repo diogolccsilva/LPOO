@@ -12,6 +12,7 @@ public class Game implements Updatable {
     public static final int ENEMY_RANGED_SPAWN_INDEX = 1;
     public static final int HERO_PROJECTILE_FIRED_INDEX = 2;
     public static final int ENEMY_PROJECTILE_FIRED_INDEX = 3;
+    public int nNewProjectiles;
 
     private boolean[] frameEvents;
 
@@ -38,6 +39,7 @@ public class Game implements Updatable {
         frameEvents[ENEMY_RANGED_SPAWN_INDEX] = false;
         frameEvents[HERO_PROJECTILE_FIRED_INDEX] = false;
         frameEvents[ENEMY_PROJECTILE_FIRED_INDEX] = false;
+        nNewProjectiles = 0;
 
         hero = new Hero( this, 300, 144, 100, 10, 25 );
         enemies = new LinkedList<>();
@@ -138,18 +140,23 @@ public class Game implements Updatable {
     public void setFrameEvents( ) {
         for( int i = 0; i < frameEvents.length; i++ )
             frameEvents[i] = false;
+        nNewProjectiles = 0;
     }
 
-    public final Hero getHero() {
+    public Hero getHero() {
         return hero;
     }
 
-    public final LinkedList<Enemy> getEnemies() {
+    public LinkedList<Enemy> getEnemies() {
         return enemies;
     }
 
-    public final LinkedList<Projectile> getProjectiles() {
+    public LinkedList<Projectile> getProjectiles() {
         return projectiles;
+    }
+
+    public int getnNewProjectiles() {
+        return nNewProjectiles;
     }
 
     public final Trap[] getTraps() {
@@ -175,8 +182,10 @@ public class Game implements Updatable {
     public void addProjectile(Projectile projectile, boolean heroSide) {
         if( heroSide )
             frameEvents[HERO_PROJECTILE_FIRED_INDEX] = true;
-        else
+        else {
+            nNewProjectiles++;
             frameEvents[ENEMY_PROJECTILE_FIRED_INDEX] = true;
+        }
         projectiles.add(projectile);
     }
 

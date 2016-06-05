@@ -5,7 +5,7 @@ package com.lpoo.project.logic;
  * Class that creates the enemies
  * This class extends the superclass Character and it implements the Updatable, Movable and Hitable interfaces
  */
-public class Enemy extends Character implements Updatable, Movable, Hitable {
+public class Enemy extends Character {
 
     /**
      * Enumeration for the enemy's status
@@ -97,7 +97,6 @@ public class Enemy extends Character implements Updatable, Movable, Hitable {
         }
     }
 
-    @Override
     /**
      * Updates the enemy and current status
      */
@@ -140,15 +139,5 @@ public class Enemy extends Character implements Updatable, Movable, Hitable {
             state = EnemyStatus.DEAD;
             nextState = EnemyStatus.DEAD;
         }
-    }
-
-    @Override
-    /**
-     * Represents the way the enemy moves
-     * @param dir Movement's direction
-     * @param delta Increasing value
-     */
-    public void move(int dir, float delta) {
-        rect.x += stats.getMovSpeed() * dir * delta;
     }
 }

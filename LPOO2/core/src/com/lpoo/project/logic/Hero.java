@@ -4,7 +4,7 @@ package com.lpoo.project.logic;
  * Class that creates the heroes
  * This class extends the superclass Character and it implements the Updatable, Movable and Hitable interfaces
  */
-public class Hero extends Character implements Updatable, Movable, Hitable {
+public class Hero extends Character {
 
     /**
      * Enumeration for the heros status
@@ -165,7 +165,7 @@ public class Hero extends Character implements Updatable, Movable, Hitable {
      */
     public void move( int dir, float delta ) {
         float x = rect.x + getVelocity() * delta * dir;
-        if( x >= 200 && x <= 3700 )
+        if (x >= 200 && x <= 3700)
             rect.x += getVelocity() * delta * dir;
     }
 
