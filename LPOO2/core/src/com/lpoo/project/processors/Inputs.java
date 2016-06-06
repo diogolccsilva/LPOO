@@ -61,7 +61,7 @@ public class Inputs implements InputProcessor {
                 switch(keycode){
                     case Keys.BACK:
                     case Keys.ESCAPE:
-                        game.changeScreen(MyGame.States.PAUSE);
+                        //game.changeScreen(MyGame.States.PAUSE);
                         break;
                     case Keys.LEFT:
                         game.getPlayScreen().getGame().getHero().move(Hero.HeroStatus.MOVE_LEFT);
@@ -114,31 +114,30 @@ public class Inputs implements InputProcessor {
      */
     public boolean keyUp(int keycode) {
         switch (game.getState()){
-            case MENU:
+            /*case MENU:
                 switch(keycode){
                     case Keys.BACK:
                         return true;
                     default:
                         break;
                 }
-                break;
+                break;*/
             case PLAY:
                 switch(keycode){
                     case Keys.BACK:
-                        return true;
+                    case Keys.ESCAPE:
+                        game.changeScreen(MyGame.States.PAUSE);
+                        break;
                     default:
                         game.getPlayScreen().getGame().getHero().move(Hero.HeroStatus.STILL);
-                        break;
                 }
-                break;
+                return true;
             case PAUSE:
                 switch(keycode){
                     case Keys.BACK:
-                        return true;
                     case Keys.ESCAPE:
-                       Hero.HeroStatus status = game.getPlayScreen().getGame().getHero().getState();
-                       game.getPlayScreen().getGame().getHero().move(status);
-                       break;
+                        game.changeScreen(MyGame.States.PLAY);
+                        return true;
                     default:
                         break;
                 }

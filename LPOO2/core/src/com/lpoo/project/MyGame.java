@@ -62,7 +62,6 @@ public class MyGame extends com.badlogic.gdx.Game {
 
         inputs = new Inputs(this);
         menu = new Menu(this);
-        pauseMenu = new PauseMenu(this);
         setScreen( menu );
 
         heroes = new Vector<>();
@@ -82,7 +81,7 @@ public class MyGame extends com.badlogic.gdx.Game {
                 build.dispose();
                 break;
             case PAUSE:
-                pauseMenu.dispose();
+
                 break;
 
         }
@@ -99,11 +98,14 @@ public class MyGame extends com.badlogic.gdx.Game {
                 setScreen( menu );
                 break;
             case PLAY:
-                if( game == null )
-                    game = new Game();
+                if( state != States.PAUSE ) {
+                    if( game == null )
+                        game = new Game();
+                    play = new PlayScreen(this, game);
+                }
+
                 disposeState();
                 state = stat;
-                play = new PlayScreen(this, game);
                 setScreen( play );
                 break;
             case BUILD:
@@ -115,12 +117,12 @@ public class MyGame extends com.badlogic.gdx.Game {
                 setScreen(build);
                 break;
             case PAUSE:
-                /*if( state == States.PLAY )
-                    game = new Game();*/
-                disposeState();
-                state = stat;
-                pauseMenu = new PauseMenu(this);
-                setScreen( pauseMenu );
+                if( state == States.PLAY ) {
+                    play.pause();
+                    state = stat;
+                    pauseMenu = new PauseMenu( this );
+                    setScreen(pauseMenu);
+                }
                 break;
             case EXIT:
                 Gdx.app.exit();

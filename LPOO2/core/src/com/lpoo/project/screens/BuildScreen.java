@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.StringBuilder;
 import com.lpoo.project.MyGame;
 import com.lpoo.project.animations.Animator;
 import com.lpoo.project.animations.Map;
@@ -79,7 +80,11 @@ public class BuildScreen implements Screen {
         screenWidth = Gdx.graphics.getWidth();
         screenHeight = Gdx.graphics.getHeight();
 
-        map = new Map();
+        Map mp = myGame.getCache().getMap();
+        if( mp == null ) {
+            map = new Map();
+            myGame.getCache().setMap(map);
+        } else map = mp;
 
         myGame.hudCamera.position.set( myGame.w / 2, myGame.h / 2, 0 );
         myGame.hudCamera.update();
@@ -227,7 +232,13 @@ public class BuildScreen implements Screen {
         myGame.batch.draw(gold, 50, hudY);
         font.draw(myGame.batch, "" + game.getMoney(), 100, drawY);
         myGame.batch.draw(robotIcon, 200, hudY);
-        font.draw(myGame.batch, "" + game.getnEnemiesWon(), 250, drawY);
+
+        StringBuilder str = new StringBuilder();
+        str.append(game.getnEnemiesWon());
+        str.append("/");
+        str.append(game.getMaxEnemiesWon());
+
+        font.draw(myGame.batch, str, 250, drawY);
         myGame.batch.draw(play, myGame.w - 100, drawY);
         myGame.batch.draw(exit, myGame.w - 50, drawY);
 

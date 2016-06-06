@@ -7,7 +7,9 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.lpoo.project.MyGame;
+import com.lpoo.project.animations.Map;
 
 
 public class PauseMenu implements Screen{
@@ -17,6 +19,7 @@ public class PauseMenu implements Screen{
     private OrthographicCamera menuCamera;
     private Texture background;
     private Music music;
+    private Map map;
 
     private static final int menuH = 256, menuW = 453;
 
@@ -26,15 +29,16 @@ public class PauseMenu implements Screen{
         mainMenu = new Rectangle( 169, 109, 116, 36 );
         back = new Rectangle( 169, 165, 116, 36 );
 
-        menuCamera = new OrthographicCamera( menuW, menuH );
+        OrthographicCamera c = myGame.getCache().getMenuCamera();
+        if( c == null ) {
+            menuCamera = new OrthographicCamera(menuW, menuH);
+            myGame.getCache().setMenuCamera(menuCamera);
+        } else menuCamera = c;
+
         menuCamera.position.set( menuW / 2, menuH / 2, 0 );
         menuCamera.update();
 
-        Texture b = myGame.getCache().getMenuBackground();
-        if( b != null ) {
-            background = new Texture("Menu2.jpg");
-            myGame.getCache().setMenuBackground(background);
-        } else background = b;
+        background = new Texture("PauseMenu.png");
 
         Music m = myGame.getCache().getMenuAudio();
         if( m == null ) {
@@ -45,6 +49,13 @@ public class PauseMenu implements Screen{
         music.setLooping(true);
         music.setVolume(myGame.getVolume()/100f);
         music.play();
+
+        Map mp = myGame.getCache().getMap();
+        if (mp == null) {
+            map = new Map();
+            myGame.getCache().setMap(map);
+        } else map = mp;
+
     }
 
     public float getRelativeY( int y ) {
@@ -62,16 +73,20 @@ public class PauseMenu implements Screen{
     @Override
     public void render(float delta) {
         //Clear screen with certain color
-        Gdx.gl.glClearColor((float)0.5, (float)0.5, (float)0.5, 1);
+        Gdx.gl.glClearColor((float) 0.5, (float) 0.5, (float) 0.5, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        //Set batch to only draw what the camera sees
+        myGame.batch.setProjectionMatrix(myGame.camera.combined);
+        myGame.batch.begin();
+
+        //Draw hero's texture
+        myGame.batch.draw(map.getSky(), 0, 0);
+        myGame.batch.draw(map.getTerrain(), 0, 0);
 
         //Set batch to only draw what the camera sees
         myGame.batch.setProjectionMatrix( menuCamera.combined );
 
-        //menuCamera.position.set( menuW / 2, menuH / 2, 0 );
-        //menuCamera.update();
-
-        myGame.batch.begin();
         myGame.batch.draw(background, 0, 0);
         myGame.batch.end();
     }
@@ -87,7 +102,7 @@ public class PauseMenu implements Screen{
 
     @Override
     public void resume() {
-        myGame.changeScreen(MyGame.States.PLAY);
+        //myGame.changeScreen(MyGame.States.PLAY);
     }
 
     @Override
@@ -107,9 +122,9 @@ public class PauseMenu implements Screen{
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         Rectangle rect = new Rectangle( getRelativeX(screenX), getRelativeY(screenY), 20, 20 );
         if( rect.overlaps(mainMenu))
-            myGame.changeScreen(MyGame.States.EXIT);
+            myGame.changeScreen(MyGame.States.MENU);
         else if ( rect.overlaps(back))
-            resume();
+            myGame.changeScreen(MyGame.States.PLAY);
         return true;
     }
 

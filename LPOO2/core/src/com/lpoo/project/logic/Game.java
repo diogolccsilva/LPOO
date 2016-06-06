@@ -29,6 +29,7 @@ public class Game implements Updatable {
 
     private int wave = 0;
     private int nEnemies = 10, nEnemiesWon = 0;
+    private static final int maxEnemiesWon = 3;
     private int enemiesSpawned = 0;
     private int diffNextEnemy = 5;
     private final int enemyResist = 20, enemyHealth = 50, enemyStrength = 20;
@@ -61,7 +62,7 @@ public class Game implements Updatable {
 
     public void updatePlaying( float delta ) {
 
-        if( nEnemiesWon >= 3 ) {
+        if( nEnemiesWon >= maxEnemiesWon ) {
             state = GameStatus.LOST;
             return ;
         }
@@ -160,6 +161,10 @@ public class Game implements Updatable {
         return nEnemiesWon;
     }
 
+    public static int getMaxEnemiesWon() {
+        return maxEnemiesWon;
+    }
+
     public LinkedList<Enemy> getEnemies() {
         return enemies;
     }
@@ -206,11 +211,11 @@ public class Game implements Updatable {
     public void setTrap(int x, int y, int width, int height, int index) {
         if( traps[index] == null && money >= trapCost ) {
             money -= trapCost;
-            trapCost += 20;
+            trapCost += 40;
             traps[index] = new Trap(this, x, y, width, height, 5);
         }
         else if( traps[index] != null ){
-            trapCost -= 20;
+            trapCost -= 40;
             money += trapCost;
             traps[index] = null;
         }
