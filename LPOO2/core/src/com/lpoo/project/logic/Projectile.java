@@ -41,6 +41,7 @@ public class Projectile extends Entity implements Updatable, Movable {
      * @param width  Projectile's width
      * @param height Projectile's height
      * @param damage Projectile's damage
+     * @param side   which side the projectile's on (true if it on the hero's side)
      */
     public Projectile(Game game, float x, float y, int width, int height, int damage, int maxRange, boolean side) {
         super(game, x, y, width, height);
@@ -58,6 +59,24 @@ public class Projectile extends Entity implements Updatable, Movable {
      */
     public ProjectileStatus getState() {
         return state;
+    }
+
+    /**
+     * Setter for the projectile's state
+     * @param state new value for state
+     */
+    public void setState(ProjectileStatus state) {
+        this.state = state;
+    }
+
+    /**
+     *
+     * Setter for the projectile's heroSide
+     *
+     * @param heroSide new value for heroSide
+     */
+    public void setHeroSide(boolean heroSide) {
+        this.heroSide = heroSide;
     }
 
     /**
@@ -112,6 +131,14 @@ public class Projectile extends Entity implements Updatable, Movable {
         rect.x += dir * stats.getMovSpeed() * delta;
     }
 
+    /**
+     * Resets the projectile's variables
+     * @param x current position in x
+     * @param y current position in y
+     * @param width width of the collision box
+     * @param height height of the collision box
+     * @param side which side the projectile's on (true if it on the hero's side)
+     */
     public void reset( int x, int y, int width, int height, boolean side ) {
         super.reset( x, y, width, height );
         if( heroSide != side ) {

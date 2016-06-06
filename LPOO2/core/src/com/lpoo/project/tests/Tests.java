@@ -68,7 +68,7 @@ public class Tests {
         assertNotEquals(0, game.getTraps().length);
         assertEquals(true, game.getProjectiles().isEmpty());
 
-        assertEquals(Game.GameStatus.PLAYING, game.getState());
+        assertEquals(Game.GameStatus.BUILDING, game.getState());
     }
 
     @Test
@@ -77,7 +77,47 @@ public class Tests {
      */
     public void TestProjectiles() {
         Game game = new Game();
-        Projectile projectile = new Projectile(game, 0, 0, 30, 40, 6, 500, true);
+        Projectile projectile = new Projectile(game, game.getHero().getRect().x + 10, 150, 30, 40, 6, 500, false);
+        game.addProjectile(projectile, false);
+        assertEquals( 1, game.getProjectiles().size());
         assertEquals(Projectile.ProjectileStatus.TRAVELLING, projectile.getState());
+
+        //If the projectile is against the hero then it should it him
+        int heroHealth = game.getHero().getStats().getHealth();
+        projectile.getRect().x = game.getHero().getRect().x + 10;
+        projectile.update(0);
+        assertEquals(Projectile.ProjectileStatus.HIT_TARGET, projectile.getState());
+        int heroCurrHealth = game.getHero().getStats().getHealth();
+        assertEquals( true, heroCurrHealth < heroHealth );
+
+        //If the projectile is on the hero's side then it will pass right trough him
+        projectile.setHeroSide(true);
+        projectile.setState(Projectile.ProjectileStatus.TRAVELLING);
+        heroHealth = game.getHero().getStats().getHealth();
+        projectile.update(0);
+        assertEquals(Projectile.ProjectileStatus.TRAVELLING, projectile.getState());
+        heroCurrHealth = game.getHero().getStats().getHealth();
+        assertEquals( true, heroCurrHealth == heroHealth );
+
+        Enemy enemy = new MeleeEnemy(game, 0, 144, 50, 10, 10);
+        game.addEnemy(enemy);
+        assertEquals( 1, game.getEnemies().size());
+
+        //If the projectile is on the hero's side then it should it the enemy
+        projectile.getRect().x = game.getEnemies().get(0).getRect().x + 10;
+        int enemyHealth = game.getEnemies().get(0).getStats().getHealth();
+        projectile.update(0);
+        assertEquals(Projectile.ProjectileStatus.HIT_TARGET, projectile.getState());
+        int enemyCurrHealth = game.getEnemies().get(0).getStats().getHealth();
+        assertEquals( true, enemyCurrHealth < enemyHealth);
+
+        //If the projectile is against the hero then it shouldn't hit the enemies
+        projectile.setHeroSide(false);
+        projectile.setState(Projectile.ProjectileStatus.TRAVELLING);
+        enemyHealth = game.getEnemies().get(0).getStats().getHealth();
+        projectile.update(0);
+        assertEquals(Projectile.ProjectileStatus.TRAVELLING, projectile.getState());
+        enemyCurrHealth = game.getEnemies().get(0).getStats().getHealth();
+        assertEquals( true, enemyCurrHealth == enemyHealth);
     }
 }
