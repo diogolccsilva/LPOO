@@ -3,49 +3,38 @@ package com.lpoo.project.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.graphics.GL20;
 import com.lpoo.project.MyGame;
 
-/**
- * Created by Vasco on 11/05/2016.
- */
-public class Menu implements Screen{
+
+public class PauseMenu implements Screen{
 
     private MyGame myGame;
-    private Rectangle play, highScore, exit;
+    private Rectangle mainMenu, back;
     private OrthographicCamera menuCamera;
     private Texture background;
     private Music music;
 
     private static final int menuH = 256, menuW = 453;
 
-    public Menu(MyGame myGame) {
+    public PauseMenu(MyGame myGame) {
         this.myGame = myGame;
 
-        play = new Rectangle( 235, 116, 130, 35 );
-        highScore = new Rectangle( 235, 163, 130, 35 );
-        exit = new Rectangle( 235, 210, 130, 35 );
+        mainMenu = new Rectangle( 169, 109, 116, 36 );
+        back = new Rectangle( 169, 165, 116, 36 );
 
-
-        OrthographicCamera c = myGame.getCache().getMenuCamera();
-        if( c == null ) {
-            menuCamera = new OrthographicCamera(menuW, menuH);
-            myGame.getCache().setMenuCamera(menuCamera);
-        } else menuCamera = c;
-
+        menuCamera = new OrthographicCamera( menuW, menuH );
         menuCamera.position.set( menuW / 2, menuH / 2, 0 );
         menuCamera.update();
 
-
         Texture b = myGame.getCache().getMenuBackground();
-        if( b == null ) {
-            background = new Texture("Back.jpg");
+        if( b != null ) {
+            background = new Texture("Menu2.jpg");
             myGame.getCache().setMenuBackground(background);
         } else background = b;
-
 
         Music m = myGame.getCache().getMenuAudio();
         if( m == null ) {
@@ -79,6 +68,9 @@ public class Menu implements Screen{
         //Set batch to only draw what the camera sees
         myGame.batch.setProjectionMatrix( menuCamera.combined );
 
+        //menuCamera.position.set( menuW / 2, menuH / 2, 0 );
+        //menuCamera.update();
+
         myGame.batch.begin();
         myGame.batch.draw(background, 0, 0);
         myGame.batch.end();
@@ -91,12 +83,11 @@ public class Menu implements Screen{
 
     @Override
     public void pause() {
-
     }
 
     @Override
     public void resume() {
-
+        myGame.changeScreen(MyGame.States.PLAY);
     }
 
     @Override
@@ -115,10 +106,10 @@ public class Menu implements Screen{
 
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         Rectangle rect = new Rectangle( getRelativeX(screenX), getRelativeY(screenY), 20, 20 );
-        if( rect.overlaps(play))
-            myGame.changeScreen(MyGame.States.BUILD);
-        else if ( rect.overlaps(exit))
+        if( rect.overlaps(mainMenu))
             myGame.changeScreen(MyGame.States.EXIT);
+        else if ( rect.overlaps(back))
+            resume();
         return true;
     }
 
@@ -126,3 +117,4 @@ public class Menu implements Screen{
         music.setVolume(v);
     }
 }
+

@@ -8,6 +8,7 @@ import com.lpoo.project.logic.Hero;
 import com.lpoo.project.processors.Inputs;
 import com.lpoo.project.screens.BuildScreen;
 import com.lpoo.project.screens.Menu;
+import com.lpoo.project.screens.PauseMenu;
 import com.lpoo.project.screens.PlayScreen;
 import com.lpoo.project.storage.Cache;
 import com.lpoo.project.storage.GameFiles;
@@ -30,6 +31,7 @@ public class MyGame extends com.badlogic.gdx.Game {
     private PlayScreen play;
     private BuildScreen build;
     private Menu menu;
+    private PauseMenu pauseMenu;
 
     private int volume;
 
@@ -37,7 +39,7 @@ public class MyGame extends com.badlogic.gdx.Game {
 
     private Vector<Hero> heroes;
 
-    public enum States { MENU, PLAY, BUILD, EXIT }
+    public enum States { MENU, PLAY, BUILD, EXIT, PAUSE}
     private States state;
 
     private static MyGame ourInstance = new MyGame();
@@ -60,6 +62,7 @@ public class MyGame extends com.badlogic.gdx.Game {
 
         inputs = new Inputs(this);
         menu = new Menu(this);
+        pauseMenu = new PauseMenu(this);
         setScreen( menu );
 
         heroes = new Vector<>();
@@ -78,6 +81,10 @@ public class MyGame extends com.badlogic.gdx.Game {
             case BUILD:
                 build.dispose();
                 break;
+            case PAUSE:
+                pauseMenu.dispose();
+                break;
+
         }
     }
 
@@ -107,6 +114,14 @@ public class MyGame extends com.badlogic.gdx.Game {
                 build = new BuildScreen(this, game);
                 setScreen(build);
                 break;
+            case PAUSE:
+                /*if( state == States.PLAY )
+                    game = new Game();*/
+                disposeState();
+                state = stat;
+                pauseMenu = new PauseMenu(this);
+                setScreen( pauseMenu );
+                break;
             case EXIT:
                 Gdx.app.exit();
         }
@@ -119,6 +134,8 @@ public class MyGame extends com.badlogic.gdx.Game {
     public Menu getMenu(){
         return menu;
     }
+
+    public PauseMenu getPauseMenu() { return pauseMenu; }
 
     public PlayScreen getPlayScreen(){
         return play;
@@ -164,6 +181,9 @@ public class MyGame extends com.badlogic.gdx.Game {
             case BUILD:
                 build.setVolume(volume/100f);
                 break;
+            case PAUSE:
+                build.setVolume(volume/100f);
+                break;
         }
     }
 
@@ -197,6 +217,8 @@ public class MyGame extends com.badlogic.gdx.Game {
             menu.dispose();
         else if( build != null )
             build.dispose();
+        else if( pauseMenu != null)
+            pauseMenu.dispose();
         batch.dispose();
         cache.dispose();
     }

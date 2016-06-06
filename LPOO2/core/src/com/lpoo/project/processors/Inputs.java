@@ -61,8 +61,8 @@ public class Inputs implements InputProcessor {
                 switch(keycode){
                     case Keys.BACK:
                     case Keys.ESCAPE:
-                        game.changeScreen(MyGame.States.MENU);
-                        return true;
+                        game.changeScreen(MyGame.States.PAUSE);
+                        break;
                     case Keys.LEFT:
                         game.getPlayScreen().getGame().getHero().move(Hero.HeroStatus.MOVE_LEFT);
                         break;
@@ -89,6 +89,17 @@ public class Inputs implements InputProcessor {
                         game.changeScreen(MyGame.States.MENU);
                         return true;
                 }
+                break;
+            case PAUSE:
+                switch (keycode) {
+                    case Keys.BACK:
+                    case Keys.ESCAPE:
+                        game.changeScreen(MyGame.States.PLAY);
+                        return true;
+                    default:
+                        break;
+                }
+                break;
             default:
                 break;
         }
@@ -117,6 +128,18 @@ public class Inputs implements InputProcessor {
                         return true;
                     default:
                         game.getPlayScreen().getGame().getHero().move(Hero.HeroStatus.STILL);
+                        break;
+                }
+                break;
+            case PAUSE:
+                switch(keycode){
+                    case Keys.BACK:
+                        return true;
+                    case Keys.ESCAPE:
+                       Hero.HeroStatus status = game.getPlayScreen().getGame().getHero().getState();
+                       game.getPlayScreen().getGame().getHero().move(status);
+                       break;
+                    default:
                         break;
                 }
                 break;
@@ -164,6 +187,9 @@ public class Inputs implements InputProcessor {
             case BUILD:
                 game.getBuildScreen().touchDown(screenX,screenY);
                 break;
+            case PAUSE:
+                game.getPauseMenu().touchDown(screenX, screenY, pointer, button);
+                break;
             default:
                 break;
         }
@@ -190,6 +216,8 @@ public class Inputs implements InputProcessor {
             case BUILD:
                 game.getBuildScreen().touchUp(screenX,screenY);
                 break;
+            case PAUSE:
+                game.getPauseMenu().touchUp(screenX, screenY, pointer, button);
             default:
                 break;
         }
