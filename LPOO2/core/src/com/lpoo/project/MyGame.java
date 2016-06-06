@@ -108,7 +108,6 @@ public class MyGame extends com.badlogic.gdx.Game {
                 setScreen(build);
                 break;
             case EXIT:
-                cache.dispose();
                 Gdx.app.exit();
         }
     }

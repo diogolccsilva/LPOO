@@ -1,12 +1,17 @@
 package com.lpoo.project.storage;
 
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.utils.Disposable;
 import com.lpoo.project.animations.EnemyAnimation;
 import com.lpoo.project.animations.HeroAnimation;
 import com.lpoo.project.animations.Map;
+import com.lpoo.project.logic.Enemy;
+import com.lpoo.project.logic.Hero;
+import com.lpoo.project.logic.Projectile;
+import com.lpoo.project.logic.Trap;
 
 /**
  * Created by Vasco on 05/06/2016.
@@ -56,6 +61,30 @@ public class Cache implements Disposable {
      * Texture used int the HUD to represent the robots
      */
     private Texture robotIcon;
+    /**
+     * Camera used during the menu screen
+     */
+    private OrthographicCamera menuCamera;
+    /**
+     * Instance of hero used in the game
+     */
+    private Hero hero;
+    /**
+     * Instance of a meleeEnemy used during the game
+     */
+    private Enemy meleeEnemy;
+    /**
+     * Instance of a rangedEnemy used during the game
+     */
+    private Enemy rangedEnemy;
+    /**
+     * Instance of a projectile used during the game
+     */
+    private Projectile projectile;
+    /**
+     * Instance of a trap used during the game
+     */
+    private Trap trap;
 
     private static Cache ourInstance = new Cache();
 
@@ -207,6 +236,102 @@ public class Cache implements Disposable {
      */
     public void setRobotIcon(Texture robotIcon) {
         this.robotIcon = robotIcon;
+    }
+
+    /**
+     * Getter for the camera used during the menu screen
+     * @return the camera stored
+     */
+    public OrthographicCamera getMenuCamera() {
+        return menuCamera;
+    }
+
+    /**
+     * Setter for the camera used during the menu screen
+     * @param menuCamera camera to be stored
+     */
+    public void setMenuCamera(OrthographicCamera menuCamera) {
+        this.menuCamera = menuCamera;
+    }
+
+    /**
+     * Getter for the instance of hero stored
+     * @return the instance of hero
+     */
+    public Hero getHero() {
+        return hero;
+    }
+
+    /**
+     * Setter for the instance of hero
+     * @param hero hero to be stored
+     */
+    public void setHero(Hero hero) {
+        this.hero = hero;
+    }
+
+    /**
+     * Getter for the instance of the meleeEnemy
+     * @return the meleeEnemy
+     */
+    public Enemy getMeleeEnemy() {
+        return meleeEnemy;
+    }
+
+    /**
+     * Setter fo the instance of meleeEnemy
+     * @param meleeEnemy enemy to be stored
+     */
+    public void setMeleeEnemy(Enemy meleeEnemy) {
+        this.meleeEnemy = meleeEnemy;
+    }
+
+    /**
+     * Getter for the instance of the rangedEnemy
+     * @return the rangedEnemy
+     */
+    public Enemy getRangedEnemy() {
+        return rangedEnemy;
+    }
+
+    /**
+     * Setter fo the instance of rangedEnemy
+     * @param rangedEnemy enemy to be stored
+     */
+    public void setRangedEnemy(Enemy rangedEnemy) {
+        this.rangedEnemy = rangedEnemy;
+    }
+
+    /**
+     * Getter for the instance of projectile stored
+     * @return the projectile
+     */
+    public Projectile getProjectile() {
+        return projectile;
+    }
+
+    /**
+     * Setter for the instance of projectile
+     * @param projectile projectile to be stored
+     */
+    public void setProjectile(Projectile projectile) {
+        this.projectile = projectile;
+    }
+
+    /**
+     * Getter for the instance of trap stored
+     * @return the trap
+     */
+    public Trap getTrap() {
+        return trap;
+    }
+
+    /**
+     * Setter for the instance of trap
+     * @param trap trap to be stored
+     */
+    public void setTrap(Trap trap) {
+        this.trap = trap;
     }
 
     @Override

@@ -29,15 +29,23 @@ public class Menu implements Screen{
         instructions = new Rectangle( 235, 163, 130, 35 );
         exit = new Rectangle( 235, 210, 130, 35 );
 
-        menuCamera = new OrthographicCamera( menuW, menuH );
+
+        OrthographicCamera c = myGame.getCache().getMenuCamera();
+        if( c == null ) {
+            menuCamera = new OrthographicCamera(menuW, menuH);
+            myGame.getCache().setMenuCamera(menuCamera);
+        } else menuCamera = c;
+
         menuCamera.position.set( menuW / 2, menuH / 2, 0 );
         menuCamera.update();
+
 
         Texture b = myGame.getCache().getMenuBackground();
         if( b == null ) {
             background = new Texture("Back.jpg");
             myGame.getCache().setMenuBackground(background);
         } else background = b;
+
 
         Music m = myGame.getCache().getMenuAudio();
         if( m == null ) {
@@ -71,9 +79,6 @@ public class Menu implements Screen{
         //Set batch to only draw what the camera sees
         myGame.batch.setProjectionMatrix( menuCamera.combined );
 
-        //menuCamera.position.set( menuW / 2, menuH / 2, 0 );
-        //menuCamera.update();
-
         myGame.batch.begin();
         myGame.batch.draw(background, 0, 0);
         myGame.batch.end();
@@ -102,8 +107,6 @@ public class Menu implements Screen{
     @Override
     public void dispose() {
         music.stop();
-        //music.dispose();
-        //background.dispose();
     }
 
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {

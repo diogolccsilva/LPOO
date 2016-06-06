@@ -12,14 +12,15 @@ public class Game implements Updatable {
     public static final int ENEMY_RANGED_SPAWN_INDEX = 1;
     public static final int HERO_PROJECTILE_FIRED_INDEX = 2;
     public static final int ENEMY_PROJECTILE_FIRED_INDEX = 3;
-    public int nNewProjectiles;
 
     private boolean[] frameEvents;
+    public int nNewProjectiles;
 
     public enum GameStatus { BUILDING, PLAYING, WON, LOST}
     private GameStatus state;
 
     private Hero hero;
+
     private LinkedList<Enemy> enemies;
     private Trap[] traps;
     private LinkedList<Projectile> projectiles;
@@ -45,10 +46,12 @@ public class Game implements Updatable {
         nNewProjectiles = 0;
 
         hero = new Hero( this, 300, 144, 100, 10, 25 );
+
         enemies = new LinkedList<>();
         traps = new Trap[26];
         projectiles = new LinkedList<>();
-        state = GameStatus.PLAYING;
+
+        state = GameStatus.BUILDING;
         stateTime = 0;
     }
 
@@ -88,10 +91,11 @@ public class Game implements Updatable {
             Enemy e;
             Random rand = new Random();
             int type = rand.nextInt(2);
-            if( type == 0 ) {
+            if (type == 0) {
                 e = new MeleeEnemy(this, 50, 144, enemyHealth + healthPerWave * wave,
                         enemyResist + resistPerWave * wave, enemyStrength + strengthPerWave * wave);
                 frameEvents[ENEMY_MELEE_SPAWN_INDEX] = true;
+
             } else {
                 e = new RangedEnemy(this, 50, 144, enemyHealth + healthPerWave * wave,
                         enemyResist + resistPerWave * wave, enemyStrength + strengthPerWave * wave);
@@ -206,8 +210,8 @@ public class Game implements Updatable {
             traps[index] = new Trap(this, x, y, width, height, 5);
         }
         else if( traps[index] != null ){
-            money += trapCost;
             trapCost -= 20;
+            money += trapCost;
             traps[index] = null;
         }
     }
