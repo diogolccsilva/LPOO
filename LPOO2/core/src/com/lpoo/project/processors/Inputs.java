@@ -114,14 +114,6 @@ public class Inputs implements InputProcessor {
      */
     public boolean keyUp(int keycode) {
         switch (game.getState()){
-            /*case MENU:
-                switch(keycode){
-                    case Keys.BACK:
-                        return true;
-                    default:
-                        break;
-                }
-                break;*/
             case PLAY:
                 switch(keycode){
                     case Keys.BACK:
@@ -217,8 +209,10 @@ public class Inputs implements InputProcessor {
                 break;
             case PAUSE:
                 game.getPauseMenu().touchUp(screenX, screenY, pointer, button);
+                break;
             case GAMEOVER:
                 game.getGameOver().touchUp(screenX, screenY);
+                break;
             default:
                 break;
         }

@@ -164,15 +164,13 @@ public class PlayScreen implements Screen {
                 myGame.getCache().setEnemyMeleeAnimation(e);
             } else {
                 //Clone an existing enemy
-                EnemyAnimation e = null;
+                EnemyAnimation e;
                 try {
                     e = (EnemyAnimation) myGame.getCache().getEnemyMeleeAnimation().clone();
-                } catch (CloneNotSupportedException c) {
-                    enemies.add(new EnemyAnimation(game, "Robot\\robot1_attack.atlas", "Robot\\robot1_walk.atlas", 1 / 5f, 1 / 2f, enemies.size()));
-                }
-                if (e != null) {
                     e.reset(enemies.size());
                     enemies.add(e);
+                } catch (CloneNotSupportedException c) {
+                    enemies.add(new EnemyAnimation(game, "Robot\\robot1_attack.atlas", "Robot\\robot1_walk.atlas", 1 / 5f, 1 / 2f, enemies.size()));
                 }
             }
         } else if (frameEvents[Game.ENEMY_RANGED_SPAWN_INDEX]) {
@@ -182,15 +180,13 @@ public class PlayScreen implements Screen {
                 myGame.getCache().setEnemyRangedAnimation(e);
             } else {
                 //Clone an existing enemy
-                EnemyAnimation e = null;
+                EnemyAnimation e;
                 try {
                     e = (EnemyAnimation) myGame.getCache().getEnemyRangedAnimation().clone();
-                } catch (CloneNotSupportedException c) {
-                    enemies.add(new EnemyAnimation(game, "Robot\\robot2_attack.atlas", "Robot\\robot2_walk.atlas", 1 / 10f, 1 / 5f, enemies.size()));
-                }
-                if (e != null) {
                     e.reset(enemies.size());
                     enemies.add(e);
+                } catch (CloneNotSupportedException c) {
+                    enemies.add(new EnemyAnimation(game, "Robot\\robot2_attack.atlas", "Robot\\robot2_walk.atlas", 1 / 10f, 1 / 5f, enemies.size()));
                 }
             }
         }

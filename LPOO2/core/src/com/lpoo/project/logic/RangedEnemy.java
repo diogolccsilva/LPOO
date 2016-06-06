@@ -17,13 +17,13 @@ public class RangedEnemy extends Enemy {
         super(game, x, y, width, height, health, resistance, damage);
         shotRange = new Rectangle( rect.x + rect.width / 2 - 5, rect.y, range, rect.height);
         attack_time = 0.3f;
-        stats.setAttSpeed(0.7f);
+        stats.setAttSpeed(0.6f);
     }
 
     public void update(float delta) {
         stateTime += delta;
 
-        switch( state ) {
+        switch (state) {
             case DEAD:
                 break;
             case MOVE_RIGHT:
@@ -31,7 +31,7 @@ public class RangedEnemy extends Enemy {
                 break;
             case ATTACK:
                 if( stateTime >= stats.getAttSpeed() ) {
-                    stateTime -= stats.getAttSpeed();
+                    stateTime = 0;
                     attacked = false;
                 } else if( stateTime >= attack_time && !attacked ) {
                     Projectile projectile = new Projectile(game, rect.x + rect.width / 2 - 5, rect.y + 10, 10, 10, 5, range, false);
@@ -42,8 +42,8 @@ public class RangedEnemy extends Enemy {
         }
 
         //Change state
-        if( state != EnemyStatus.DEAD ) {
-            if ( game.getHero().getState() != Hero.HeroStatus.DEAD && shotRange.overlaps( game.getHero().getRect()) )
+        if (state != EnemyStatus.DEAD) {
+            if (game.getHero().getState() != Hero.HeroStatus.DEAD && shotRange.overlaps(game.getHero().getRect()))
                 nextState = EnemyStatus.ATTACK;
             else
                 nextState = EnemyStatus.MOVE_RIGHT;

@@ -7,6 +7,8 @@ public class MeleeEnemy extends Enemy {
 
     public MeleeEnemy(Game game, int x, int y, int health, int resistance, int damage) {
         super(game, x, y, width, height, health, resistance, damage);
+        attack_time = 0.4f;
+        stats.setAttSpeed(1.4f);
     }
 
     public void update(float delta) {
@@ -19,13 +21,13 @@ public class MeleeEnemy extends Enemy {
                 move(1, delta);
                 break;
             case ATTACK:
-                if (stateTime >= stats.getAttSpeed()) {
-                    stateTime -= stats.getAttSpeed();
-                    attacked = false;
-                } else if (stateTime >= attack_time && !attacked) {
+                if (stateTime >= attack_time && !attacked) {
                     attacked = true;
                     if (rect.overlaps(game.getHero().getRect()))
                         game.getHero().hit(stats);
+                } else if (stateTime >= stats.getAttSpeed()) {
+                    stateTime -= stats.getAttSpeed();
+                    attacked = false;
                 }
                 break;
         }
