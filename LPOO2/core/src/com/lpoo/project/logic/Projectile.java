@@ -41,6 +41,7 @@ public class Projectile extends Entity implements Updatable, Movable {
      * @param width  Projectile's width
      * @param height Projectile's height
      * @param damage Projectile's damage
+     * @param side   which side the projectile's on (true if it on the hero's side)
      */
     public Projectile(Game game, float x, float y, int width, int height, int damage, int maxRange, boolean side) {
         super(game, x, y, width, height);
@@ -58,6 +59,24 @@ public class Projectile extends Entity implements Updatable, Movable {
      */
     public ProjectileStatus getState() {
         return state;
+    }
+
+    /**
+     * Setter for the projectile's state
+     * @param state new value for state
+     */
+    public void setState(ProjectileStatus state) {
+        this.state = state;
+    }
+
+    /**
+     *
+     * Setter for the projectile's heroSide
+     *
+     * @param heroSide new value for heroSide
+     */
+    public void setHeroSide(boolean heroSide) {
+        this.heroSide = heroSide;
     }
 
     /**
@@ -110,23 +129,5 @@ public class Projectile extends Entity implements Updatable, Movable {
      */
     public void move(int dir, float delta) {
         rect.x += dir * stats.getMovSpeed() * delta;
-    }
-
-    public void reset( int x, int y, int width, int height, boolean side ) {
-        super.reset( x, y, width, height );
-        if( heroSide != side ) {
-            stats.movSpeed *= -1;
-            heroSide = side;
-        }
-        state = ProjectileStatus.TRAVELLING;
-        initPosition.x = x;
-        initPosition.y = y;
-    }
-
-    /**
-     * Clones the hero's animation
-     */
-    public Object clone() throws CloneNotSupportedException {
-        return super.clone();
     }
 }

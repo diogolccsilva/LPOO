@@ -10,6 +10,7 @@ import com.lpoo.project.logic.Hero;
 import com.lpoo.project.logic.TrapStats;
 import com.lpoo.project.processors.Inputs;
 import com.lpoo.project.screens.BuildScreen;
+import com.lpoo.project.screens.GameOver;
 import com.lpoo.project.screens.Menu;
 import com.lpoo.project.screens.PauseMenu;
 import com.lpoo.project.screens.PlayScreen;
@@ -35,6 +36,7 @@ public class MyGame extends com.badlogic.gdx.Game {
     private BuildScreen build;
     private Menu menu;
     private PauseMenu pauseMenu;
+    private GameOver gameOver;
 
     private int volume;
     private int selectedHeroIndex;
@@ -45,7 +47,8 @@ public class MyGame extends com.badlogic.gdx.Game {
     private Vector<TrapStats> traps;
     private Vector<CharacterStats> enemies;
 
-    public enum States { MENU, PLAY, BUILD, EXIT, PAUSE}
+    public enum States {MENU, PLAY, BUILD, EXIT, PAUSE, GAMEOVER}
+
     private States state;
 
     private static MyGame ourInstance = new MyGame();
@@ -54,10 +57,11 @@ public class MyGame extends com.badlogic.gdx.Game {
         return ourInstance;
     }
 
-    private MyGame() {}
+    private MyGame() {
+    }
 
     @Override
-	public void create () {
+    public void create() {
         batch = new SpriteBatch();
         cache = Cache.getInstance();
 
@@ -68,8 +72,7 @@ public class MyGame extends com.badlogic.gdx.Game {
 
         inputs = new Inputs(this);
         menu = new Menu(this);
-        pauseMenu = new PauseMenu(this);
-        setScreen( menu );
+        setScreen(menu);
 
         heroes = new Vector<>();
         traps = new Vector<>();
@@ -79,9 +82,9 @@ public class MyGame extends com.badlogic.gdx.Game {
         loadGame();
 
         state = States.MENU;
-	}
+    }
 
-    public void disposeState( ) {
+    public void disposeState() {
         switch (state) {
             case MENU:
                 menu.dispose();
@@ -95,44 +98,66 @@ public class MyGame extends com.badlogic.gdx.Game {
             case PAUSE:
                 pauseMenu.dispose();
                 break;
+            case GAMEOVER:
+                gameOver.dispose();
+                break;
 
         }
     }
 
-    public void changeScreen( States stat ) {
-        switch ( stat ) {
+    public void changeScreen(States stat) {
+        switch (stat) {
             case MENU:
-                if( state == States.PLAY )
+                if (state == States.PLAY)
                     game = null;
+                if (state == States.PAUSE) {
+                    if (play != null)
+                        play.dispose();
+                    game = null;
+                }
+
                 disposeState();
                 state = stat;
                 menu = new Menu(this);
-                setScreen( menu );
+                setScreen(menu);
                 break;
+
             case PLAY:
-                if( game == null )
-                    game = new Game(heroes.elementAt(selectedHeroIndex));
+                if (state != States.PAUSE) {
+                    if (game == null)
+                        game = new Game(heroes.elementAt(selectedHeroIndex));
+                    play = new PlayScreen(this, game);
+                }
                 disposeState();
                 state = stat;
-                play = new PlayScreen(this, game);
-                setScreen( play );
+                setScreen(play);
                 break;
+
             case BUILD:
-                if( game == null )
+                if (game == null)
                     game = new Game(heroes.elementAt(selectedHeroIndex));
                 disposeState();
                 state = stat;
                 build = new BuildScreen(this, game);
                 setScreen(build);
                 break;
+
             case PAUSE:
-                /*if( state == States.PLAY )
-                    game = new Game();*/
+                if (state == States.PLAY) {
+                    play.pause();
+                    state = stat;
+                    pauseMenu = new PauseMenu(this);
+                    setScreen(pauseMenu);
+                }
+                break;
+
+            case GAMEOVER:
                 disposeState();
                 state = stat;
-                pauseMenu = new PauseMenu(this);
-                setScreen( pauseMenu );
+                gameOver = new GameOver(this);
+                setScreen(gameOver);
                 break;
+
             case EXIT:
                 Gdx.app.exit();
         }
@@ -142,13 +167,15 @@ public class MyGame extends com.badlogic.gdx.Game {
         return state;
     }
 
-    public Menu getMenu(){
+    public Menu getMenu() {
         return menu;
     }
 
-    public PauseMenu getPauseMenu() { return pauseMenu; }
+    public PauseMenu getPauseMenu() {
+        return pauseMenu;
+    }
 
-    public PlayScreen getPlayScreen(){
+    public PlayScreen getPlayScreen() {
         return play;
     }
 
@@ -156,57 +183,61 @@ public class MyGame extends com.badlogic.gdx.Game {
         return build;
     }
 
+    public GameOver getGameOver() {
+        return gameOver;
+    }
+
     public Cache getCache() {
         return cache;
     }
 
     public void volumeUp() {
-        if (volume<100){
+        if (volume < 100) {
             volume++;
         }
         updateVolume();
     }
 
     public void volumeDown() {
-        if (volume>0){
+        if (volume > 0) {
             volume--;
         }
         updateVolume();
     }
 
-    public void volumeMute(){
+    public void volumeMute() {
         volume = 0;
         updateVolume();
     }
 
-    public void updateVolume(){
+    public void updateVolume() {
         System.out.println(volume);
-        switch(state){
+        switch (state) {
             case MENU:
-                menu.setVolume(volume/100f);
+                menu.setVolume(volume / 100f);
                 break;
             case PLAY:
-                play.setVolume(volume/100f);
+                play.setVolume(volume / 100f);
                 break;
             case BUILD:
-                build.setVolume(volume/100f);
+                build.setVolume(volume / 100f);
                 break;
         }
     }
 
-    public int getVolume(){
+    public int getVolume() {
         return volume;
     }
 
-    public Vector<CharacterStats> getHeroes(){
+    public Vector<CharacterStats> getHeroes() {
         return heroes;
     }
 
-    public void addHero(CharacterStats stats){
+    public void addHero(CharacterStats stats) {
         heroes.add(stats);
     }
 
-    public void addEnemy(CharacterStats stats){
+    public void addEnemy(CharacterStats stats) {
         enemies.add(stats);
     }
 
@@ -215,14 +246,14 @@ public class MyGame extends com.badlogic.gdx.Game {
     }
 
     public void newHero() {
-        addHero(new CharacterStats(100,1,80f,0.7f,1));
+        addHero(new CharacterStats(100, 1, 80f, 0.7f, 1));
         int damage = 10;
         float attackSpeed = 1f;
         float rechargeSpeed = 3f;
         float heatUpSpeed = 1 / 10f;
         float timeAttack = attackSpeed / 3f;
         int cost = 20;
-        addTrap(new TrapStats(damage,attackSpeed,rechargeSpeed,heatUpSpeed,timeAttack,cost));
+        addTrap(new TrapStats(damage, attackSpeed, rechargeSpeed, heatUpSpeed, timeAttack, cost));
     }
 
     public void saveGame() {
@@ -237,22 +268,26 @@ public class MyGame extends com.badlogic.gdx.Game {
         traps = GameFiles.loadTraps();
     }
 
+    public void setStatus (States state){
+        this.state = state;
+    }
+
     @Override
-    public void dispose() {
-        if( play != null )
+    public void dispose () {
+        if (play != null)
             play.dispose();
-        else if( menu != null )
+        else if (menu != null)
             menu.dispose();
-        else if( build != null )
+        else if (build != null)
             build.dispose();
-        else if( pauseMenu != null)
+        else if (pauseMenu != null)
             pauseMenu.dispose();
         batch.dispose();
         cache.dispose();
     }
 
     @Override
-	public void render () {
+    public void render () {
         super.render();
-	}
+    }
 }

@@ -6,16 +6,14 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Circle;
 import com.lpoo.project.MyGame;
 import com.lpoo.project.animations.Map;
 
-
-public class PauseMenu implements Screen{
+public class GameOver implements Screen{
 
     private MyGame myGame;
-    private Rectangle mainMenu, back;
+    private Circle back;
     private OrthographicCamera menuCamera;
     private Texture background;
     private Music music;
@@ -23,11 +21,10 @@ public class PauseMenu implements Screen{
 
     private static final int menuH = 256, menuW = 453;
 
-    public PauseMenu(MyGame myGame) {
+    public GameOver(MyGame myGame) {
         this.myGame = myGame;
 
-        mainMenu = new Rectangle( 169, 109, 116, 36 );
-        back = new Rectangle( 169, 165, 116, 36 );
+        back = new Circle(107, 127, 32);
 
         OrthographicCamera c = myGame.getCache().getMenuCamera();
         if( c == null ) {
@@ -38,7 +35,7 @@ public class PauseMenu implements Screen{
         menuCamera.position.set( menuW / 2, menuH / 2, 0 );
         menuCamera.update();
 
-        background = new Texture("PauseMenu.png");
+        background = new Texture("gameOver.jpg");
 
         Music m = myGame.getCache().getMenuAudio();
         if( m == null ) {
@@ -49,13 +46,6 @@ public class PauseMenu implements Screen{
         music.setLooping(true);
         music.setVolume(myGame.getVolume()/100f);
         music.play();
-
-        Map mp = myGame.getCache().getMap();
-        if (mp == null) {
-            map = new Map();
-            myGame.getCache().setMap(map);
-        } else map = mp;
-
     }
 
     public float getRelativeY( int y ) {
@@ -80,10 +70,6 @@ public class PauseMenu implements Screen{
         myGame.batch.setProjectionMatrix(myGame.camera.combined);
         myGame.batch.begin();
 
-        //Draw hero's texture
-        myGame.batch.draw(map.getSky(), 0, 0);
-        myGame.batch.draw(map.getTerrain(), 0, 0);
-
         //Set batch to only draw what the camera sees
         myGame.batch.setProjectionMatrix( menuCamera.combined );
 
@@ -102,7 +88,6 @@ public class PauseMenu implements Screen{
 
     @Override
     public void resume() {
-        //myGame.changeScreen(MyGame.States.PLAY);
     }
 
     @Override
@@ -115,16 +100,10 @@ public class PauseMenu implements Screen{
         music.stop();
     }
 
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        return true;
-    }
-
-    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        Rectangle rect = new Rectangle( getRelativeX(screenX), getRelativeY(screenY), 20, 20 );
-        if( rect.overlaps(mainMenu))
+    public boolean touchUp(int screenX, int screenY) {
+        Circle circ = new Circle( getRelativeX(screenX), getRelativeY(screenY), 32);
+        if( circ.overlaps(back))
             myGame.changeScreen(MyGame.States.MENU);
-        else if ( rect.overlaps(back))
-            myGame.changeScreen(MyGame.States.PLAY);
         return true;
     }
 

@@ -70,10 +70,13 @@ public class Enemy extends Character {
         return state;
     }
 
-    public void setStates(EnemyStatus state) {
-        setState(state);
-        setNextState(state);
-        stateTime = 0;
+    /**
+     * Getter for the status
+     *
+     * @return enemy's next status
+     */
+    public EnemyStatus getNextState() {
+        return nextState;
     }
 
     public void setState(EnemyStatus state) {
@@ -85,13 +88,10 @@ public class Enemy extends Character {
         this.nextState = nextState;
     }
 
-    /**
-     * Getter for the status
-     *
-     * @return enemy's next status
-     */
-    public EnemyStatus getNextState() {
-        return nextState;
+    public void setStates(EnemyStatus state) {
+        setState(state);
+        setNextState(state);
+        stateTime = 0;
     }
 
     /**
@@ -125,21 +125,4 @@ public class Enemy extends Character {
         }
     }
 
-    public void reset( int x, int y, int width, int height, int health, int resistance, int damage ) {
-        super.reset( x, y, width, height );
-        stats.setHealth(health);
-        stats.setMaxHealth(health);
-        stats.setResistance(resistance);
-        stats.setAttDamage(damage);
-        stateTime = 0;
-        state = EnemyStatus.MOVE_RIGHT;
-        nextState = EnemyStatus.MOVE_RIGHT;
-    }
-
-    /**
-     * Clones the hero's animation
-     */
-    public Object clone() throws CloneNotSupportedException {
-        return super.clone();
-    }
 }
