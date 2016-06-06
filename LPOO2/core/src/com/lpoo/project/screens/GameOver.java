@@ -48,9 +48,11 @@ public class GameOver implements Screen{
         music.setVolume(myGame.getVolume()/100f);
         music.play();
 
+        Map mp = myGame.getCache().getMap();
         if (mp == null) {
             map = new Map();
             myGame.getCache().setMap(map);
+        } else map = mp;
 
     }
 
