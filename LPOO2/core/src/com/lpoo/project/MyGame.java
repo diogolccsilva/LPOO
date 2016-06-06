@@ -7,6 +7,7 @@ import com.lpoo.project.logic.Game;
 import com.lpoo.project.logic.Hero;
 import com.lpoo.project.processors.Inputs;
 import com.lpoo.project.screens.BuildScreen;
+import com.lpoo.project.screens.GameOver;
 import com.lpoo.project.screens.Menu;
 import com.lpoo.project.screens.PauseMenu;
 import com.lpoo.project.screens.PlayScreen;
@@ -32,6 +33,7 @@ public class MyGame extends com.badlogic.gdx.Game {
     private BuildScreen build;
     private Menu menu;
     private PauseMenu pauseMenu;
+    private GameOver gameOver;
 
     private int volume;
 
@@ -39,7 +41,7 @@ public class MyGame extends com.badlogic.gdx.Game {
 
     private Vector<Hero> heroes;
 
-    public enum States { MENU, PLAY, BUILD, EXIT, PAUSE}
+    public enum States { MENU, PLAY, BUILD, EXIT, PAUSE, GAMEOVER}
     private States state;
 
     private static MyGame ourInstance = new MyGame();
@@ -81,7 +83,8 @@ public class MyGame extends com.badlogic.gdx.Game {
                 build.dispose();
                 break;
             case PAUSE:
-
+                break;
+            case GAMEOVER:
                 break;
 
         }
@@ -103,7 +106,6 @@ public class MyGame extends com.badlogic.gdx.Game {
                         game = new Game();
                     play = new PlayScreen(this, game);
                 }
-
                 disposeState();
                 state = stat;
                 setScreen( play );
@@ -123,6 +125,10 @@ public class MyGame extends com.badlogic.gdx.Game {
                     pauseMenu = new PauseMenu( this );
                     setScreen(pauseMenu);
                 }
+                break;
+            case GAMEOVER:
+                gameOver = new GameOver(this);
+                setScreen(gameOver);
                 break;
             case EXIT:
                 Gdx.app.exit();
@@ -209,6 +215,10 @@ public class MyGame extends com.badlogic.gdx.Game {
 
     public int getVolume(){
         return volume;
+    }
+
+    public void setStatus(States state) {
+        this.state = state;
     }
 
     @Override
