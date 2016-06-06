@@ -1,13 +1,18 @@
 package com.lpoo.project.logic;
 
-/**
- * Created by Diogo on 6/5/2016.
- */
 public class ProjectileStats extends Stats {
 
+    /**
+     * Projectile's damage
+     */
     public int attDamage;
 
+    /**
+     * Projectile's movement speed
+     */
     public float movSpeed;
+
+    public int penetration; //TODO: add this
 
     public ProjectileStats(int attDamage, float movSpeed) {
         super();

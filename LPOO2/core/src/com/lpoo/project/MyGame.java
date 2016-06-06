@@ -3,8 +3,11 @@ package com.lpoo.project;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.lpoo.project.logic.Character;
+import com.lpoo.project.logic.CharacterStats;
 import com.lpoo.project.logic.Game;
 import com.lpoo.project.logic.Hero;
+import com.lpoo.project.logic.TrapStats;
 import com.lpoo.project.processors.Inputs;
 import com.lpoo.project.screens.BuildScreen;
 import com.lpoo.project.screens.Menu;
@@ -34,10 +37,13 @@ public class MyGame extends com.badlogic.gdx.Game {
     private PauseMenu pauseMenu;
 
     private int volume;
+    private int selectedHeroIndex;
 
     private Game game;
 
-    private Vector<Hero> heroes;
+    private Vector<CharacterStats> heroes;
+    private Vector<TrapStats> traps;
+    private Vector<CharacterStats> enemies;
 
     public enum States { MENU, PLAY, BUILD, EXIT, PAUSE}
     private States state;
@@ -66,6 +72,11 @@ public class MyGame extends com.badlogic.gdx.Game {
         setScreen( menu );
 
         heroes = new Vector<>();
+        traps = new Vector<>();
+        enemies = new Vector<>();
+        selectedHeroIndex = 0;
+
+        loadGame();
 
         state = States.MENU;
 	}
@@ -100,7 +111,7 @@ public class MyGame extends com.badlogic.gdx.Game {
                 break;
             case PLAY:
                 if( game == null )
-                    game = new Game();
+                    game = new Game(heroes.elementAt(selectedHeroIndex));
                 disposeState();
                 state = stat;
                 play = new PlayScreen(this, game);
@@ -108,7 +119,7 @@ public class MyGame extends com.badlogic.gdx.Game {
                 break;
             case BUILD:
                 if( game == null )
-                    game = new Game();
+                    game = new Game(heroes.elementAt(selectedHeroIndex));
                 disposeState();
                 state = stat;
                 build = new BuildScreen(this, game);
@@ -145,52 +156,30 @@ public class MyGame extends com.badlogic.gdx.Game {
         return build;
     }
 
-    public Vector<Hero> getHeroes(){
-        return heroes;
-    }
-
     public Cache getCache() {
         return cache;
-    }
-
-    public void addHero(Hero h){
-        heroes.add(h);
-    }
-
-    public void newHero() {
-        Hero h = new Hero(null,0,0,100,1,1);
-        addHero(h);
-    }
-
-    public void saveGame() {
-        GameFiles.saveHeroes(heroes);
     }
 
     public void volumeUp() {
         if (volume<100){
             volume++;
         }
-        System.out.println(volume);
-        switch(state){
-            case MENU:
-                menu.setVolume(volume/100f);
-                break;
-            case PLAY:
-                play.setVolume(volume/100f);
-                break;
-            case BUILD:
-                build.setVolume(volume/100f);
-                break;
-            case PAUSE:
-                build.setVolume(volume/100f);
-                break;
-        }
+        updateVolume();
     }
 
     public void volumeDown() {
         if (volume>0){
             volume--;
         }
+        updateVolume();
+    }
+
+    public void volumeMute(){
+        volume = 0;
+        updateVolume();
+    }
+
+    public void updateVolume(){
         System.out.println(volume);
         switch(state){
             case MENU:
@@ -207,6 +196,45 @@ public class MyGame extends com.badlogic.gdx.Game {
 
     public int getVolume(){
         return volume;
+    }
+
+    public Vector<CharacterStats> getHeroes(){
+        return heroes;
+    }
+
+    public void addHero(CharacterStats stats){
+        heroes.add(stats);
+    }
+
+    public void addEnemy(CharacterStats stats){
+        enemies.add(stats);
+    }
+
+    public void addTrap(TrapStats stats) {
+        traps.add(stats);
+    }
+
+    public void newHero() {
+        addHero(new CharacterStats(100,1,80f,0.7f,1));
+        int damage = 10;
+        float attackSpeed = 1f;
+        float rechargeSpeed = 3f;
+        float heatUpSpeed = 1 / 10f;
+        float timeAttack = attackSpeed / 3f;
+        int cost = 20;
+        addTrap(new TrapStats(damage,attackSpeed,rechargeSpeed,heatUpSpeed,timeAttack,cost));
+    }
+
+    public void saveGame() {
+        GameFiles.saveHeroes(heroes);
+        GameFiles.saveEnemies(enemies);
+        GameFiles.saveTraps(traps);
+    }
+
+    public void loadGame() {
+        heroes = GameFiles.loadHeroes();
+        enemies = GameFiles.loadEnemies();
+        traps = GameFiles.loadTraps();
     }
 
     @Override

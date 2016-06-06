@@ -49,6 +49,20 @@ public class Hero extends Character {
     }
 
     /**
+     *
+     * @param game
+     * @param x
+     * @param y
+     * @param stats
+     */
+    public Hero(Game game, int x, int y, CharacterStats stats){
+        super(game,x,y,45,88);
+        this.stats = stats;
+        state = HeroStatus.STILL;
+        nextState = state;
+    }
+
+    /**
      * Getter for the hero's current status
      *
      * @return the hero's current status
@@ -129,7 +143,7 @@ public class Hero extends Character {
         switch (state) {
             case ATTACK:
                 if (currTime >= stats.getAttSpeed()) {
-                    Projectile projectile = new Projectile(game, rect.x, rect.y + 46, 10, 3, 5, 550, true);
+                    Projectile projectile = new Projectile(game, rect.x, rect.y + 46, 10, 3, getStats().getAttDamage(), 550, true);
                     game.addProjectile(projectile, true);
                     currTime -= stats.getAttSpeed();
                 }

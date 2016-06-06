@@ -1,8 +1,5 @@
 package com.lpoo.project.logic;
 
-/**
- * Created by Vasco on 05/06/2016.
- */
 public class MeleeEnemy extends Enemy {
 
     public static final int width = 80;
@@ -15,35 +12,35 @@ public class MeleeEnemy extends Enemy {
     public void update(float delta) {
         stateTime += delta;
 
-        switch( state ) {
+        switch (state) {
             case DEAD:
                 break;
             case MOVE_RIGHT:
-                move( 1, delta );
+                move(1, delta);
                 break;
             case ATTACK:
-                if( stateTime >= stats.getAttSpeed() ) {
+                if (stateTime >= stats.getAttSpeed()) {
                     stateTime -= stats.getAttSpeed();
                     attacked = false;
-                } else if( stateTime >= attack_time && !attacked ) {
+                } else if (stateTime >= attack_time && !attacked) {
                     attacked = true;
-                    if( rect.overlaps( game.getHero().getRect()) )
+                    if (rect.overlaps(game.getHero().getRect()))
                         game.getHero().hit(stats);
                 }
                 break;
         }
 
         //Change state
-        if( state != EnemyStatus.DEAD ) {
-            if ( game.getHero().getState() != Hero.HeroStatus.DEAD && rect.overlaps( game.getHero().getRect()) )
+        if (state != EnemyStatus.DEAD) {
+            if (game.getHero().getState() != Hero.HeroStatus.DEAD && rect.overlaps(game.getHero().getRect()))
                 nextState = EnemyStatus.ATTACK;
             else
                 nextState = EnemyStatus.MOVE_RIGHT;
         }
     }
 
-    public void reset( int x, int y, int health, int resistance, int damage) {
-        super.reset( x, y, width, height, health, resistance, damage );
+    public void reset(int x, int y, int health, int resistance, int damage) {
+        super.reset(x, y, width, height, health, resistance, damage);
     }
 
     /**

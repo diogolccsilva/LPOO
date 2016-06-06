@@ -6,72 +6,105 @@ import java.util.Arrays;
 import java.util.Vector;
 
 import com.google.gson.*;
+import com.lpoo.project.logic.Character;
+import com.lpoo.project.logic.CharacterStats;
 import com.lpoo.project.logic.Enemy;
 import com.lpoo.project.logic.Hero;
+import com.lpoo.project.logic.TrapStats;
 
-/**
- * Created by Diogo on 5/20/2016.
- */
 public class GameFiles {
 
     static String heroesPath = "heroes.json";
     static String enemiesPath = "enemies.json";
+    static String trapsPath = "traps.json";
 
-    public static void saveHeroes(Vector<Hero> heroes) {
+    public static void saveHeroes(Vector<CharacterStats> stats) {
         File file = new File(heroesPath);
         try {
+            file.delete();
             file.createNewFile();
         } catch (IOException e) {
             e.printStackTrace();
         }
         try (Writer writer = new OutputStreamWriter(new FileOutputStream(heroesPath), "UTF-8")) {
             Gson gson = new GsonBuilder().create();
-            for (int i = 0; i < heroes.size(); i++) {
-                gson.toJson(heroes.elementAt(i), writer);
-            }
+            CharacterStats[] vs = new CharacterStats[stats.size()];
+            stats.toArray(vs);
+            gson.toJson(vs,writer);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public static Vector<Hero> loadHeroes() {
-        Vector<Hero> heroes = new Vector<Hero>();
-        try (Reader reader = new InputStreamReader(GameFiles.class.getResourceAsStream(heroesPath), "UTF-8")) {
+    public static Vector<CharacterStats> loadHeroes() {
+        Vector<CharacterStats> stats = new Vector<>();
+        try (Reader reader = new InputStreamReader(new FileInputStream(heroesPath), "UTF-8")) {
             Gson gson = new GsonBuilder().create();
-            Hero[] h = gson.fromJson(reader, Hero[].class);
-            heroes.addAll(Arrays.asList(h));
+            CharacterStats[] vs = gson.fromJson(reader, CharacterStats[].class);
+            stats.addAll(Arrays.asList(vs));
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return heroes;
+        return stats;
     }
 
-    public static void saveEnemies(Vector<Enemy> enemies) {
+    public static void saveEnemies(Vector<CharacterStats> stats) {
         File file = new File(enemiesPath);
         try {
+            file.delete();
             file.createNewFile();
         } catch (IOException e) {
             e.printStackTrace();
         }
         try (Writer writer = new OutputStreamWriter(new FileOutputStream(enemiesPath), "UTF-8")) {
             Gson gson = new GsonBuilder().create();
-            for (int i = 0; i < enemies.size(); i++) {
-                gson.toJson(enemies.elementAt(i), writer);
-            }
+            CharacterStats[] vs = new CharacterStats[stats.size()];
+            stats.toArray(vs);
+            gson.toJson(vs,writer);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public static Vector<Enemy> loadEnemies() {
-        Vector<Enemy> enemies = new Vector<Enemy>();
-        try (Reader reader = new InputStreamReader(GameFiles.class.getResourceAsStream(enemiesPath), "UTF-8")) {
+    public static Vector<CharacterStats> loadEnemies() {
+        Vector<CharacterStats> stats = new Vector<>();
+        try (Reader reader = new InputStreamReader(new FileInputStream(enemiesPath), "UTF-8")) {
             Gson gson = new GsonBuilder().create();
-            Enemy[] ve = gson.fromJson(reader, Enemy[].class);
-            enemies.addAll(Arrays.asList(ve));
+            CharacterStats[] vs = gson.fromJson(reader, CharacterStats[].class);
+            stats.addAll(Arrays.asList(vs));
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return enemies;
+        return stats;
+    }
+
+    public static void saveTraps(Vector<TrapStats> stats) {
+        File file = new File(trapsPath);
+        try {
+            file.delete();
+            file.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try (Writer writer = new OutputStreamWriter(new FileOutputStream(trapsPath), "UTF-8")) {
+            Gson gson = new GsonBuilder().create();
+            TrapStats[] vs = new TrapStats[stats.size()];
+            stats.toArray(vs);
+            gson.toJson(vs,writer);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static Vector<TrapStats> loadTraps() {
+        Vector<TrapStats> stats = new Vector<>();
+        try (Reader reader = new InputStreamReader(new FileInputStream(trapsPath), "UTF-8")) {
+            Gson gson = new GsonBuilder().create();
+            TrapStats[] vs = gson.fromJson(reader, TrapStats[].class);
+            stats.addAll(Arrays.asList(vs));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return stats;
     }
 }

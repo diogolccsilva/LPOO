@@ -54,7 +54,7 @@ public class Trap extends Entity implements Updatable {
         float heatUpSpeed = 1 / 10f;
         nAttacks = 1;
         float timeAttack = attackSpeed / 3f;
-        this.stats = new TrapStats(damage,attackSpeed, rechargeSpeed, timeAttack, timeAttack);
+        this.stats = new TrapStats(damage, attackSpeed, rechargeSpeed, heatUpSpeed, timeAttack, 20);
     }
 
     /**

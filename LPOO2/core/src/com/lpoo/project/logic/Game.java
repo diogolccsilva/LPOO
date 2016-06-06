@@ -16,7 +16,8 @@ public class Game implements Updatable {
     private boolean[] frameEvents;
     public int nNewProjectiles;
 
-    public enum GameStatus { BUILDING, PLAYING, WON, LOST}
+    public enum GameStatus {BUILDING, PLAYING, WON, LOST}
+
     private GameStatus state;
 
     private Hero hero;
@@ -36,8 +37,9 @@ public class Game implements Updatable {
 
     private int money = 0;
     private int trapCost = 100;
+    private int score;
 
-    public Game() {
+    public Game(CharacterStats heroStats) {
         frameEvents = new boolean[4];
         frameEvents[ENEMY_MELEE_SPAWN_INDEX] = false;
         frameEvents[ENEMY_RANGED_SPAWN_INDEX] = false;
@@ -45,7 +47,10 @@ public class Game implements Updatable {
         frameEvents[ENEMY_PROJECTILE_FIRED_INDEX] = false;
         nNewProjectiles = 0;
 
-        hero = new Hero( this, 300, 144, 100, 10, 25 );
+        int x = 300;
+        int y = 144;
+
+        hero = new Hero(this, x, y, heroStats);
 
         enemies = new LinkedList<>();
         traps = new Trap[26];
@@ -59,34 +64,33 @@ public class Game implements Updatable {
         return state;
     }
 
-    public void updatePlaying( float delta ) {
+    public void updatePlaying(float delta) {
 
-        if( nEnemiesWon >= 3 ) {
+        if (nEnemiesWon >= 3) {
             state = GameStatus.LOST;
-            return ;
+            return;
         }
 
         float currTime = stateTime + delta;
-        hero.update( delta );
+        hero.update(delta);
 
-        for( Enemy e : enemies ) {
-            if(e.getPosition().x >= 4000) {
+        for (Enemy e : enemies) {
+            if (e.getPosition().x >= 4000) {
                 nEnemiesWon++;
                 e.setStates(Enemy.EnemyStatus.DEAD);
-            }
-            else e.update(delta);
+            } else e.update(delta);
         }
-        for( Projectile p : projectiles )
+        for (Projectile p : projectiles)
             p.update(delta);
-        for( Trap t : traps ) {
-            if( t == null )
+        for (Trap t : traps) {
+            if (t == null)
                 continue;
             t.update(delta);
         }
 
         int nextEnemy = wave >= 5 ? 1 : diffNextEnemy / wave;
-        if( enemiesSpawned < nEnemies * wave &&
-                Math.floor( stateTime / (float)nextEnemy ) != Math.floor( currTime / (float)nextEnemy ) ) {
+        if (enemiesSpawned < nEnemies * wave &&
+                Math.floor(stateTime / (float) nextEnemy) != Math.floor(currTime / (float) nextEnemy)) {
             enemiesSpawned++;
             Enemy e;
             Random rand = new Random();
@@ -107,13 +111,13 @@ public class Game implements Updatable {
         stateTime = currTime;
     }
 
-    public void update( float delta ) {
-        switch ( state ) {
+    public void update(float delta) {
+        switch (state) {
             case PLAYING:
-                if( enemiesSpawned == nEnemies * wave && enemies.size() == 0 ) {
+                if (enemiesSpawned == nEnemies * wave && enemies.size() == 0) {
                     stateTime = 0;
                     state = GameStatus.BUILDING;
-                } else updatePlaying( delta );
+                } else updatePlaying(delta);
                 break;
             case BUILDING:
                 break;
@@ -124,8 +128,8 @@ public class Game implements Updatable {
         }
     }
 
-    public void changeState( GameStatus status ) {
-        if( status == GameStatus.PLAYING ) {
+    public void changeState(GameStatus status) {
+        if (status == GameStatus.PLAYING) {
             state = status;
             enemies.clear();
             projectiles.clear();
@@ -138,8 +142,8 @@ public class Game implements Updatable {
         return frameEvents;
     }
 
-    public void setFrameEvents( ) {
-        for( int i = 0; i < frameEvents.length; i++ )
+    public void setFrameEvents() {
+        for (int i = 0; i < frameEvents.length; i++)
             frameEvents[i] = false;
         nNewProjectiles = 0;
     }
@@ -150,10 +154,20 @@ public class Game implements Updatable {
 
     /**
      * Getter for the hero's amount of money
+     *
      * @return the hero's current amount of money
      */
     public int getMoney() {
         return money;
+    }
+
+    /**
+     * Getter for the hero's current score
+     *
+     * @return the hero's current score
+     */
+    public int getScore() {
+        return score;
     }
 
     public int getnEnemiesWon() {
@@ -176,25 +190,25 @@ public class Game implements Updatable {
         return traps;
     }
 
-    public void eraseEnemy( int index ) {
+    public void eraseEnemy(int index) {
         money += 20;
         enemies.remove(index);
     }
 
-    public void eraseProjectile( int index ) {
+    public void eraseProjectile(int index) {
         projectiles.remove(index);
     }
 
-    public void touchDown( float screenX, float screenY ) {
-        hero.touchDown( screenX);
+    public void touchDown(float screenX, float screenY) {
+        hero.touchDown(screenX);
     }
 
-    public void touchUp( ) {
+    public void touchUp() {
         hero.touchUp();
     }
 
     public void addProjectile(Projectile projectile, boolean heroSide) {
-        if( heroSide )
+        if (heroSide)
             frameEvents[HERO_PROJECTILE_FIRED_INDEX] = true;
         else {
             nNewProjectiles++;
@@ -204,12 +218,11 @@ public class Game implements Updatable {
     }
 
     public void setTrap(int x, int y, int width, int height, int index) {
-        if( traps[index] == null && money >= trapCost ) {
+        if (traps[index] == null && money >= trapCost) {
             money -= trapCost;
             trapCost += 20;
             traps[index] = new Trap(this, x, y, width, height, 5);
-        }
-        else if( traps[index] != null ){
+        } else if (traps[index] != null) {
             trapCost -= 20;
             money += trapCost;
             traps[index] = null;

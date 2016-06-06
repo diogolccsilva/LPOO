@@ -1,18 +1,21 @@
 package com.lpoo.project.tests;
 
 import static org.junit.Assert.*;
+
 import org.junit.Test;
 
 import com.lpoo.project.logic.*;
 
 public class Tests {
 
+    private final CharacterStats standardHero = new CharacterStats(300,100,90f,0.7f,10);
+
     @Test
     /**
      * Tests the hero
      */
     public void testHeroStatus() {
-        Game game = new Game();
+        Game game = new Game(standardHero);
         Hero hero = new Hero(game, 0, 0, 100, 50, 75);
 
         assertEquals(Hero.HeroStatus.STILL, hero.getState());
@@ -43,7 +46,7 @@ public class Tests {
      * Tests the enemies
      */
     public void testEnemyStatus() {
-        Game game = new Game();
+        Game game = new Game(standardHero);
         Enemy enemy = new Enemy(game, 0, 0, 80, 125, 100, 50, 75);
 
         assertEquals(Enemy.EnemyStatus.MOVE_RIGHT, enemy.getState());
@@ -61,7 +64,7 @@ public class Tests {
      * Tests the game
      */
     public void TestGame() {
-        Game game = new Game();
+        Game game = new Game(standardHero);
 
         assertNotNull(game.getHero());
         assertEquals(true, game.getEnemies().isEmpty());
@@ -76,7 +79,7 @@ public class Tests {
      * Tests the projectiles
      */
     public void TestProjectiles() {
-        Game game = new Game();
+        Game game = new Game(standardHero);
         Projectile projectile = new Projectile(game, 0, 0, 30, 40, 6, 500, true);
         assertEquals(Projectile.ProjectileStatus.TRAVELLING, projectile.getState());
     }
