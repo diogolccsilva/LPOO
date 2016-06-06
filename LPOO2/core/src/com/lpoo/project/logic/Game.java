@@ -102,7 +102,7 @@ public class Game implements Updatable {
                         enemyResist + resistPerWave * wave, enemyStrength + strengthPerWave * wave);
                 frameEvents[ENEMY_RANGED_SPAWN_INDEX] = true;
             }
-            enemies.add(e);
+            addEnemy(e);
         }
 
         stateTime = currTime;
@@ -181,6 +181,20 @@ public class Game implements Updatable {
         return traps;
     }
 
+    public void addEnemy(Enemy enemy) {
+        enemies.add(enemy);
+    }
+
+    public void addProjectile(Projectile projectile, boolean heroSide) {
+        if( heroSide )
+            frameEvents[HERO_PROJECTILE_FIRED_INDEX] = true;
+        else {
+            nNewProjectiles++;
+            frameEvents[ENEMY_PROJECTILE_FIRED_INDEX] = true;
+        }
+        projectiles.add(projectile);
+    }
+
     public void eraseEnemy( int index ) {
         money += 20;
         enemies.remove(index);
@@ -196,16 +210,6 @@ public class Game implements Updatable {
 
     public void touchUp( ) {
         hero.touchUp();
-    }
-
-    public void addProjectile(Projectile projectile, boolean heroSide) {
-        if( heroSide )
-            frameEvents[HERO_PROJECTILE_FIRED_INDEX] = true;
-        else {
-            nNewProjectiles++;
-            frameEvents[ENEMY_PROJECTILE_FIRED_INDEX] = true;
-        }
-        projectiles.add(projectile);
     }
 
     public void setTrap(int x, int y, int width, int height, int index) {
