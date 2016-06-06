@@ -130,30 +130,4 @@ public class Projectile extends Entity implements Updatable, Movable {
     public void move(int dir, float delta) {
         rect.x += dir * stats.getMovSpeed() * delta;
     }
-
-    /**
-     * Resets the projectile's variables
-     * @param x current position in x
-     * @param y current position in y
-     * @param width width of the collision box
-     * @param height height of the collision box
-     * @param side which side the projectile's on (true if it on the hero's side)
-     */
-    public void reset( int x, int y, int width, int height, boolean side ) {
-        super.reset( x, y, width, height );
-        if( heroSide != side ) {
-            stats.movSpeed *= -1;
-            heroSide = side;
-        }
-        state = ProjectileStatus.TRAVELLING;
-        initPosition.x = x;
-        initPosition.y = y;
-    }
-
-    /**
-     * Clones the hero's animation
-     */
-    public Object clone() throws CloneNotSupportedException {
-        return super.clone();
-    }
 }

@@ -133,7 +133,6 @@ public class PlayScreen implements Screen {
 
     @Override
     public void render(float delta) {
-
         if (isPaused) {
             resume();
             return;
@@ -145,8 +144,8 @@ public class PlayScreen implements Screen {
         Vector2 hPos = game.getHero().getPosition();
         game.update(delta);
 
-        if (game.getState() == Game.GameStatus.LOST || game.getState() == Game.GameStatus.WON)
-            myGame.changeScreen(MyGame.States.MENU);
+        if (game.getState() == Game.GameStatus.LOST)
+            myGame.changeScreen(MyGame.States.GAMEOVER);
         else if (game.getState() == Game.GameStatus.BUILDING)
             myGame.changeScreen(MyGame.States.BUILD);
 

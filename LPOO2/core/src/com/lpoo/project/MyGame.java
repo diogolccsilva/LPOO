@@ -83,8 +83,10 @@ public class MyGame extends com.badlogic.gdx.Game {
                 build.dispose();
                 break;
             case PAUSE:
+                pauseMenu.dispose();
                 break;
             case GAMEOVER:
+                gameOver.dispose();
                 break;
 
         }
@@ -95,11 +97,18 @@ public class MyGame extends com.badlogic.gdx.Game {
             case MENU:
                 if( state == States.PLAY )
                     game = null;
+                if( state == States.PAUSE ) {
+                    if( play != null )
+                        play.dispose();
+                    game = null;
+                }
+
                 disposeState();
                 state = stat;
                 menu = new Menu(this);
                 setScreen( menu );
                 break;
+
             case PLAY:
                 if( state != States.PAUSE ) {
                     if( game == null )
@@ -110,6 +119,7 @@ public class MyGame extends com.badlogic.gdx.Game {
                 state = stat;
                 setScreen( play );
                 break;
+
             case BUILD:
                 if( game == null )
                     game = new Game();
@@ -118,6 +128,7 @@ public class MyGame extends com.badlogic.gdx.Game {
                 build = new BuildScreen(this, game);
                 setScreen(build);
                 break;
+
             case PAUSE:
                 if( state == States.PLAY ) {
                     play.pause();
@@ -126,10 +137,14 @@ public class MyGame extends com.badlogic.gdx.Game {
                     setScreen(pauseMenu);
                 }
                 break;
+
             case GAMEOVER:
+                disposeState();
+                state = stat;
                 gameOver = new GameOver(this);
                 setScreen(gameOver);
                 break;
+
             case EXIT:
                 Gdx.app.exit();
         }
@@ -151,6 +166,10 @@ public class MyGame extends com.badlogic.gdx.Game {
 
     public BuildScreen getBuildScreen() {
         return build;
+    }
+
+    public GameOver getGameOver() {
+        return gameOver;
     }
 
     public Vector<Hero> getHeroes(){

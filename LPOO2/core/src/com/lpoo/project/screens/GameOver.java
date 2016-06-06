@@ -10,7 +10,6 @@ import com.badlogic.gdx.math.Circle;
 import com.lpoo.project.MyGame;
 import com.lpoo.project.animations.Map;
 
-
 public class GameOver implements Screen{
 
     private MyGame myGame;
@@ -47,13 +46,6 @@ public class GameOver implements Screen{
         music.setLooping(true);
         music.setVolume(myGame.getVolume()/100f);
         music.play();
-
-        Map mp = myGame.getCache().getMap();
-        if (mp == null) {
-            map = new Map();
-            myGame.getCache().setMap(map);
-        } else map = mp;
-
     }
 
     public float getRelativeY( int y ) {
@@ -77,10 +69,6 @@ public class GameOver implements Screen{
         //Set batch to only draw what the camera sees
         myGame.batch.setProjectionMatrix(myGame.camera.combined);
         myGame.batch.begin();
-
-        //Draw hero's texture
-        myGame.batch.draw(map.getSky(), 0, 0);
-        myGame.batch.draw(map.getTerrain(), 0, 0);
 
         //Set batch to only draw what the camera sees
         myGame.batch.setProjectionMatrix( menuCamera.combined );
@@ -112,11 +100,7 @@ public class GameOver implements Screen{
         music.stop();
     }
 
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        return true;
-    }
-
-    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+    public boolean touchUp(int screenX, int screenY) {
         Circle circ = new Circle( getRelativeX(screenX), getRelativeY(screenY), 32);
         if( circ.overlaps(back))
             myGame.changeScreen(MyGame.States.MENU);

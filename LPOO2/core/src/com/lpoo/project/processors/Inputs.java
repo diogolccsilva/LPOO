@@ -217,6 +217,8 @@ public class Inputs implements InputProcessor {
                 break;
             case PAUSE:
                 game.getPauseMenu().touchUp(screenX, screenY, pointer, button);
+            case GAMEOVER:
+                game.getGameOver().touchUp(screenX, screenY);
             default:
                 break;
         }

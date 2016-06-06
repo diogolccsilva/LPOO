@@ -188,22 +188,4 @@ public class Hero extends Character {
     public String toString() {
         return "Hero [stats=" + stats + "]";
     }
-
-    public void reset( int x, int y, int health, int resistance, int damage ) {
-        super.reset( x, y, 45, 88 );
-        stats.setHealth(health);
-        stats.setMaxHealth(health);
-        stats.setResistance(resistance);
-        stats.setAttDamage(damage);
-        stateTime = 0;
-        state = HeroStatus.STILL;
-        nextState = HeroStatus.STILL;
-    }
-
-    /**
-     * Clones the hero's animation
-     */
-    public Object clone() throws CloneNotSupportedException {
-        return super.clone();
-    }
 }

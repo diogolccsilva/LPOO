@@ -16,7 +16,7 @@ public class Game implements Updatable {
     private boolean[] frameEvents;
     public int nNewProjectiles;
 
-    public enum GameStatus { BUILDING, PLAYING, WON, LOST}
+    public enum GameStatus { BUILDING, PLAYING, LOST}
     private GameStatus state;
 
     private Hero hero;
@@ -117,8 +117,6 @@ public class Game implements Updatable {
                 } else updatePlaying( delta );
                 break;
             case BUILDING:
-                break;
-            case WON:
                 break;
             case LOST:
                 break;

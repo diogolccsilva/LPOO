@@ -42,14 +42,4 @@ public class MeleeEnemy extends Enemy {
         }
     }
 
-    public void reset( int x, int y, int health, int resistance, int damage) {
-        super.reset( x, y, width, height, health, resistance, damage );
-    }
-
-    /**
-     * Clones the hero's animation
-     */
-    public Object clone() throws CloneNotSupportedException {
-        return super.clone();
-    }
 }
