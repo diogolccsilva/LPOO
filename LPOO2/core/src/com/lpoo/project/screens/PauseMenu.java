@@ -114,12 +114,8 @@ public class PauseMenu implements Screen{
         music.stop();
     }
 
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        return true;
-    }
-
-    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        Rectangle rect = new Rectangle( getRelativeX(screenX), getRelativeY(screenY), 20, 20 );
+    public boolean touchUp(int screenX, int screenY) {
+        Rectangle rect = new Rectangle( getRelativeX(screenX), getRelativeY(screenY), 5, 5 );
         if( rect.overlaps(mainMenu))
             myGame.changeScreen(MyGame.States.MENU);
         else if ( rect.overlaps(back))

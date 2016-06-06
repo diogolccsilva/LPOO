@@ -3,7 +3,6 @@ package com.lpoo.project;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.lpoo.project.logic.Character;
 import com.lpoo.project.logic.CharacterStats;
 import com.lpoo.project.logic.Game;
 import com.lpoo.project.logic.Hero;
@@ -11,6 +10,7 @@ import com.lpoo.project.logic.TrapStats;
 import com.lpoo.project.processors.Inputs;
 import com.lpoo.project.screens.BuildScreen;
 import com.lpoo.project.screens.GameOver;
+import com.lpoo.project.screens.HeroMenu;
 import com.lpoo.project.screens.Menu;
 import com.lpoo.project.screens.PauseMenu;
 import com.lpoo.project.screens.PlayScreen;
@@ -37,6 +37,7 @@ public class MyGame extends com.badlogic.gdx.Game {
     private Menu menu;
     private PauseMenu pauseMenu;
     private GameOver gameOver;
+    private HeroMenu heroMenu;
 
     private int volume;
     private int selectedHeroIndex;
@@ -47,7 +48,7 @@ public class MyGame extends com.badlogic.gdx.Game {
     private Vector<TrapStats> traps;
     private Vector<CharacterStats> enemies;
 
-    public enum States {MENU, PLAY, BUILD, EXIT, PAUSE, GAMEOVER}
+    public enum States {MENU, PLAY, BUILD, EXIT, PAUSE, GAMEOVER, HERO}
 
     private States state;
 
@@ -72,7 +73,8 @@ public class MyGame extends com.badlogic.gdx.Game {
 
         inputs = new Inputs(this);
         menu = new Menu(this);
-        setScreen(menu);
+        heroMenu = new HeroMenu(this);
+        setScreen(heroMenu);
 
         heroes = new Vector<>();
         traps = new Vector<>();
@@ -81,7 +83,7 @@ public class MyGame extends com.badlogic.gdx.Game {
 
         loadGame();
 
-        state = States.MENU;
+        state = States.HERO;
     }
 
     public void disposeState() {
@@ -185,6 +187,10 @@ public class MyGame extends com.badlogic.gdx.Game {
 
     public GameOver getGameOver() {
         return gameOver;
+    }
+
+    public HeroMenu getHeroMenu() {
+        return heroMenu;
     }
 
     public Cache getCache() {

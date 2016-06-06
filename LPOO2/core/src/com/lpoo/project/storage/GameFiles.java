@@ -5,11 +5,9 @@ import java.io.*;
 import java.util.Arrays;
 import java.util.Vector;
 
+import com.badlogic.gdx.assets.AssetManager;
 import com.google.gson.*;
-import com.lpoo.project.logic.Character;
 import com.lpoo.project.logic.CharacterStats;
-import com.lpoo.project.logic.Enemy;
-import com.lpoo.project.logic.Hero;
 import com.lpoo.project.logic.TrapStats;
 
 public class GameFiles {
@@ -56,6 +54,7 @@ public class GameFiles {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         try (Writer writer = new OutputStreamWriter(new FileOutputStream(enemiesPath), "UTF-8")) {
             Gson gson = new GsonBuilder().create();
             CharacterStats[] vs = new CharacterStats[stats.size()];
