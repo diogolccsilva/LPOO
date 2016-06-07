@@ -5,16 +5,17 @@ import java.io.*;
 import java.util.Arrays;
 import java.util.Vector;
 
-import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.Gdx;
 import com.google.gson.*;
 import com.lpoo.project.logic.CharacterStats;
 import com.lpoo.project.logic.TrapStats;
 
 public class GameFiles {
 
-    static String heroesPath = "heroes.json";
-    static String enemiesPath = "enemies.json";
-    static String trapsPath = "traps.json";
+    private static String localPath = Gdx.files.getLocalStoragePath();
+    private static String heroesPath = localPath + "heroes.json";
+    private static String enemiesPath = localPath + "enemies.json";
+    private static String trapsPath = localPath + "traps.json";
 
     public static void saveHeroes(Vector<CharacterStats> stats) {
         File file = new File(heroesPath);
