@@ -100,4 +100,9 @@ public class TrapStats extends Stats {
     public int getAttDamage() {
         return attDamage;
     }
+
+    @Override
+    public String toString() {
+        return "";
+    }
 }
