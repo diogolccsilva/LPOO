@@ -153,21 +153,33 @@ public class Cache implements Disposable {
     }
 
     /**
-     * 
-     * @return
+     * Getter for the menu's background
+     * @return the menu's background
      */
     public Texture getMenuBackground() {
         return menuBackground;
     }
 
+    /**
+     * Setter for the menu's background
+     * @param menuBackground nem menu's background that will replaced the old one
+     */
     public void setMenuBackground(Texture menuBackground) {
         this.menuBackground = menuBackground;
     }
 
+    /**
+     * Getter for the hero's animation
+     * @return the hero's animation
+     */
     public HeroAnimation getHeroAnimation() {
         return heroAnimation;
     }
 
+    /**
+     * Setter for the hero's animation
+     * @param heroAnimation new hero's animation that will replace the old one
+     */
     public void setHeroAnimation(HeroAnimation heroAnimation) {
         this.heroAnimation = heroAnimation;
     }
@@ -221,6 +233,9 @@ public class Cache implements Disposable {
     }
 
     @Override
+    /**
+     * Called when the cache is destroyed
+     */
     public void dispose() {
         if( font != null )
             font.dispose();
