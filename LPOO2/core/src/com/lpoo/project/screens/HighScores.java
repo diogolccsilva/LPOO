@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.math.Circle;
 import com.lpoo.project.MyGame;
 import com.lpoo.project.storage.GameFiles;
 
@@ -45,6 +46,11 @@ public class HighScores implements Screen {
     private Texture background;
 
     /**
+     * Circle that represents the back button
+     */
+    private Circle back;
+
+    /**
      * A camera with orthographic projection
      */
     private OrthographicCamera highScoresCamera;
@@ -65,6 +71,8 @@ public class HighScores implements Screen {
      */
     public HighScores(MyGame myGame){
         this.myGame = myGame;
+
+        back = new Circle(107, 127, 32);
 
         highScoresCamera = new OrthographicCamera(highScoresW, highScoresH);
         highScoresCamera.position.set( highScoresW / 2, highScoresH / 2, 0 );
@@ -159,7 +167,34 @@ public class HighScores implements Screen {
 
     }
 
-    public void touchUp(int screenX, int screenY) {
+    /**
+     * Getter for the y's relative position
+     * @param y Y coordinate
+     * @return The y's relative position
+     */
+    public float getRelativeY(int y ) {
+        return highScoresH * y / Gdx.graphics.getHeight();
+    }
 
+    /**
+     * Getter for the x's relative position
+     * @param x x coordinate
+     * @return The x's relative position
+     */
+    public float getRelativeX( int x ) {
+        return highScoresW * x / Gdx.graphics.getWidth();
+    }
+
+    /**
+     * Called when the screen was touched or a mouse button was released
+     * @param screenX The x coordinate, origin is in the upper left corner
+     * @param screenY The y coordinate, origin is in the upper left corner
+     * @return True if the input was processed, False if it wasn't
+     */
+    public boolean touchUp(int screenX, int screenY) {
+        Circle circ = new Circle( getRelativeX(screenX), getRelativeY(screenY), 32);
+        if( circ.overlaps(back))
+            myGame.changeScreen(MyGame.States.MENU);
+        return true;
     }
 }

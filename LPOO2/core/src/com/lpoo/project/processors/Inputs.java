@@ -131,6 +131,16 @@ public class Inputs implements InputProcessor {
                         break;
                 }
                 break;
+            case HIGHSCORE:
+                switch (keycode) {
+                    case Keys.BACK:
+                    case Keys.ESCAPE:
+                        game.changeScreen(MyGame.States.MENU);
+                        return true;
+                    default:
+                        break;
+                }
+                break;
             default:
                 break;
         }
