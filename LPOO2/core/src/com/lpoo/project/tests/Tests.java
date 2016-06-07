@@ -114,6 +114,30 @@ public class Tests {
 
     @Test
     /**
+     * Tests the traps
+     */
+    public void TestTraps() {
+        Game game = new Game(standardHero);
+
+        //All traps have the same size
+        game.setTrap(100, 144, 128, 128, 0);
+
+        assertTrue( game.getTraps()[0] != null );
+
+        game.setTrap(228, 144, 128, 128, -1);
+        game.setTrap(356, 144, 128, 128, game.getTraps().length);
+
+        int nTraps = 0;
+        for( Trap t : game.getTraps() ) {
+            if( t != null )
+                nTraps++;
+        }
+
+        assertEquals( 1, nTraps );
+    }
+
+    @Test
+    /**
      * Tests the projectiles
      */
     public void TestProjectiles() {

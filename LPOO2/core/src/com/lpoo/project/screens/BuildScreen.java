@@ -3,6 +3,7 @@ package com.lpoo.project.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -16,6 +17,8 @@ import com.lpoo.project.animations.Map;
 import com.lpoo.project.animations.TrapAnimation;
 import com.lpoo.project.logic.Game;
 import com.lpoo.project.logic.Trap;
+
+import java.util.logging.FileHandler;
 
 /**
  * Class that creates the screen where the player can build the traps
@@ -111,21 +114,22 @@ public class BuildScreen implements Screen {
         music.setVolume(myGame.getVolume()/100f);
         music.play();
 
-        grid = new Texture("Grid.png");
+        grid = new Texture(Gdx.files.internal("Grid.png"));
 
         Texture g = myGame.getCache().getGoldIcon();
         if( g == null ) {
-            gold = new Texture("Gold.png");
+            gold = new Texture(Gdx.files.internal("Gold.png"));
             myGame.getCache().setGoldIcon(gold);
         } else gold = g;
         g = myGame.getCache().getRobotIcon();
         if( g == null ) {
-            robotIcon = new Texture("Robot_Icon.png");
+            FileHandle file = Gdx.files.internal("Robot_Icon.png");
+            robotIcon = new Texture(Gdx.files.internal("Robot_Icon.png"));
             myGame.getCache().setRobotIcon(robotIcon);
         } else robotIcon = g;
 
-        play = new Texture("PlayButton.png");
-        exit = new Texture("ExitButton.png");
+        play = new Texture(Gdx.files.internal("PlayButton.png"));
+        exit = new Texture(Gdx.files.internal("ExitButton.png"));
 
         trapDraw = new TrapAnimation( game, "Trap\\trap1.atlas", 0, 0 );
 
@@ -279,6 +283,7 @@ public class BuildScreen implements Screen {
         play.dispose();
         exit.dispose();
         grid.dispose();
+        trapDraw.dispose();
         music.stop();
     }
 

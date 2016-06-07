@@ -92,6 +92,7 @@ public class PlayScreen implements Screen {
                     "Hero\\hero1_move_left.atlas", "Hero\\hero1_move_right.atlas", 1 / 10f, 1 / 10f);
             myGame.getCache().setHeroAnimation(hero_animations);
         } else hero_animations = hA;
+        hero_animations.reset( game );
 
         enemies = new LinkedList<>();
         trapAnimations = new TrapAnimation[26];
@@ -157,39 +158,11 @@ public class PlayScreen implements Screen {
         game.getHero().animationStatus(hero_animations.getState());
 
         boolean[] frameEvents = game.getFrameEvents();
-        if (frameEvents[Game.ENEMY_MELEE_SPAWN_INDEX]) {
-            if (myGame.getCache().getEnemyMeleeAnimation() == null) {
-                EnemyAnimation e = new EnemyAnimation(game,"Robot\\robot1_attack.atlas", "Robot\\robot1_walk.atlas", 1 / 5f, 1 / 2f, enemies.size());
-                enemies.add(e);
-                myGame.getCache().setEnemyMeleeAnimation(e);
-            } else {
-                //Clone an existing enemy
-                EnemyAnimation e;
-                try {
-                    e = (EnemyAnimation) myGame.getCache().getEnemyMeleeAnimation().clone();
-                    e.reset(enemies.size());
-                    enemies.add(e);
-                } catch (CloneNotSupportedException c) {
-                    enemies.add(new EnemyAnimation(game, "Robot\\robot1_attack.atlas", "Robot\\robot1_walk.atlas", 1 / 5f, 1 / 2f, enemies.size()));
-                }
-            }
-        } else if (frameEvents[Game.ENEMY_RANGED_SPAWN_INDEX]) {
-            if (myGame.getCache().getEnemyRangedAnimation() == null) {
-                EnemyAnimation e = new EnemyAnimation(game, "Robot\\robot2_attack.atlas", "Robot\\robot2_walk.atlas", 1 / 10f, 1 / 5f, enemies.size());
-                enemies.add(e);
-                myGame.getCache().setEnemyRangedAnimation(e);
-            } else {
-                //Clone an existing enemy
-                EnemyAnimation e;
-                try {
-                    e = (EnemyAnimation) myGame.getCache().getEnemyRangedAnimation().clone();
-                    e.reset(enemies.size());
-                    enemies.add(e);
-                } catch (CloneNotSupportedException c) {
-                    enemies.add(new EnemyAnimation(game, "Robot\\robot2_attack.atlas", "Robot\\robot2_walk.atlas", 1 / 10f, 1 / 5f, enemies.size()));
-                }
-            }
-        }
+        if (frameEvents[Game.ENEMY_MELEE_SPAWN_INDEX])
+            enemies.add(new EnemyAnimation(game, "Robot\\robot1_attack.atlas", "Robot\\robot1_walk.atlas", 1 / 5f, 1 / 2f, enemies.size()));
+        else if (frameEvents[Game.ENEMY_RANGED_SPAWN_INDEX])
+            enemies.add(new EnemyAnimation(game, "Robot\\robot2_attack.atlas", "Robot\\robot2_walk.atlas", 1 / 10f, 1 / 5f, enemies.size()));
+
         if (frameEvents[Game.HERO_PROJECTILE_FIRED_INDEX])
             projectiles.add(new ProjectileAnimation(game, "Projectile\\projectile1.atlas", projectiles.size() - 1));
         if (frameEvents[Game.ENEMY_PROJECTILE_FIRED_INDEX])
@@ -242,9 +215,11 @@ public class PlayScreen implements Screen {
         }
         for (int i = 0; i < enemies.size(); i++) {
             Enemy e = en.get(i);
+            EnemyAnimation e_ani = enemies.get(i);
             enemies.get(i).setIndex(i);
 
             if (e.getState() == Enemy.EnemyStatus.DEAD) {
+                e_ani.dispose();
                 enemies.remove(i);
                 game.eraseEnemy(i);
                 i--;
@@ -252,7 +227,7 @@ public class PlayScreen implements Screen {
             }
 
             //Update texture and enemy
-            TextureRegion robot_text = enemies.get(i).getTexture(delta);
+            TextureRegion robot_text = e_ani.getTexture(delta);
             myGame.batch.draw(robot_text, e.getPosition().x, e.getPosition().y);
             e.animationStatus(enemies.get(i).getState());
 
@@ -278,6 +253,7 @@ public class PlayScreen implements Screen {
 
             //If the projectile's animation has ended or if the bullet is already out of the map
             if (p_ani.isFinished() || p.getPosition().x <= 0) {
+                p_ani.dispose();
                 projectiles.remove(i);
                 game.eraseProjectile(i);
                 i--;

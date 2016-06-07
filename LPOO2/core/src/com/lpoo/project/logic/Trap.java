@@ -120,15 +120,17 @@ public class Trap extends Entity implements Updatable {
     public void collision() {
         LinkedList<Enemy> enemies = game.getEnemies();
         for (Enemy e : enemies) {
-            if (currStatus == TrapStatus.ATTACK && rect.overlaps(e.getRect()))
-                e.hit(stats);
-            else if (currStatus == TrapStatus.WAIT && e.getRect().getX() >= rect.getX() &&
-                    e.getRect().getX() + e.getRect().getWidth() <= rect.getX() + rect.getWidth()) {
-                //In heatUpMode the trap doesn't attack, it just gets ready to attack
-                currStatus = TrapStatus.HEATUP;
-                stateTime = 0;
-                return;
+            if( rect.overlaps(e.getRect())) {
+                if (currStatus == TrapStatus.ATTACK)
+                    e.hit(stats);
+                else if (currStatus == TrapStatus.WAIT) {
+                    //In heatUpMode the trap doesn't attack, it just gets ready to attack
+                    currStatus = TrapStatus.HEATUP;
+                    stateTime = 0;
+                    return;
+                }
             }
+
         }
     }
 }

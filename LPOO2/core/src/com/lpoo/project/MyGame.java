@@ -71,11 +71,6 @@ public class MyGame extends com.badlogic.gdx.Game {
 
         volume = 50;
 
-        inputs = new Inputs(this);
-        menu = new Menu(this);
-        //heroMenu = new HeroMenu(this);
-        setScreen(menu);
-
         heroes = new Vector<>();
         traps = new Vector<>();
         enemies = new Vector<>();
@@ -84,6 +79,11 @@ public class MyGame extends com.badlogic.gdx.Game {
         loadGame();
 
         state = States.MENU;
+
+        inputs = new Inputs(this);
+        menu = new Menu(this);
+        //heroMenu = new HeroMenu(this);
+        setScreen(menu);
     }
 
     public void disposeState() {
@@ -110,8 +110,6 @@ public class MyGame extends com.badlogic.gdx.Game {
     public void changeScreen(States stat) {
         switch (stat) {
             case MENU:
-                if (state == States.PLAY)
-                    game = null;
                 if (state == States.PAUSE) {
                     if (play != null)
                         play.dispose();
@@ -154,6 +152,7 @@ public class MyGame extends com.badlogic.gdx.Game {
                 break;
 
             case GAMEOVER:
+                game = null;
                 disposeState();
                 state = stat;
                 gameOver = new GameOver(this);

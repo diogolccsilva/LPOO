@@ -52,6 +52,14 @@ public abstract class Animator implements Disposable, Cloneable {
         this.index = index;
     }
 
+    public TextureAtlas[] getTextures() {
+        return textures;
+    }
+
+    public Animation[] getAnimations() {
+        return animations;
+    }
+
     /**
      * Getter for the animation's texture
      * @param delta Increasing value
@@ -87,8 +95,9 @@ public abstract class Animator implements Disposable, Cloneable {
             textures[i].dispose();
     }
 
-    public void reset( int index ) {
+    public void reset( Game game, int index ) {
         stateTime = 0;
+        this.game = game;
         this.index = index;
     }
 

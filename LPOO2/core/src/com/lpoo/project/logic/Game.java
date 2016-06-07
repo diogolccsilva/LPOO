@@ -225,6 +225,9 @@ public class Game implements Updatable {
     }
 
     public void setTrap(int x, int y, int width, int height, int index) {
+        if( index < 0 || index >= traps.length )
+            return ;
+
         if (traps[index] == null && money >= trapCost) {
             money -= trapCost;
             trapCost += 40;

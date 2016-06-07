@@ -118,6 +118,15 @@ public class CharacterStats extends Stats {
     }
 
     /**
+     * Setter for the character's movement speed
+     *
+     * @param movSpeed
+     */
+    public void setMovSpeed(float movSpeed) {
+
+        this.movSpeed = movSpeed;
+    }
+    /**
      * Setter for the character's resistance
      *
      * @param resistance

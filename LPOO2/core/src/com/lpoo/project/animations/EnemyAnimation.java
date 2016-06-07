@@ -127,21 +127,5 @@ public class EnemyAnimation extends Animator {
 
         return currAnimation.getKeyFrame( stateTime, true );
     }
-
-    /**
-     * Resets the animation and changes the values of stateTime, state and currAnimation
-     */
-    public void reset( int index ) {
-        super.reset( index );
-        state = EnemyStatus.MOVE_RIGHT;
-        currAnimation = animations[MOVE_INDEX];
-    }
-
-    /**
-     * Clones the enemy's animation
-     */
-    public Object clone() throws CloneNotSupportedException {
-        return super.clone();
-    }
 }
 

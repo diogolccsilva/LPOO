@@ -12,7 +12,6 @@ public class Hero extends Character {
     public enum HeroStatus {
         STILL, ATTACK, MOVE_LEFT, MOVE_RIGHT, DEAD
     }
-
     /**
      * Hero's current status
      */
@@ -57,7 +56,9 @@ public class Hero extends Character {
      */
     public Hero(Game game, int x, int y, CharacterStats stats){
         super(game,x,y,45,88);
-        this.stats = stats;
+
+        this.stats = new CharacterStats(stats.getHealth(), stats.getResistance(), stats.getMovSpeed(), stats.getAttSpeed(), stats.getAttDamage());
+
         state = HeroStatus.STILL;
         nextState = state;
     }
@@ -127,7 +128,7 @@ public class Hero extends Character {
      */
     public void animationStatus(HeroStatus stat) {
         if (state != HeroStatus.DEAD && stat != state) {
-            nextState = stat;
+            //nextState = stat;
             state = stat;
             stateTime = 0;
         }

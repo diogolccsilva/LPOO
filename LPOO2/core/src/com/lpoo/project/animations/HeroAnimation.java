@@ -154,7 +154,9 @@ public class HeroAnimation extends Animator {
                 ( currAnimation == animations[STILL_INDEX] && nextAnimation != animations[STILL_INDEX] ||
                         state == HeroStatus.DEAD)) {
             stateTime = 0;
-            state = stat;
+            if( nextAnimation != animations[STILL_INDEX] )
+                state = stat;
+            else state = stat;
             currAnimation = nextAnimation;
         }
 
@@ -164,10 +166,11 @@ public class HeroAnimation extends Animator {
     /**
      * Resets the animation and changes the values of stateTime, state and currAnimation
      */
-    public void reset( ) {
+    public void reset( Game game ) {
         stateTime = 0;
-        state = HeroStatus.MOVE_LEFT;
-        currAnimation = animations[MOVE_LEFT_INDEX];
+        this.game = game;
+        state = HeroStatus.STILL;
+        currAnimation = animations[STILL_INDEX];
     }
 
     /**

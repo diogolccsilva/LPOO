@@ -38,33 +38,4 @@ public class ProjectileAnimation extends Animator {
         textures[EXPLODE_INDEX] = new TextureAtlas( Gdx.files.internal( path ) );
         animations[EXPLODE_INDEX] = new Animation( explode_speed, textures[EXPLODE_INDEX].getRegions() );
     }
-
-    /**
-     * Function that verifies if the projectile's animation is finished
-     * @return True if the projectile's animation is finished, False if it isn't
-     */
-    public boolean isFinished() {
-        return explode_speed * 4 <= stateTime;
-    }
-
-    /**
-     * Gets the current texture of the animation
-     * @param delta Increasing value
-     * @return TextureRegion to be drawn on the screen
-     */
-    public TextureRegion getTexture( float delta ) {
-        ProjectileStatus stat = game.getProjectiles().get(index).getState();
-        if( stat == ProjectileStatus.HIT_TARGET) {
-            stateTime += delta;
-            return animations[EXPLODE_INDEX].getKeyFrame(stateTime, false);
-        }
-        return animations[EXPLODE_INDEX].getKeyFrames()[0];
-    }
-
-    /**
-     * Clones the hero's animation
-     */
-    public Object clone() throws CloneNotSupportedException {
-        return super.clone();
-    }
 }

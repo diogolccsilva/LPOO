@@ -42,14 +42,6 @@ public class Cache implements Disposable {
      */
     private Texture menuBackground;
     /**
-     * Instance of EnemyAnimation to be used during the playing stage by a melee robot
-     */
-    private EnemyAnimation enemyMeleeAnimation;
-    /**
-     * Instance of EnemyAnimation to be used during the playing stage by a ranged robot
-     */
-    private EnemyAnimation enemyRangedAnimation;
-    /**
      * Instance of HeroAnimation to be used during the playing stage by the hero
      */
     private HeroAnimation heroAnimation;
@@ -65,26 +57,6 @@ public class Cache implements Disposable {
      * Camera used during the menu screen
      */
     private OrthographicCamera menuCamera;
-    /**
-     * Instance of hero used in the game
-     */
-    private Hero hero;
-    /**
-     * Instance of a meleeEnemy used during the game
-     */
-    private Enemy meleeEnemy;
-    /**
-     * Instance of a rangedEnemy used during the game
-     */
-    private Enemy rangedEnemy;
-    /**
-     * Instance of a projectile used during the game
-     */
-    private Projectile projectile;
-    /**
-     * Instance of a trap used during the game
-     */
-    private Trap trap;
 
     private static Cache ourInstance = new Cache();
 
@@ -182,22 +154,6 @@ public class Cache implements Disposable {
         this.menuBackground = menuBackground;
     }
 
-    public EnemyAnimation getEnemyMeleeAnimation() {
-        return enemyMeleeAnimation;
-    }
-
-    public void setEnemyMeleeAnimation(EnemyAnimation enemyAnimation) {
-        this.enemyMeleeAnimation = enemyAnimation;
-    }
-
-    public EnemyAnimation getEnemyRangedAnimation() {
-        return enemyRangedAnimation;
-    }
-
-    public void setEnemyRangedAnimation(EnemyAnimation enemyRangedAnimation) {
-        this.enemyRangedAnimation = enemyRangedAnimation;
-    }
-
     public HeroAnimation getHeroAnimation() {
         return heroAnimation;
     }
@@ -254,86 +210,6 @@ public class Cache implements Disposable {
         this.menuCamera = menuCamera;
     }
 
-    /**
-     * Getter for the instance of hero stored
-     * @return the instance of hero
-     */
-    public Hero getHero() {
-        return hero;
-    }
-
-    /**
-     * Setter for the instance of hero
-     * @param hero hero to be stored
-     */
-    public void setHero(Hero hero) {
-        this.hero = hero;
-    }
-
-    /**
-     * Getter for the instance of the meleeEnemy
-     * @return the meleeEnemy
-     */
-    public Enemy getMeleeEnemy() {
-        return meleeEnemy;
-    }
-
-    /**
-     * Setter fo the instance of meleeEnemy
-     * @param meleeEnemy enemy to be stored
-     */
-    public void setMeleeEnemy(Enemy meleeEnemy) {
-        this.meleeEnemy = meleeEnemy;
-    }
-
-    /**
-     * Getter for the instance of the rangedEnemy
-     * @return the rangedEnemy
-     */
-    public Enemy getRangedEnemy() {
-        return rangedEnemy;
-    }
-
-    /**
-     * Setter fo the instance of rangedEnemy
-     * @param rangedEnemy enemy to be stored
-     */
-    public void setRangedEnemy(Enemy rangedEnemy) {
-        this.rangedEnemy = rangedEnemy;
-    }
-
-    /**
-     * Getter for the instance of projectile stored
-     * @return the projectile
-     */
-    public Projectile getProjectile() {
-        return projectile;
-    }
-
-    /**
-     * Setter for the instance of projectile
-     * @param projectile projectile to be stored
-     */
-    public void setProjectile(Projectile projectile) {
-        this.projectile = projectile;
-    }
-
-    /**
-     * Getter for the instance of trap stored
-     * @return the trap
-     */
-    public Trap getTrap() {
-        return trap;
-    }
-
-    /**
-     * Setter for the instance of trap
-     * @param trap trap to be stored
-     */
-    public void setTrap(Trap trap) {
-        this.trap = trap;
-    }
-
     @Override
     public void dispose() {
         if( font != null )
@@ -346,10 +222,6 @@ public class Cache implements Disposable {
             buildAudio.dispose();
         if( map != null )
             map.dispose();
-        if( enemyMeleeAnimation != null )
-            enemyMeleeAnimation.dispose();
-        if( enemyRangedAnimation != null )
-            enemyRangedAnimation.dispose();
         if( heroAnimation != null )
             heroAnimation.dispose();
         if( menuBackground != null )
