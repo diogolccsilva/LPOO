@@ -27,7 +27,7 @@ public class GameFiles {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        try (Writer writer = new OutputStreamWriter(new FileOutputStream(heroesPath), "UTF-8")) {
+        try (Writer writer = new OutputStreamWriter(Gdx.files.internal(heroesPath).write(false), "UTF-8")) {
             Gson gson = new GsonBuilder().create();
             CharacterStats[] vs = new CharacterStats[stats.size()];
             stats.toArray(vs);
@@ -39,10 +39,11 @@ public class GameFiles {
 
     public static Vector<CharacterStats> loadHeroes() {
         Vector<CharacterStats> stats = new Vector<>();
-        try (Reader reader = new InputStreamReader(new FileInputStream(heroesPath), "UTF-8")) {
+        try (Reader reader = new InputStreamReader(Gdx.files.internal(heroesPath).read(), "UTF-8")) {
             Gson gson = new GsonBuilder().create();
             CharacterStats[] vs = gson.fromJson(reader, CharacterStats[].class);
             stats.addAll(Arrays.asList(vs));
+            System.out.println("leu");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -57,8 +58,7 @@ public class GameFiles {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        try (Writer writer = new OutputStreamWriter(new FileOutputStream(enemiesPath), "UTF-8")) {
+        try (Writer writer = new OutputStreamWriter(Gdx.files.internal(enemiesPath).write(false), "UTF-8")) {
             Gson gson = new GsonBuilder().create();
             CharacterStats[] vs = new CharacterStats[stats.size()];
             stats.toArray(vs);
@@ -70,7 +70,7 @@ public class GameFiles {
 
     public static Vector<CharacterStats> loadEnemies() {
         Vector<CharacterStats> stats = new Vector<>();
-        try (Reader reader = new InputStreamReader(new FileInputStream(enemiesPath), "UTF-8")) {
+        try (Reader reader = new InputStreamReader(Gdx.files.internal(enemiesPath).read(), "UTF-8")) {
             Gson gson = new GsonBuilder().create();
             CharacterStats[] vs = gson.fromJson(reader, CharacterStats[].class);
             stats.addAll(Arrays.asList(vs));
@@ -88,7 +88,7 @@ public class GameFiles {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        try (Writer writer = new OutputStreamWriter(new FileOutputStream(trapsPath), "UTF-8")) {
+        try (Writer writer = new OutputStreamWriter(Gdx.files.internal(trapsPath).write(false), "UTF-8")) {
             Gson gson = new GsonBuilder().create();
             TrapStats[] vs = new TrapStats[stats.size()];
             stats.toArray(vs);
@@ -100,7 +100,7 @@ public class GameFiles {
 
     public static Vector<TrapStats> loadTraps() {
         Vector<TrapStats> stats = new Vector<>();
-        try (Reader reader = new InputStreamReader(new FileInputStream(trapsPath), "UTF-8")) {
+        try (Reader reader = new InputStreamReader(Gdx.files.internal(trapsPath).read(), "UTF-8")) {
             Gson gson = new GsonBuilder().create();
             TrapStats[] vs = gson.fromJson(reader, TrapStats[].class);
             stats.addAll(Arrays.asList(vs));

@@ -7,8 +7,6 @@ package com.lpoo.project.logic;
  */
 public class Enemy extends Character {
 
-
-
     /**
      * Enumeration for the enemy's status
      */
@@ -48,8 +46,7 @@ public class Enemy extends Character {
 
     /**
      * Constructor for the class Enemy
-     *
-     * @param game       Game where will be placed the enemy
+     * @param game       Game where the enemy will be placed
      * @param x          Enemy's x position
      * @param y          Enemy's y position
      * @param health     Enemy's health
@@ -70,7 +67,6 @@ public class Enemy extends Character {
 
     /**
      * Getter for the status
-     *
      * @return enemy's currents status
      */
     public EnemyStatus getState() {
@@ -79,22 +75,33 @@ public class Enemy extends Character {
 
     /**
      * Getter for the status
-     *
      * @return enemy's next status
      */
     public EnemyStatus getNextState() {
         return nextState;
     }
 
+    /**
+     * Setter for the enemy's current status
+     * @param state New status that will replace the old one
+     */
     public void setState(EnemyStatus state) {
         this.state = state;
         stateTime = 0;
     }
 
+    /**
+     * Setter for the enemy's next status
+     * @param nextState New next status that will replace the old one
+     */
     public void setNextState(EnemyStatus nextState) {
         this.nextState = nextState;
     }
 
+    /**
+     * Setter for the enemy's status
+     * @param state Enemy's status that will replace the old ones
+     */
     public void setStates(EnemyStatus state) {
         setState(state);
         setNextState(state);
@@ -103,7 +110,6 @@ public class Enemy extends Character {
 
     /**
      * Function which represents the enemy's status' animation
-     *
      * @param stat Enemy's status
      */
     public void animationStatus(EnemyStatus stat) {
@@ -116,12 +122,12 @@ public class Enemy extends Character {
 
     /**
      * Updates the enemy and current status
+     * @param delta Difference between the last time of call and the current time
      */
     public void update(float delta) { }
 
     /**
      * Verifies if the enemy was hit by a projectile and if its life is 0 or less the enemy dies
-     *
      * @param stats Enemy's properties
      */
     public void hit(Stats stats) {
@@ -132,6 +138,10 @@ public class Enemy extends Character {
         }
     }
 
+    /**
+     * Getter for the enemy's points
+     * @return The enemy's points
+     */
     public int getPoints() {
         return points;
     }

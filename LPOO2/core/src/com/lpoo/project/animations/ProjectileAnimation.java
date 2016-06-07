@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.lpoo.project.logic.Game;
-import com.lpoo.project.logic.Projectile;
 import com.lpoo.project.logic.Projectile.ProjectileStatus;
 
 /**
@@ -49,7 +48,7 @@ public class ProjectileAnimation extends Animator {
     }
     /**
      * Getter for the animation's texture
-     * @param delta Increasing value
+     * @param delta Difference between the last time of call and the current time
      * @return TextureRegion to be drawn on the screen
      */
     public TextureRegion getTexture( float delta ) {

@@ -37,8 +37,9 @@ public class EnemyAnimation extends Animator {
 
     /**
      * Constructor for the EnemyAnimator class
-     * @param attackPath Path where is saved the TextureAtlas of the enemy's attack
-     * @param movePath Path where is saved the TextureAtlas of the enemy moving to the right
+     * @param game Game where the enemy's animations will be placed
+     * @param attackPath Path where the TextureAtlas of the enemy's attack is saved
+     * @param movePath Path where the TextureAtlas of the enemy moving to the right is saved
      * @param attackSpeed Enemy's velocity's attack
      * @param moveSpeed Velocity of the enemy when he is moving
      * @param index Enemy's index
@@ -98,7 +99,7 @@ public class EnemyAnimation extends Animator {
 
     /**
      * Gets the current texture of the animation
-     * @param delta Increasing time
+     * @param delta Difference between the last time of call and the current time
      * @return TextureRegion to be drawn on the screen
      */
     public TextureRegion getTexture( float delta ) {

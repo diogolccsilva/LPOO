@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.lpoo.project.logic.Enemy;
 import com.lpoo.project.logic.Game;
 import com.lpoo.project.logic.Hero.HeroStatus;
 
@@ -59,11 +58,11 @@ public class HeroAnimation extends Animator {
 
     /**
      * Constructor for the class HeroAnimation
-     * @param game Game where will be placed the animation
-     * @param attackPath Path where is saved the TextureAtlas of the hero's attack
-     * @param stillPath Path where is saved the TextureAtlas of the hero stopped
-     * @param leftPath Path where is saved the TextureAtlas of the hero's movement to the left
-     * @param rightPath Path where is saved the TextureAtlas of the hero's movement to the right
+     * @param game Game where the hero's animation will be placed
+     * @param attackPath Path where the TextureAtlas of the hero's attack is saved
+     * @param stillPath Path where the TextureAtlas of the hero stopped is saved
+     * @param leftPath Path where the TextureAtlas of the hero's movement to the left is saved
+     * @param rightPath Path where the TextureAtlas of the hero's movement to the right is saved
      * @param attackSpeed Hero's attack's speed
      * @param moveSpeed Hero's movement's speed
      */
@@ -121,7 +120,7 @@ public class HeroAnimation extends Animator {
 
     /**
      * Getter for the current texture of the animation
-     * @param delta Increasing value
+     * @param delta Difference between the last time of call and the current time
      * @return TextureRegion to be drawn on the screen
      */
     public TextureRegion getTexture( float delta ) {

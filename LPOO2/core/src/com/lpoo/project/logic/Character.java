@@ -2,7 +2,7 @@ package com.lpoo.project.logic;
 
 /**
  * Class that creates the game's characters
- * This class extends the superclass Entity
+ * This class extends the superclass Entity and it implements the Updatable, Movable and Hitable interfaces
  */
 public class Character extends Entity implements Updatable, Hitable, Movable {
 
@@ -18,7 +18,7 @@ public class Character extends Entity implements Updatable, Hitable, Movable {
 
     /**
      * Constructor for the class Constructor
-     * @param game Game where will be placed the character
+     * @param game Game where the character will be placed
      * @param x Character's x position
      * @param y Character's y position
      * @param width Character's width
@@ -32,7 +32,7 @@ public class Character extends Entity implements Updatable, Hitable, Movable {
 
     /**
      * Constructor for the class Constructor
-     * @param game Game where will be placed the character
+     * @param game Game where the character will be placed
      * @param x Character's x position
      * @param y Character's y position
      * @param width Character's width
@@ -60,6 +60,7 @@ public class Character extends Entity implements Updatable, Hitable, Movable {
 
     /**
      * Updates the enemy and current status
+     * @param delta Difference between the last time of call and the current time
      */
     public void update(float delta) { }
 
@@ -72,7 +73,7 @@ public class Character extends Entity implements Updatable, Hitable, Movable {
     /**
      * Allows the hero to move
      * @param dir Movement's direction
-     * @param delta Increasing value
+     * @param delta Difference between the last time of call and the current time
      */
     public void move( int dir, float delta ) {
         rect.x += getVelocity() * delta * dir;
