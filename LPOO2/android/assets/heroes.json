@@ -1,1 +1,1 @@
-[{"health":300,"maxHealth":300,"resistance":100,"movSpeed":200.0,"attSpeed":0.7,"attDamage":20},{"health":100,"maxHealth":100,"resistance":1,"movSpeed":80.0,"attSpeed":0.7,"attDamage":1},{"health":200,"maxHealth":200,"resistance":150,"movSpeed":80.0,"attSpeed":0.7,"attDamage":1}]
+[{"health":500,"maxHealth":500,"resistance":10,"movSpeed":100.0,"attSpeed":1,"attDamage":15},{"health":200,"maxHealth":250,"resistance":5,"movSpeed":120.0,"attSpeed":0.7,"attDamage":20},{"health":100,"maxHealth":100,"resistance":3,"movSpeed":200.0,"attSpeed":0.4,"attDamage":12}]

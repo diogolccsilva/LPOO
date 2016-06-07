@@ -48,7 +48,7 @@ public class MyGame extends com.badlogic.gdx.Game {
     private Vector<TrapStats> traps;
     private Vector<CharacterStats> enemies;
 
-    public enum States {MENU, PLAY, BUILD, EXIT, PAUSE, GAMEOVER, HERO}
+    public enum States {MENU, HERO, BUILD, PLAY, EXIT, PAUSE, GAMEOVER}
 
     private States state;
 
@@ -73,7 +73,6 @@ public class MyGame extends com.badlogic.gdx.Game {
 
         inputs = new Inputs(this);
         menu = new Menu(this);
-        //heroMenu = new HeroMenu(this);
         setScreen(menu);
 
         heroes = new Vector<>();
@@ -122,21 +121,28 @@ public class MyGame extends com.badlogic.gdx.Game {
                 setScreen(menu);
                 break;
 
+            case HERO:
+                disposeState();
+                state = stat;
+                heroMenu = new HeroMenu(this);
+                setScreen(heroMenu);
+                break;
+
+            case BUILD:
+                if (state == States.HERO)
+                    game = new Game(heroes.elementAt(selectedHeroIndex));
+                disposeState();
+                state = stat;
+                build = new BuildScreen(this, game);
+                setScreen(build);
+                break;
+
             case PLAY:
                 if (state != States.PAUSE)
                     play = new PlayScreen(this, game);
                 disposeState();
                 state = stat;
                 setScreen(play);
-                break;
-
-            case BUILD:
-                if (state == States.MENU)
-                    game = new Game(heroes.elementAt(selectedHeroIndex));
-                disposeState();
-                state = stat;
-                build = new BuildScreen(this, game);
-                setScreen(build);
                 break;
 
             case PAUSE:
@@ -154,10 +160,6 @@ public class MyGame extends com.badlogic.gdx.Game {
                 state = stat;
                 gameOver = new GameOver(this);
                 setScreen(gameOver);
-                break;
-
-            case HERO:
-
                 break;
 
             case EXIT:
@@ -195,6 +197,10 @@ public class MyGame extends com.badlogic.gdx.Game {
 
     public Cache getCache() {
         return cache;
+    }
+
+    public void setSelectedHeroIndex(int selectedHeroIndex) {
+        this.selectedHeroIndex = selectedHeroIndex;
     }
 
     public void volumeUp() {

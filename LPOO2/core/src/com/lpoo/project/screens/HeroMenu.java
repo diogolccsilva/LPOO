@@ -71,12 +71,11 @@ public class HeroMenu implements Screen {
     public void touchUp( int screenX, int screenY ) {
         Rectangle rect = new Rectangle( getRelativeX(screenX), h - getRelativeY(screenY), 20, 20 );
         if( rect.overlaps(opt1))
-            opt = 1;
+            opt = 0;
         else if ( rect.overlaps(opt2))
-            opt = 2;
+            opt = 1;
         else if ( rect.overlaps(opt3))
-            opt = 3;
-        else opt = -1;
+            opt = 2;
     }
 
     @Override
@@ -115,11 +114,16 @@ public class HeroMenu implements Screen {
         text.draw(myGame.batch, "ATTACK SPEED: " + 0.4, 670, 113);
         text.draw(myGame.batch, "ATTACK DAMAGE: " + 12, 670, 78);
 
-        myGame.batch.draw( opt == 3 ? selected: notSelected, 619, 41, 700, 200 );
-        myGame.batch.draw( opt == 2 ? selected: notSelected, 619, 282, 700, 200 );
-        myGame.batch.draw( opt == 1 ? selected: notSelected, 619, 523, 700, 200 );
+        myGame.batch.draw( opt == 2 ? selected: notSelected, 619, 41, 700, 200 );
+        myGame.batch.draw( opt == 1 ? selected: notSelected, 619, 282, 700, 200 );
+        myGame.batch.draw( opt == 0 ? selected: notSelected, 619, 523, 700, 200 );
 
         myGame.batch.end();
+
+        if( opt != -1 ) {
+            myGame.setSelectedHeroIndex(opt);
+            myGame.changeScreen(MyGame.States.BUILD);
+        }
     }
 
     @Override

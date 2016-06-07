@@ -165,10 +165,11 @@ public class HeroAnimation extends Animator {
     /**
      * Resets the animation and changes the values of stateTime, state and currAnimation
      */
-    public void reset( Game game ) {
+    public void reset( Game game, float attack_speed ) {
         stateTime = 0;
         this.game = game;
         state = HeroStatus.STILL;
+        this.attack_speed = attack_speed;
         currAnimation = animations[STILL_INDEX];
     }
 

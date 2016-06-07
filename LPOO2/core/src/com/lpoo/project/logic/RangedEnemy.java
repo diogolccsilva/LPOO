@@ -32,7 +32,7 @@ public class RangedEnemy extends Enemy {
                 break;
             case ATTACK:
                 if( stateTime >= stats.getAttSpeed() ) {
-                    stateTime = 0;
+                    stateTime -= stats.getAttSpeed();
                     attacked = false;
                 } else if( stateTime >= attack_time && !attacked ) {
                     Projectile projectile = new Projectile(game, rect.x + width, rect.y + 10, 10, 10, 5, range, false);

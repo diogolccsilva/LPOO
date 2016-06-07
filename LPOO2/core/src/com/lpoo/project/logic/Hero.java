@@ -24,7 +24,6 @@ public class Hero extends Character {
      * Status "time of life"
      */
     private float stateTime;
-
     /**
      * Hero's time to be dead
      */
@@ -132,7 +131,6 @@ public class Hero extends Character {
         }
     }
 
-    @Override
     /**
      * Updates the hero and current status
      * @param delta Difference between the last time of call and the current time

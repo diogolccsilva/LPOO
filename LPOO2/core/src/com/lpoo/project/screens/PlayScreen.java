@@ -89,10 +89,12 @@ public class PlayScreen implements Screen {
         HeroAnimation hA = myGame.getCache().getHeroAnimation();
         if (hA == null) {
             hero_animations = new HeroAnimation(game, "Hero\\hero1_fire.atlas", "Hero\\hero1_still.atlas",
-                    "Hero\\hero1_move_left.atlas", "Hero\\hero1_move_right.atlas", 1 / 10f, 1 / 10f);
+                    "Hero\\hero1_move_left.atlas", "Hero\\hero1_move_right.atlas", game.getHero().getStats().getAttSpeed() / 7, 1 / 10f);
             myGame.getCache().setHeroAnimation(hero_animations);
-        } else hero_animations = hA;
-        hero_animations.reset( game );
+        } else {
+            hero_animations = hA;
+            hero_animations.reset(game, game.getHero().getStats().getAttSpeed() / 7);
+        }
 
         enemies = new LinkedList<>();
         trapAnimations = new TrapAnimation[26];
