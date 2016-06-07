@@ -123,18 +123,15 @@ public class MyGame extends com.badlogic.gdx.Game {
                 break;
 
             case PLAY:
-                if (state != States.PAUSE) {
-                    if (game == null)
-                        game = new Game(heroes.elementAt(selectedHeroIndex));
+                if (state != States.PAUSE)
                     play = new PlayScreen(this, game);
-                }
                 disposeState();
                 state = stat;
                 setScreen(play);
                 break;
 
             case BUILD:
-                if (game == null)
+                if (state == States.MENU)
                     game = new Game(heroes.elementAt(selectedHeroIndex));
                 disposeState();
                 state = stat;
@@ -152,7 +149,6 @@ public class MyGame extends com.badlogic.gdx.Game {
                 break;
 
             case GAMEOVER:
-                game = null;
                 GameFiles.saveScore(game.getScore());
                 disposeState();
                 state = stat;

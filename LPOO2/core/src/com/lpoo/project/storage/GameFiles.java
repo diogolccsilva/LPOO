@@ -3,19 +3,21 @@ package com.lpoo.project.storage;
 import java.io.*;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Vector;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.google.gson.*;
 import com.lpoo.project.logic.CharacterStats;
 import com.lpoo.project.logic.TrapStats;
 
 public class GameFiles {
 
-    private static String localPath = Gdx.files.getLocalStoragePath();
-    private static String heroesPath = localPath + "heroes.json";
-    private static String enemiesPath = localPath + "enemies.json";
-    private static String trapsPath = localPath + "traps.json";
+    private static String heroesPath = "heroes.json";
+    private static String enemiesPath = "enemies.json";
+    private static String trapsPath = "traps.json";
+    private static String scoresPath = "Data/highscores.txt";
 
     public static void saveHeroes(Vector<CharacterStats> stats) {
         File file = new File(heroesPath);
@@ -106,5 +108,48 @@ public class GameFiles {
             e.printStackTrace();
         }
         return stats;
+    }
+
+    public static void saveScore(int score){
+        FileHandle file = Gdx.files.local(scoresPath);
+        Vector<Integer> v = new Vector<>();
+        try {
+            BufferedReader reader = file.reader(Integer.SIZE);
+            String line;
+            while ((line = reader.readLine()) != null) {
+                v.add(Integer.parseInt(line));
+            }
+            v.add(score);
+            Collections.sort(v);
+            Collections.reverse(v);
+            file.writeString("",false);
+            for (int i = 0;i<v.size();i++){
+                file.writeString(v.elementAt(i).toString()+'\n',true);
+            }
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    public static Vector<Integer> loadScore(int top){
+        FileHandle file = Gdx.files.local(scoresPath);
+        if (!file.exists()){
+            file.write(false);
+        }
+        Vector<Integer> v = new Vector<>();
+        try {
+            BufferedReader reader = file.reader(Integer.SIZE);
+            String line;
+            while ((line = reader.readLine()) != null) {
+                v.add(Integer.parseInt(line));
+                top--;
+                if (top<1)
+                    break;
+            }
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+        System.out.println(v);
+        return v;
     }
 }
