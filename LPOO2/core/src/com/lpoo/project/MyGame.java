@@ -380,22 +380,41 @@ public class MyGame extends com.badlogic.gdx.Game {
         return volume;
     }
 
+    /**
+     * Getter for the game's heroes
+     * @return The game's heroes
+     */
     public Vector<CharacterStats> getHeroes() {
         return heroes;
     }
 
+    /**
+     * Adds a hero to the vector of game's heroes
+     * @param stats New hero's properties
+     */
     public void addHero(CharacterStats stats) {
         heroes.add(stats);
     }
 
+    /**
+     * Adds a enemy to the vector of game's enemies
+     * @param stats New enemy's properties
+     */
     public void addEnemy(CharacterStats stats) {
         enemies.add(stats);
     }
 
+    /**
+     * Adds a new trap to the game's traps
+     * @param stats New trap's properties
+     */
     public void addTrap(TrapStats stats) {
         traps.add(stats);
     }
 
+    /**
+     * Creates a new Hero
+     */
     public void newHero() {
         addHero(new CharacterStats(100, 1, 80f, 0.7f, 1));
         int damage = 10;
@@ -407,23 +426,36 @@ public class MyGame extends com.badlogic.gdx.Game {
         addTrap(new TrapStats(damage, attackSpeed, rechargeSpeed, heatUpSpeed, timeAttack, cost));
     }
 
+    /**
+     * Function that saves the game into files
+     */
     public void saveGame() {
         GameFiles.saveHeroes(heroes);
         GameFiles.saveEnemies(enemies);
         GameFiles.saveTraps(traps);
     }
 
+    /**
+     * Function that loads a game from files
+     */
     public void loadGame() {
         heroes = GameFiles.loadHeroes();
         enemies = GameFiles.loadEnemies();
         traps = GameFiles.loadTraps();
     }
 
+    /**
+     * Setter for the main game's status
+     * @param state Main game's status to replace the old one
+     */
     public void setStatus (States state){
         this.state = state;
     }
 
     @Override
+    /**
+     * Releases all textures of the game
+     */
     public void dispose () {
         if (play != null)
             play.dispose();

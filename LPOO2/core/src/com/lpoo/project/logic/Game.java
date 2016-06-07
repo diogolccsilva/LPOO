@@ -273,6 +273,14 @@ public class Game implements Updatable {
     }
 
     /**
+     * Setter for the hero's amount of money
+     * @param money New hero's amount of money
+     */
+    public void setMoney(int money) {
+        this.money = money;
+    }
+
+    /**
      * Getter for the hero's amount of money
      * @return The hero's current amount of money
      */
