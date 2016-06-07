@@ -18,8 +18,6 @@ import com.lpoo.project.animations.TrapAnimation;
 import com.lpoo.project.logic.Game;
 import com.lpoo.project.logic.Trap;
 
-import java.util.logging.FileHandler;
-
 /**
  * Class that creates the screen where the player can build the traps
  * This class implements the interface Screen
@@ -27,7 +25,7 @@ import java.util.logging.FileHandler;
 public class BuildScreen implements Screen {
 
     /**
-     *
+     * Principal game where the screen will be created
      */
     private MyGame myGame;
     /**
@@ -38,41 +36,89 @@ public class BuildScreen implements Screen {
      * Build screen's map
      */
     private Map map;
-
-    /**
-     * A camera with orthographic projection
-     */
-    //private OrthographicCamera camera;
-    /**
-     *
-     */
-    //private OrthographicCamera hudCamera;
-
     /**
      * Music of the build screen
      */
     private Music music;
 
+    /**
+     * Renders bitmap fonts
+     */
     private BitmapFont font;
 
+    /**
+     * Array with the button's rectangles
+     */
     private Rectangle[] rectangles;
+    /**
+     * Rectangle of the advance's button
+     */
     private Rectangle advance;
+    /**
+     * Rectangle of the back's button
+     */
     private Rectangle back;
 
+    /**
+     * Grid's texture
+     */
     private Texture grid;
+    /**
+     * Gold's texture
+     */
     private Texture gold;
+    /**
+     * Texture of the robot's icon
+     */
     private Texture robotIcon;
+    /**
+     * Play's button's texture
+     */
     private Texture play;
+    /**
+     * Exit's button's texture
+     */
     private Texture exit;
+    /**
+     * Trap's animation
+     */
     private Animator trapDraw;
 
+    /**
+     * Screen's x position
+     */
     private int xPos = 700;
+    /**
+     * Screen's y position
+     */
     private static final int yPos = 400;
-    private int screenWidth, screenHeight;
+    /**
+     * Screen's width
+     */
+    private int screenWidth;
+    /**
+     * Screen's height
+     */
+    private int screenHeight;
 
-    private int xTouch = 0, yTouch = 0;
+    /**
+     * X touch's coordinate
+     */
+    private int xTouch = 0;
+    /**
+     * Y touch's coordinate
+     */
+    private int yTouch = 0;
+    /**
+     * Boolean that represents if the traps were selected
+     */
     private boolean select = false;
 
+    /**
+     * Constructor for the class BuildScreen
+     * @param myGame Principal game where the screen will be placed
+     * @param game Game where the screen will be placed
+     */
     public BuildScreen( MyGame myGame, Game game ) {
         this.myGame = myGame;
         this.game = game;
@@ -144,6 +190,11 @@ public class BuildScreen implements Screen {
         }
     }
 
+    /**
+     * Called when the screen was touched or a mouse button was pressed
+     * @param screenX The x coordinate, origin is in the upper left corner
+     * @param screenY The y coordinate, origin is in the upper left corner
+     */
     public void touchDown( int screenX, int screenY ) {
         Vector2 pos = getRelativePosition( screenX, screenY );
         xTouch = (int) pos.x;
@@ -151,6 +202,11 @@ public class BuildScreen implements Screen {
         select = true;
     }
 
+    /**
+     * Called when a finger or the mouse was dragged
+     * @param screenX The x coordinate, origin is in the upper left corner
+     * @param screenY The y coordinate, origin is in the upper left corner
+    */
     public void touchDragged( int screenX, int screenY ) {
         Vector2 pos = getRelativePosition( screenX, screenY );
         int deltaX = xTouch - (int) pos.x;
@@ -175,6 +231,11 @@ public class BuildScreen implements Screen {
         yTouch = (int)pos.y;
     }
 
+    /**
+     * Called when a finger was lifted or a mouse button was released
+     * @param screenX The x coordinate, origin is in the upper left corner
+     * @param screenY The y coordinate, origin is in the upper left corner
+     */
     public void touchUp( int screenX, int screenY ) {
         Vector2 pos = getRelativePosition( screenX, screenY );
         xTouch = (int)pos.x;
@@ -195,21 +256,40 @@ public class BuildScreen implements Screen {
         select = false;
     }
 
+    /**
+     * Getter for the relative position
+     * @param x X coordinate
+     * @param y Y coordinate
+     * @return The relative position
+     */
     public Vector2 getRelativePosition( int x, int y ) {
         return new Vector2( xPos + (myGame.w * x / screenWidth) - myGame.w / 2,
                             yPos - (myGame.h * y / screenHeight) + myGame.h / 2 );
     }
 
+    /**
+     * Getter for the relative position of the screen
+     * @param x X coordinate
+     * @param y Y coordinate
+     * @return The relative position of the screen
+     */
     public Vector2 getRelativePositionScreen( int x, int y ) {
         return new Vector2( myGame.w * x / screenWidth, myGame.h  - myGame.h * y / screenHeight );
     }
 
     @Override
+    /**
+     * Called when this screen becomes the current screen for a Game
+     */
     public void show() {
 
     }
 
     @Override
+    /**
+     * Called when the screen should render itself
+     * @param delta Difference between the last time of call and the current time
+     */
     public void render(float delta) {
         //Clear screen with certain color
         Gdx.gl.glClearColor((float)0.5, (float)0.5, (float)0.5, 1);
@@ -257,27 +337,44 @@ public class BuildScreen implements Screen {
     }
 
     @Override
+    /**
+     * Called when the screen is resized
+     * @param width Screen's width
+     * @param height Screen's height
+     */
     public void resize(int width, int height) {
         screenHeight = height;
         screenWidth = width;
     }
 
     @Override
+    /**
+     * Called when the screen is paused
+     */
     public void pause() {
         music.pause();
     }
 
     @Override
+    /**
+     * Called when the screen is resumed from a paused state
+     */
     public void resume() {
         music.play();
     }
 
     @Override
+    /**
+     * Hide's the screen
+     */
     public void hide() {
 
     }
 
     @Override
+    /**
+     * Called when the screen is destroyed
+     */
     public void dispose() {
         play.dispose();
         exit.dispose();
@@ -286,6 +383,10 @@ public class BuildScreen implements Screen {
         music.stop();
     }
 
+    /**
+     * Setter for the music's volume
+     * @param v New volume that will replace the old one
+     */
     public void setVolume(float v) {
         music.setVolume(v);
     }

@@ -37,8 +37,7 @@ public class Trap extends Entity implements Updatable {
 
     /**
      * Constructor for the class Trap
-     *
-     * @param game   Game where will be placed the trap
+     * @param game   Game where the trap will be placed
      * @param x      Trap's x position
      * @param y      Trap's y position
      * @param width  Trap's width
@@ -86,7 +85,7 @@ public class Trap extends Entity implements Updatable {
     @Override
     /**
      * Updates the trap and treats the possible collision
-     * @param delta Increasing value
+     * @param delta Difference between the last time of call and the current time
      */
     public void update(float delta) {
         float tmp = stateTime + delta;
