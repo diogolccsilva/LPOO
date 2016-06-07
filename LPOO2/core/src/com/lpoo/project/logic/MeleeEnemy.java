@@ -26,7 +26,6 @@ public class MeleeEnemy extends Enemy {
         super(game, x, y, width, height, stats);
         points = 5;
         attack_time = 0.4f;
-        stats.setAttSpeed(1.4f);
     }
 
     /**

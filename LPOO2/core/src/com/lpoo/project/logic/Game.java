@@ -2,6 +2,7 @@ package com.lpoo.project.logic;
 
 import java.util.LinkedList;
 import java.util.Random;
+import java.util.Vector;
 
 /**
  * Class that provides the creation of the game
@@ -38,7 +39,9 @@ public class Game implements Updatable {
     /**
      * Enumeration about the game's status
      */
-    public enum GameStatus {BUILDING, PLAYING, LOST}
+    public enum GameStatus {
+        BUILDING, PLAYING, LOST
+    }
 
     /**
      * Game's status
@@ -49,6 +52,11 @@ public class Game implements Updatable {
      * Game's hero
      */
     private Hero hero;
+
+    /**
+     * Vector with the enemies stats (melee and ranged)
+     */
+    private Vector<CharacterStats> enemiesStats;
 
     /**
      * LinkedList with all the enemies of the game
@@ -92,18 +100,7 @@ public class Game implements Updatable {
      * Time difference between enemies
      */
     private int diffNextEnemy = 5;
-    /**
-     * Enemies' resistance
-     */
-    private final int enemyResist = 20;
-    /**
-     * Enemies' health
-     */
-    private final int enemyHealth = 50;
-    /**
-     * Enemies' strength
-     */
-    private final int enemyStrength = 20;
+
     /**
      * Enemies' resistance per wave
      */
@@ -132,9 +129,11 @@ public class Game implements Updatable {
 
     /**
      * Constructor for the class Game
+     *
      * @param heroStats Hero's properties
+     * @param enemiesStats Enemies' properties
      */
-    public Game(CharacterStats heroStats) {
+    public Game(CharacterStats heroStats, Vector<CharacterStats> enemiesStats) {
         frameEvents = new boolean[4];
         frameEvents[ENEMY_MELEE_SPAWN_INDEX] = false;
         frameEvents[ENEMY_RANGED_SPAWN_INDEX] = false;
@@ -151,12 +150,15 @@ public class Game implements Updatable {
         traps = new Trap[26];
         projectiles = new LinkedList<>();
 
+        this.enemiesStats = enemiesStats;
+
         state = GameStatus.BUILDING;
         stateTime = 0;
     }
 
     /**
      * Getter for the game's status
+     *
      * @return The game's status
      */
     public GameStatus getState() {
@@ -165,6 +167,7 @@ public class Game implements Updatable {
 
     /**
      * Getter for the wave variable
+     *
      * @return the current wave being played
      */
     public int getWave() {
@@ -173,6 +176,7 @@ public class Game implements Updatable {
 
     /**
      * Updates the game  playing
+     *
      * @param delta Difference between the last time of call and the current time
      */
     public void updatePlaying(float delta) {
@@ -206,14 +210,14 @@ public class Game implements Updatable {
             Enemy e;
             Random rand = new Random();
             int type = rand.nextInt(2);
+            CharacterStats temp = enemiesStats.elementAt(type);
+            CharacterStats stats = new CharacterStats(temp.getAttDamage() + healthPerWave * wave, temp.getResistance() + resistPerWave * wave, temp.getMovSpeed(), temp.getAttSpeed(), temp.getAttDamage() + strengthPerWave * wave);
             if (type == 0) {
-                e = new MeleeEnemy(this, 50, 144, enemyHealth + healthPerWave * wave,
-                        enemyResist + resistPerWave * wave, enemyStrength + strengthPerWave * wave);
+                e = new MeleeEnemy(this, 50, 144, stats);
                 frameEvents[ENEMY_MELEE_SPAWN_INDEX] = true;
 
             } else {
-                e = new RangedEnemy(this, 50, 144, enemyHealth + healthPerWave * wave,
-                        enemyResist + resistPerWave * wave, enemyStrength + strengthPerWave * wave);
+                e = new RangedEnemy(this, 50, 144, stats);
                 frameEvents[ENEMY_RANGED_SPAWN_INDEX] = true;
             }
             addEnemy(e);
@@ -224,6 +228,7 @@ public class Game implements Updatable {
 
     /**
      * Updates the game and the current status
+     *
      * @param delta Difference between the last time of call and the current time
      */
     public void update(float delta) {
@@ -236,6 +241,7 @@ public class Game implements Updatable {
 
     /**
      * Changes the current status of the game
+     *
      * @param status New status that will replace the old one
      */
     public void changeState(GameStatus status) {
@@ -250,6 +256,7 @@ public class Game implements Updatable {
 
     /**
      * Getter for the frame's events
+     *
      * @return An array with the boolean values of frame's events
      */
     public boolean[] getFrameEvents() {
@@ -267,6 +274,7 @@ public class Game implements Updatable {
 
     /**
      * Getter for the hero
+     *
      * @return The game's hero
      */
     public Hero getHero() {
@@ -275,6 +283,7 @@ public class Game implements Updatable {
 
     /**
      * Setter for the hero's amount of money
+     *
      * @param money New hero's amount of money
      */
     public void setMoney(int money) {
@@ -283,6 +292,7 @@ public class Game implements Updatable {
 
     /**
      * Getter for the hero's amount of money
+     *
      * @return The hero's current amount of money
      */
     public int getMoney() {
@@ -291,6 +301,7 @@ public class Game implements Updatable {
 
     /**
      * Getter for the hero's current score
+     *
      * @return The hero's current score
      */
     public int getScore() {
@@ -299,6 +310,7 @@ public class Game implements Updatable {
 
     /**
      * Getter for the number of enemies that won
+     *
      * @return The number of enemies that won
      */
     public int getnEnemiesWon() {
@@ -307,6 +319,7 @@ public class Game implements Updatable {
 
     /**
      * Setter for the number of enemies the have survived
+     *
      * @param nEnemiesWon value to replace nEnemiesWon
      */
     public void setnEnemiesWon(int nEnemiesWon) {
@@ -315,6 +328,7 @@ public class Game implements Updatable {
 
     /**
      * Getter for the maximum number of enemies that is needed to the enemies won the game
+     *
      * @return The maximum number of enemies that is needed to the enemies won the game
      */
     public static int getMaxEnemiesWon() {
@@ -323,6 +337,7 @@ public class Game implements Updatable {
 
     /**
      * Getter for the game's enemies
+     *
      * @return The game's enemies
      */
     public LinkedList<Enemy> getEnemies() {
@@ -331,6 +346,7 @@ public class Game implements Updatable {
 
     /**
      * Getter for the projectiles
+     *
      * @return The projectiles
      */
     public LinkedList<Projectile> getProjectiles() {
@@ -339,6 +355,7 @@ public class Game implements Updatable {
 
     /**
      * Getter for the number of projectiles
+     *
      * @return The number of projectiles
      */
     public int getnNewProjectiles() {
@@ -347,6 +364,7 @@ public class Game implements Updatable {
 
     /**
      * Getter for the game's traps
+     *
      * @return The game's traps
      */
     public final Trap[] getTraps() {
@@ -355,6 +373,7 @@ public class Game implements Updatable {
 
     /**
      * Getter for the number of enemies that spawned in a certain wave
+     *
      * @return the number of enemies spawned
      */
     public int getEnemiesSpawned() {
@@ -363,6 +382,7 @@ public class Game implements Updatable {
 
     /**
      * Setter for the number of enemies spawned
+     *
      * @param enemiesSpawned value to be replaced as the number of enemies spawned
      */
     public void setEnemiesSpawned(int enemiesSpawned) {
@@ -371,6 +391,7 @@ public class Game implements Updatable {
 
     /**
      * Adds a enemy to the LinkedList of enemies
+     *
      * @param enemy New enemy to be added
      */
     public void addEnemy(Enemy enemy) {
@@ -379,8 +400,9 @@ public class Game implements Updatable {
 
     /**
      * Adds a projectile to the LinkedList of projectiles
+     *
      * @param projectile New projectile to be added
-     * @param heroSide Reprsents the hero sido to shoot the gun
+     * @param heroSide   Reprsents the hero sido to shoot the gun
      */
     public void addProjectile(Projectile projectile, boolean heroSide) {
         if (heroSide)
@@ -394,6 +416,7 @@ public class Game implements Updatable {
 
     /**
      * Erases an enemy from a certain index
+     *
      * @param index Index where the enemy will be erased
      */
     public void eraseEnemy(int index) {
@@ -404,13 +427,14 @@ public class Game implements Updatable {
 
     /**
      * Erses an projectile from a certain index
+     *
      * @param index Index where the projectile will be erased
      */
     public void eraseProjectile(int index) {
         projectiles.remove(index);
     }
 
-    public void heroMove( int dir ) {
+    public void heroMove(int dir) {
         hero.move(dir);
     }
 
@@ -425,15 +449,16 @@ public class Game implements Updatable {
     /**
      * Setter for the trap
      * This functions allows the user to put a trap wherever it wants
-     * @param x Trap's x position
-     * @param y Trap's y position
-     * @param width Trap's width
+     *
+     * @param x      Trap's x position
+     * @param y      Trap's y position
+     * @param width  Trap's width
      * @param height Trap's height
-     * @param index Trap's index
+     * @param index  Trap's index
      */
     public void setTrap(int x, int y, int width, int height, int index) {
-        if( index < 0 || index >= traps.length )
-            return ;
+        if (index < 0 || index >= traps.length)
+            return;
 
         if (traps[index] == null && money >= trapCost) {
             money -= trapCost;

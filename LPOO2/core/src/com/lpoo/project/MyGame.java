@@ -241,7 +241,7 @@ public class MyGame extends com.badlogic.gdx.Game {
                 break;
             case BUILD:
                 if (state == States.HERO)
-                    game = new Game(heroes.elementAt(selectedHeroIndex));
+                    game = new Game(heroes.elementAt(selectedHeroIndex),enemies);
                 disposeState();
                 state = stat;
                 build = new BuildScreen(this, game);

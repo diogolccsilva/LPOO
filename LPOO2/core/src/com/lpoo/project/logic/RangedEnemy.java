@@ -38,7 +38,6 @@ public class RangedEnemy extends Enemy {
         shotRange = new Rectangle( rect.x + width, rect.y, range, rect.height);
         attack_time = 0.3f;
         points = 10;
-        stats.setAttSpeed(0.6f);
     }
 
     /**
