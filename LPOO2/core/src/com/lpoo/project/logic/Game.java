@@ -38,7 +38,7 @@ public class Game implements Updatable {
 
     private int money = 0;
     private int trapCost = 100;
-    private int score;
+    private int score = 0;
 
     public Game(CharacterStats heroStats) {
         frameEvents = new boolean[4];
@@ -209,6 +209,7 @@ public class Game implements Updatable {
 
     public void eraseEnemy(int index) {
         money += 20;
+        score += enemies.get(index).getPoints();
         enemies.remove(index);
     }
 
@@ -234,6 +235,10 @@ public class Game implements Updatable {
             money += trapCost;
             traps[index] = null;
         }
+    }
+
+    public void lose() {
+        state = GameStatus.LOST;
     }
 
 }

@@ -78,6 +78,8 @@ public class Inputs implements InputProcessor {
                     case Keys.N:
                         game.newHero();
                         break;
+                    case Keys.L:
+                        game.getPlayScreen().getGame().lose();
                     default:
                         break;
                 }

@@ -3,9 +3,15 @@ package com.lpoo.project.storage;
 import java.io.*;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Vector;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.files.FileHandle;
 import com.google.gson.*;
+import com.lpoo.project.MyGame;
 import com.lpoo.project.logic.Character;
 import com.lpoo.project.logic.CharacterStats;
 import com.lpoo.project.logic.Enemy;
@@ -17,6 +23,7 @@ public class GameFiles {
     static String heroesPath = "heroes.json";
     static String enemiesPath = "enemies.json";
     static String trapsPath = "traps.json";
+    static String scoresPath = "Data/highscores.txt";
 
     public static void saveHeroes(Vector<CharacterStats> stats) {
         File file = new File(heroesPath);
@@ -39,6 +46,7 @@ public class GameFiles {
     public static Vector<CharacterStats> loadHeroes() {
         Vector<CharacterStats> stats = new Vector<>();
         try (Reader reader = new InputStreamReader(new FileInputStream(heroesPath), "UTF-8")) {
+            System.out.println("It worked");
             Gson gson = new GsonBuilder().create();
             CharacterStats[] vs = gson.fromJson(reader, CharacterStats[].class);
             stats.addAll(Arrays.asList(vs));
@@ -106,5 +114,45 @@ public class GameFiles {
             e.printStackTrace();
         }
         return stats;
+    }
+
+    public static void saveScore(int score){
+        FileHandle file = Gdx.files.local(scoresPath);
+        Vector<Integer> v = new Vector<>();
+        try {
+            BufferedReader reader = file.reader(Integer.SIZE);
+            String line;
+            while ((line = reader.readLine()) != null) {
+                v.add(Integer.parseInt(line));
+            }
+            v.add(score);
+            Collections.sort(v);
+            Collections.reverse(v);
+            file.writeString("",false);
+            for (int i = 0;i<v.size();i++){
+                file.writeString(v.elementAt(i).toString()+'\n',true);
+            }
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    public static Vector<Integer> loadScore(int top){
+        FileHandle file = Gdx.files.local(scoresPath);
+        Vector<Integer> v = new Vector<>();
+        try {
+            BufferedReader reader = file.reader(Integer.SIZE);
+            String line;
+            while ((line = reader.readLine()) != null) {
+                v.add(Integer.parseInt(line));
+                top--;
+                if (top<1)
+                    break;
+            }
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+        System.out.println(v);
+        return v;
     }
 }

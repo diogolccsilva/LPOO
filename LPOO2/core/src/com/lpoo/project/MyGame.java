@@ -70,18 +70,18 @@ public class MyGame extends com.badlogic.gdx.Game {
 
         volume = 50;
 
-        inputs = new Inputs(this);
-        menu = new Menu(this);
-        setScreen(menu);
-
         heroes = new Vector<>();
         traps = new Vector<>();
         enemies = new Vector<>();
         selectedHeroIndex = 0;
-
         loadGame();
 
+        inputs = new Inputs(this);
+        menu = new Menu(this);
+        setScreen(menu);
+
         state = States.MENU;
+        GameFiles.loadScore(10);
     }
 
     public void disposeState() {
@@ -152,6 +152,7 @@ public class MyGame extends com.badlogic.gdx.Game {
                 break;
 
             case GAMEOVER:
+                GameFiles.saveScore(game.getScore());
                 disposeState();
                 state = stat;
                 gameOver = new GameOver(this);

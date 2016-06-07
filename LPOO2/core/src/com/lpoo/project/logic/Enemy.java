@@ -7,6 +7,8 @@ package com.lpoo.project.logic;
  */
 public class Enemy extends Character {
 
+
+
     /**
      * Enumeration for the enemy's status
      */
@@ -38,6 +40,11 @@ public class Enemy extends Character {
      * Boolean which represents if the enemy was attacked or not
      */
     protected boolean attacked;
+
+    /**
+     * Number of points that the enemy gives when it's killed
+     */
+    protected int points;
 
     /**
      * Constructor for the class Enemy
@@ -123,6 +130,10 @@ public class Enemy extends Character {
             state = EnemyStatus.DEAD;
             nextState = EnemyStatus.DEAD;
         }
+    }
+
+    public int getPoints() {
+        return points;
     }
 
 }
