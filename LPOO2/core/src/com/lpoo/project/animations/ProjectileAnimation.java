@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.lpoo.project.logic.Game;
+import com.lpoo.project.logic.Projectile;
 import com.lpoo.project.logic.Projectile.ProjectileStatus;
 
 /**
@@ -35,7 +36,27 @@ public class ProjectileAnimation extends Animator {
     public ProjectileAnimation(Game game, String path, int index ) {
         super(game, ARRAY_SIZE, ARRAY_SIZE, index);
 
-        textures[EXPLODE_INDEX] = new TextureAtlas( Gdx.files.internal( path ) );
-        animations[EXPLODE_INDEX] = new Animation( explode_speed, textures[EXPLODE_INDEX].getRegions() );
+        textures[EXPLODE_INDEX] = new TextureAtlas(Gdx.files.internal(path));
+        animations[EXPLODE_INDEX] = new Animation(explode_speed, textures[EXPLODE_INDEX].getRegions());
+    }
+
+    /**
+     * Verifies if the animation already finished
+     * @return True if the animation was already finished, False if not
+     */
+    public boolean isFinished() {
+        return explode_speed * 4 <= stateTime;
+    }
+    /**
+     * Getter for the animation's texture
+     * @param delta Increasing value
+     * @return TextureRegion to be drawn on the screen
+     */
+    public TextureRegion getTexture( float delta ) {
+        if(  game.getProjectiles().get(index).getState() == ProjectileStatus.HIT_TARGET) {
+            stateTime += delta;
+            return animations[EXPLODE_INDEX].getKeyFrame(stateTime, false);
+        }
+        return animations[EXPLODE_INDEX].getKeyFrames()[0];
     }
 }

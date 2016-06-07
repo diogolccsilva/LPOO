@@ -47,7 +47,7 @@ public class Projectile extends Entity implements Updatable, Movable {
         super(game, x, y, width, height);
         initPosition = new Vector2(x, y);
         state = ProjectileStatus.TRAVELLING;
-        this.stats = new ProjectileStats(damage, 150f);
+        this.stats = new ProjectileStats(damage, 300f);
         heroSide = side;
         this.maxRange = maxRange;
     }

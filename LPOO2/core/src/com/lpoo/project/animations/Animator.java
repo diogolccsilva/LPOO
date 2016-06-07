@@ -79,7 +79,7 @@ public abstract class Animator implements Disposable, Cloneable {
     }
 
     /**
-     * Verifies if the animation was already finished
+     * Verifies if the animation already finished
      * @return True if the animation was already finished, False if not
      */
     public boolean isFinished() {
