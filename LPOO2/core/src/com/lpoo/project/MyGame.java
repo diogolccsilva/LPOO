@@ -10,6 +10,7 @@ import com.lpoo.project.processors.Inputs;
 import com.lpoo.project.screens.BuildScreen;
 import com.lpoo.project.screens.GameOver;
 import com.lpoo.project.screens.HeroMenu;
+import com.lpoo.project.screens.HighScores;
 import com.lpoo.project.screens.Menu;
 import com.lpoo.project.screens.PauseMenu;
 import com.lpoo.project.screens.PlayScreen;
@@ -34,6 +35,7 @@ public class MyGame extends com.badlogic.gdx.Game {
      * A camera with orthographic projection
      */
     public OrthographicCamera camera;
+
     /**
      * A camera with orthographic projection
      */
@@ -48,6 +50,7 @@ public class MyGame extends com.badlogic.gdx.Game {
      * Game's height
      */
     public static final int h = 765;
+
     /**
      * Game's wight
      */
@@ -57,30 +60,41 @@ public class MyGame extends com.badlogic.gdx.Game {
      * Game's inputs
      */
     private Inputs inputs;
+
     /**
      * Game's play screen
      */
     private PlayScreen play;
+
     /**
      * Game's build screen
      */
     private BuildScreen build;
+
     /**
      * Game's main menu
      */
     private Menu menu;
+
     /**
      * Game's pause menu
      */
     private PauseMenu pauseMenu;
+
     /**
      * Game over option
      */
     private GameOver gameOver;
+
     /**
      * Game's hero menu
      */
     private HeroMenu heroMenu;
+
+    /**
+     * Game's high score screen
+     */
+    private HighScores highScores;
 
     /**
      * Sounds' volume
@@ -112,7 +126,9 @@ public class MyGame extends com.badlogic.gdx.Game {
     /**
      * Enumeration for the main game's status
      */
-    public enum States {MENU, HERO, BUILD, PLAY, EXIT, PAUSE, GAMEOVER}
+    public enum States {
+        MENU, HERO, BUILD, PLAY, EXIT, PAUSE, GAMEOVER, HIGHSCORE
+    }
 
     /**
      * Main game's status
@@ -126,6 +142,7 @@ public class MyGame extends com.badlogic.gdx.Game {
 
     /**
      * Getter for the instantiation of the main game
+     *
      * @return The main game's instantiation
      */
     public static MyGame getInstance() {
@@ -185,12 +202,15 @@ public class MyGame extends com.badlogic.gdx.Game {
             case GAMEOVER:
                 gameOver.dispose();
                 break;
-
+            case HIGHSCORE:
+                highScores.dispose();
+                break;
         }
     }
 
     /**
      * Changes the current screen
+     *
      * @param stat Status that will allowed to change the screen
      */
     public void changeScreen(States stat) {
@@ -201,20 +221,17 @@ public class MyGame extends com.badlogic.gdx.Game {
                         play.dispose();
                     game = null;
                 }
-
                 disposeState();
                 state = stat;
                 menu = new Menu(this);
                 setScreen(menu);
                 break;
-
             case HERO:
                 disposeState();
                 state = stat;
                 heroMenu = new HeroMenu(this);
                 setScreen(heroMenu);
                 break;
-
             case BUILD:
                 if (state == States.HERO)
                     game = new Game(heroes.elementAt(selectedHeroIndex));
@@ -223,7 +240,6 @@ public class MyGame extends com.badlogic.gdx.Game {
                 build = new BuildScreen(this, game);
                 setScreen(build);
                 break;
-
             case PLAY:
                 if (state != States.PAUSE)
                     play = new PlayScreen(this, game);
@@ -231,7 +247,6 @@ public class MyGame extends com.badlogic.gdx.Game {
                 state = stat;
                 setScreen(play);
                 break;
-
             case PAUSE:
                 if (state == States.PLAY) {
                     play.pause();
@@ -240,7 +255,6 @@ public class MyGame extends com.badlogic.gdx.Game {
                     setScreen(pauseMenu);
                 }
                 break;
-
             case GAMEOVER:
                 GameFiles.saveScore(game.getScore());
                 disposeState();
@@ -248,7 +262,12 @@ public class MyGame extends com.badlogic.gdx.Game {
                 gameOver = new GameOver(this);
                 setScreen(gameOver);
                 break;
-
+            case HIGHSCORE:
+                disposeState();
+                state = stat;
+                highScores = new HighScores(this);
+                setScreen(highScores);
+                break;
             case EXIT:
                 Gdx.app.exit();
         }
@@ -256,6 +275,7 @@ public class MyGame extends com.badlogic.gdx.Game {
 
     /**
      * Getter for the main game's status
+     *
      * @return The main game's status
      */
     public final States getState() {
@@ -264,6 +284,7 @@ public class MyGame extends com.badlogic.gdx.Game {
 
     /**
      * Getter for the main menu
+     *
      * @return The main menu
      */
     public Menu getMenu() {
@@ -272,6 +293,7 @@ public class MyGame extends com.badlogic.gdx.Game {
 
     /**
      * Getter for the pause menu
+     *
      * @return The pause menu
      */
     public PauseMenu getPauseMenu() {
@@ -280,6 +302,7 @@ public class MyGame extends com.badlogic.gdx.Game {
 
     /**
      * Getter for the play screen
+     *
      * @return The play screen
      */
     public PlayScreen getPlayScreen() {
@@ -288,6 +311,7 @@ public class MyGame extends com.badlogic.gdx.Game {
 
     /**
      * Getter for the build screen
+     *
      * @return The build screen
      */
     public BuildScreen getBuildScreen() {
@@ -296,6 +320,7 @@ public class MyGame extends com.badlogic.gdx.Game {
 
     /**
      * Getter for the game over screen
+     *
      * @return The game over screen
      */
     public GameOver getGameOver() {
@@ -304,14 +329,25 @@ public class MyGame extends com.badlogic.gdx.Game {
 
     /**
      * Getter for the hero's menu
-     * @return Th hero's menu
+     *
+     * @return The hero's menu
      */
     public HeroMenu getHeroMenu() {
         return heroMenu;
     }
 
     /**
+     * Getter for the high scores' screen
+     *
+     * @return The high scores' screen
+     */
+    public HighScores getHighScores() {
+        return highScores;
+    }
+
+    /**
      * Getter for the game's cache
+     *
      * @return The game's cache
      */
     public Cache getCache() {
@@ -320,6 +356,7 @@ public class MyGame extends com.badlogic.gdx.Game {
 
     /**
      * Setter for the selected hero's index
+     *
      * @param selectedHeroIndex New hero's index to be selected
      */
     public void setSelectedHeroIndex(int selectedHeroIndex) {
@@ -374,6 +411,7 @@ public class MyGame extends com.badlogic.gdx.Game {
 
     /**
      * Getter for the music's volume
+     *
      * @return The music's volume
      */
     public int getVolume() {
@@ -382,6 +420,7 @@ public class MyGame extends com.badlogic.gdx.Game {
 
     /**
      * Getter for the game's heroes
+     *
      * @return The game's heroes
      */
     public Vector<CharacterStats> getHeroes() {
@@ -390,6 +429,7 @@ public class MyGame extends com.badlogic.gdx.Game {
 
     /**
      * Adds a hero to the vector of game's heroes
+     *
      * @param stats New hero's properties
      */
     public void addHero(CharacterStats stats) {
@@ -398,6 +438,7 @@ public class MyGame extends com.badlogic.gdx.Game {
 
     /**
      * Adds a enemy to the vector of game's enemies
+     *
      * @param stats New enemy's properties
      */
     public void addEnemy(CharacterStats stats) {
@@ -406,6 +447,7 @@ public class MyGame extends com.badlogic.gdx.Game {
 
     /**
      * Adds a new trap to the game's traps
+     *
      * @param stats New trap's properties
      */
     public void addTrap(TrapStats stats) {
@@ -446,9 +488,10 @@ public class MyGame extends com.badlogic.gdx.Game {
 
     /**
      * Setter for the main game's status
+     *
      * @param state Main game's status to replace the old one
      */
-    public void setStatus (States state){
+    public void setStatus(States state) {
         this.state = state;
     }
 
@@ -456,7 +499,7 @@ public class MyGame extends com.badlogic.gdx.Game {
     /**
      * Releases all textures of the game
      */
-    public void dispose () {
+    public void dispose() {
         if (play != null)
             play.dispose();
         else if (menu != null)
@@ -470,7 +513,7 @@ public class MyGame extends com.badlogic.gdx.Game {
     }
 
     @Override
-    public void render () {
+    public void render() {
         super.render();
     }
 }

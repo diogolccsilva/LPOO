@@ -201,6 +201,10 @@ public class Inputs implements InputProcessor {
                 break;
             case HERO:
                 game.getHeroMenu().touchUp(screenX, screenY);
+                break;
+            case HIGHSCORE:
+                game.getHighScores().touchUp(screenX, screenY);
+                break;
             default:
                 break;
         }

@@ -125,13 +125,12 @@ public class GameOver implements Screen{
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         //Set batch to only draw what the camera sees
-        myGame.batch.setProjectionMatrix(myGame.camera.combined);
-        myGame.batch.begin();
-
-        //Set batch to only draw what the camera sees
         myGame.batch.setProjectionMatrix( menuCamera.combined );
 
+        myGame.batch.begin();
+
         myGame.batch.draw(background, 0, 0);
+
         myGame.batch.end();
     }
 

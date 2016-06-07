@@ -103,6 +103,8 @@ public class Menu implements Screen{
         Rectangle rect = new Rectangle( getRelativeX(screenX), getRelativeY(screenY), 5, 5 );
         if( rect.overlaps(play))
             myGame.changeScreen(MyGame.States.HERO);
+        else if (rect.overlaps(highScore))
+            myGame.changeScreen(MyGame.States.HIGHSCORE);
         else if ( rect.overlaps(exit))
             myGame.changeScreen(MyGame.States.EXIT);
         return true;
