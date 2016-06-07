@@ -7,7 +7,7 @@ import com.badlogic.gdx.math.Rectangle;
  */
 public class RangedEnemy extends Enemy {
 
-    public static final int width = 60;
+    public static final int width = 33;
     public static final int height = 124;
 
     private static final int range = 500;
@@ -15,7 +15,7 @@ public class RangedEnemy extends Enemy {
 
     public RangedEnemy(Game game, int x, int y, int health, int resistance, int damage) {
         super(game, x, y, width, height, health, resistance, damage);
-        shotRange = new Rectangle( rect.x + rect.width / 2 - 5, rect.y, range, rect.height);
+        shotRange = new Rectangle( rect.x + width, rect.y, range, rect.height);
         attack_time = 0.3f;
         points = 10;
         stats.setAttSpeed(0.6f);
@@ -35,7 +35,7 @@ public class RangedEnemy extends Enemy {
                     stateTime = 0;
                     attacked = false;
                 } else if( stateTime >= attack_time && !attacked ) {
-                    Projectile projectile = new Projectile(game, rect.x + rect.width / 2 - 5, rect.y + 10, 10, 10, 5, range, false);
+                    Projectile projectile = new Projectile(game, rect.x + width, rect.y + 10, 10, 10, 5, range, false);
                     game.addProjectile(projectile, false);
                     attacked = true;
                 }
