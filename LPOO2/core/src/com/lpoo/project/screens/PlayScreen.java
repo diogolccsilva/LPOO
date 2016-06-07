@@ -215,6 +215,7 @@ public class PlayScreen implements Screen {
      * Called when the screen was touched or a mouse button was pressed
      * @param screenX The x coordinate, origin is in the upper left corner
      * @param screenY The y coordinate, origin is in the upper left corner
+     * @return True if the input was processed, False if it wasn't
      */
     public boolean touchDown(int screenX, int screenY) {
         float x = getRelativeX(screenX);

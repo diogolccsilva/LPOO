@@ -164,6 +164,8 @@ public class HeroAnimation extends Animator {
 
     /**
      * Resets the animation and changes the values of stateTime, state and currAnimation
+     * @param game Game where the animation will be placed
+     * @param attack_speed Hero's attack's speed
      */
     public void reset( Game game, float attack_speed ) {
         stateTime = 0;

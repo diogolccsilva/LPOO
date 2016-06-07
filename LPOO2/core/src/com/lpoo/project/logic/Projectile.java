@@ -47,6 +47,7 @@ public class Projectile extends Entity implements Updatable, Movable {
      * @param width  Projectile's width
      * @param height Projectile's height
      * @param damage Projectile's damage
+     * @param maxRange Projectile's maximum range
      * @param side   Which side the projectile's on (true if it on the hero's side)
      */
     public Projectile(Game game, float x, float y, int width, int height, int damage, int maxRange, boolean side) {

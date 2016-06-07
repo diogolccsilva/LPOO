@@ -1,10 +1,9 @@
 package com.lpoo.project.processors;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.InputProcessor;
 import com.lpoo.project.MyGame;
-import com.lpoo.project.logic.Hero;
 
 /**
  * Class that deals with the inputs

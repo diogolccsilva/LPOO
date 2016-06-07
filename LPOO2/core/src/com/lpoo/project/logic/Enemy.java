@@ -49,6 +49,8 @@ public class Enemy extends Character {
      * @param game       Game where the enemy will be placed
      * @param x          Enemy's x position
      * @param y          Enemy's y position
+     * @param width Enemy's width
+     * @param height Enemy's height
      * @param health     Enemy's health
      * @param resistance Enemy's resistance
      * @param damage     Enemy's damage
