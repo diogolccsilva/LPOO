@@ -46,25 +46,21 @@ public class Enemy extends Character {
 
     /**
      * Constructor for the class Enemy
-     * @param game       Game where the enemy will be placed
-     * @param x          Enemy's x position
-     * @param y          Enemy's y position
-     * @param width Enemy's width
-     * @param height Enemy's height
-     * @param health     Enemy's health
-     * @param resistance Enemy's resistance
-     * @param damage     Enemy's damage
+     * @param game      Game where the enemy will be placed
+     * @param x         Enemy's x position
+     * @param y         Enemy's y position
+     * @param width     Enemy's width
+     * @param height    Enemy's height
+     * @param stats     Character's stats
      */
-    public Enemy(Game game, int x, int y, int width, int height, int health, int resistance, int damage) {
-        super(game, x, y, 80, 124);
+    public Enemy(Game game, int x, int y, int width, int height, CharacterStats stats) {
+        super(game, x, y, width, height);
         stateTime = 0;
         state = EnemyStatus.MOVE_RIGHT;
         nextState = EnemyStatus.MOVE_RIGHT;
         attack_time = 0.6f;
         attacked = false;
-        float movSpeed = 40f;
-        float attSpeed = 1f;
-        stats = new CharacterStats(health, resistance, movSpeed, attSpeed, damage);
+        this.stats = new CharacterStats(stats.getHealth(), stats.getResistance(), stats.getMovSpeed(), stats.getAttSpeed(), stats.getAttDamage());
     }
 
     /**

@@ -20,12 +20,10 @@ public class MeleeEnemy extends Enemy {
      * @param game Game where the melee will be placed
      * @param x Melee's x coordinate
      * @param y Melee's y coordinate
-     * @param health Melee's health
-     * @param resistance Melee's resistance
-     * @param damage Melee's damage
+     * @param stats Character's stats
      */
-    public MeleeEnemy(Game game, int x, int y, int health, int resistance, int damage) {
-        super(game, x, y, width, height, health, resistance, damage);
+    public MeleeEnemy(Game game, int x, int y, CharacterStats stats) {
+        super(game, x, y, width, height, stats);
         points = 5;
         attack_time = 0.4f;
         stats.setAttSpeed(1.4f);

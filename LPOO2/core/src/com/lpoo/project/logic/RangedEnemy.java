@@ -31,12 +31,10 @@ public class RangedEnemy extends Enemy {
      * @param game Game where the melee will be placed
      * @param x Ranged's x coordinate
      * @param y Ranged's y coordinate
-     * @param health Ranged's health
-     * @param resistance Ranged's resistance
-     * @param damage Ranged's damage
+     * @param stats Character's stats
      */
-    public RangedEnemy(Game game, int x, int y, int health, int resistance, int damage) {
-        super(game, x, y, width, height, health, resistance, damage);
+    public RangedEnemy(Game game, int x, int y, CharacterStats stats) {
+        super(game, x, y, width, height, stats);
         shotRange = new Rectangle( rect.x + width, rect.y, range, rect.height);
         attack_time = 0.3f;
         points = 10;
