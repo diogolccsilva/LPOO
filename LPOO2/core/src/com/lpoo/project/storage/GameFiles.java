@@ -4,15 +4,10 @@ import java.io.*;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Vector;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.files.FileHandle;
-import com.google.gson.*;
-import com.lpoo.project.MyGame;
-import com.lpoo.project.logic.Character;
 import com.google.gson.*;
 import com.lpoo.project.logic.CharacterStats;
 import com.lpoo.project.logic.TrapStats;
@@ -23,7 +18,7 @@ public class GameFiles {
     private static String heroesPath = localPath + "heroes.json";
     private static String enemiesPath = localPath + "enemies.json";
     private static String trapsPath = localPath + "traps.json";
-    static String scoresPath = "Data/highscores.txt";
+    private static String scoresPath = "Data/highscores.txt";
 
     public static void saveHeroes(Vector<CharacterStats> stats) {
         File file = new File(heroesPath);
@@ -140,6 +135,9 @@ public class GameFiles {
 
     public static Vector<Integer> loadScore(int top){
         FileHandle file = Gdx.files.local(scoresPath);
+        if (!file.exists()){
+            file.write(false);
+        }
         Vector<Integer> v = new Vector<>();
         try {
             BufferedReader reader = file.reader(Integer.SIZE);
