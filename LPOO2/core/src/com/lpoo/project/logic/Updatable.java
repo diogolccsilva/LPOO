@@ -6,7 +6,7 @@ package com.lpoo.project.logic;
 public interface Updatable {
     /**
      * Updates a entity
-     * @param delta Increasing value
+     * @param delta Difference between the last time of call and the current time
      */
     void update( float delta );
 }

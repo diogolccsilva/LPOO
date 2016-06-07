@@ -15,7 +15,6 @@ public class Trap extends Entity implements Updatable {
         WAIT, HEATUP, ATTACK, RECHARGE
     }
 
-    ;
     /**
      * Trap's status
      */
@@ -38,8 +37,7 @@ public class Trap extends Entity implements Updatable {
 
     /**
      * Constructor for the class Trap
-     *
-     * @param game   Game where will be placed the trap
+     * @param game   Game where the trap will be placed
      * @param x      Trap's x position
      * @param y      Trap's y position
      * @param width  Trap's width
@@ -60,16 +58,34 @@ public class Trap extends Entity implements Updatable {
     /**
      * Getter for the current trap's status
      *
-     * @return Current trap'sstatus
+     * @return Current trap's status
      */
     public TrapStatus getState() {
         return currStatus;
     }
 
+    /**
+     * Getter for the trap's stats
+     *
+     * @return trap's stats
+     */
+    public TrapStats getStats() {
+        return stats;
+    }
+
+    /**
+     * Getter for the trap's current amout of attacks
+     *
+     * @return trap's amount of attacks
+     */
+    public int getnAttacks() {
+        return nAttacks;
+    }
+
     @Override
     /**
      * Updates the trap and treats the possible collision
-     * @param delta Increasing value
+     * @param delta Difference between the last time of call and the current time
      */
     public void update(float delta) {
         float tmp = stateTime + delta;
@@ -87,7 +103,6 @@ public class Trap extends Entity implements Updatable {
                     collision();
                 }
 
-                stateTime = tmp;
                 break;
             case RECHARGE:
                 if (stateTime <= stats.getRechargeSpeed() && tmp >= stats.getRechargeSpeed()) {
@@ -96,11 +111,11 @@ public class Trap extends Entity implements Updatable {
                     return;
                 }
 
-                stateTime = tmp;
                 break;
             case WAIT:
                 stateTime = tmp;
                 collision();
+
                 break;
             case HEATUP:
                 if (stateTime <= stats.getHeatUpSpeed() && tmp >= stats.getHeatUpSpeed()) {
@@ -109,9 +124,9 @@ public class Trap extends Entity implements Updatable {
                     return;
                 }
 
-                stateTime = tmp;
                 break;
         }
+        stateTime = tmp;
     }
 
     /**

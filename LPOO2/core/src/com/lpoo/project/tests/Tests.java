@@ -25,7 +25,7 @@ public class Tests {
     /**
      * Tests the hero
      */
-    public void testHeroStatus() {
+    public void testHero() {
         Game game = new Game(standardHero);
         Hero hero = new Hero(game, 0, 0, 100, 50, 75);
 
@@ -56,7 +56,7 @@ public class Tests {
     /**
      * Tests the enemies
      */
-    public void testEnemyStatus() {
+    public void testEnemy() {
         Game game = new Game(standardHero);
         Enemy enemy = new MeleeEnemy(game, 0, 144, 100, 50, 75);
         game.addEnemy(enemy);
@@ -131,8 +131,14 @@ public class Tests {
 
         //All traps have the same size
         game.setTrap(100, 144, 128, 128, 0);
-
+        assertTrue( game.getTraps()[0] == null );
+        game.setMoney(99);
+        game.setTrap(100, 144, 128, 128, 0);
+        assertTrue( game.getTraps()[0] == null );
+        game.setMoney(100);
+        game.setTrap(100, 144, 128, 128, 0);
         assertTrue( game.getTraps()[0] != null );
+        assertEquals(0, game.getMoney());
 
         game.setTrap(228, 144, 128, 128, -1);
         game.setTrap(356, 144, 128, 128, game.getTraps().length);
@@ -144,6 +150,46 @@ public class Tests {
         }
 
         assertEquals( 1, nTraps );
+
+        game.getHero().getRect().x = 105;
+
+        game.getTraps()[0].update( 0 );
+
+        assertTrue( game.getHero().getRect().overlaps( game.getTraps()[0].getRect() ) );
+        assertTrue( game.getTraps()[0].getState() != Trap.TrapStatus.HEATUP );
+
+        Enemy enemy = new MeleeEnemy(game, 105, 144, 100, 50, 75);
+        game.addEnemy(enemy);
+        assertEquals(1, game.getEnemies().size());
+
+        game.getTraps()[0].update( 0 );
+
+        assertTrue( game.getHero().getRect().overlaps( game.getTraps()[0].getRect() ) );
+        assertTrue( game.getTraps()[0].getState() == Trap.TrapStatus.HEATUP );
+
+        game.getTraps()[0].update( game.getTraps()[0].getStats().getHeatUpSpeed() );
+
+        assertTrue( game.getTraps()[0].getState() == Trap.TrapStatus.ATTACK );
+
+        game.getTraps()[0].update( game.getTraps()[0].getStats().getTimeAttack() );
+
+        assertEquals( 2, game.getTraps()[0].getnAttacks() );
+
+        game.getTraps()[0].update( game.getTraps()[0].getStats().getAttackSpeed() );
+
+        assertEquals( 1, game.getTraps()[0].getnAttacks() );
+        assertTrue( game.getTraps()[0].getState() == Trap.TrapStatus.RECHARGE );
+
+        game.getTraps()[0].update( 0 );
+
+        assertTrue( game.getTraps()[0].getState() == Trap.TrapStatus.RECHARGE );
+
+        game.getTraps()[0].update( game.getTraps()[0].getStats().getRechargeSpeed() - 0.1f );
+
+        assertTrue( game.getTraps()[0].getState() == Trap.TrapStatus.RECHARGE );
+
+        game.getTraps()[0].update( 0.1f );
+        assertTrue( game.getTraps()[0].getState() == Trap.TrapStatus.WAIT );
     }
 
     @Test

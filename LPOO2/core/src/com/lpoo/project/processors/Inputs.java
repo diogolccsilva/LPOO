@@ -267,7 +267,7 @@ public class Inputs implements InputProcessor {
     @Override
     /**
      * Called when the mouse wheel was scrolled
-     * @param amount
+     * @param amount The scroll amount, -1 or 1 depending on the direction the wheel was scrolled.
      * @return True if the input was processed, False if it wasn't
      */
     public boolean scrolled(int amount) {
