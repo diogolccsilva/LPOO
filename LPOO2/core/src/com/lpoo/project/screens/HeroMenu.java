@@ -60,6 +60,25 @@ public class HeroMenu implements Screen {
         opt3 = new Rectangle(619, 41, 700, 200);
     }
 
+    public float getRelativeY(int y) {
+        return h * y / Gdx.graphics.getHeight();
+    }
+
+    public float getRelativeX(int x) {
+        return w * x / Gdx.graphics.getWidth();
+    }
+
+    public void touchUp( int screenX, int screenY ) {
+        Rectangle rect = new Rectangle( getRelativeX(screenX), h - getRelativeY(screenY), 20, 20 );
+        if( rect.overlaps(opt1))
+            opt = 1;
+        else if ( rect.overlaps(opt2))
+            opt = 2;
+        else if ( rect.overlaps(opt3))
+            opt = 3;
+        else opt = -1;
+    }
+
     @Override
     public void show() {
 
@@ -110,36 +129,17 @@ public class HeroMenu implements Screen {
 
     @Override
     public void pause() {
-
+        music.pause();
     }
 
     @Override
     public void resume() {
-
+        music.play();
     }
 
     @Override
     public void hide() {
 
-    }
-
-    public float getRelativeY(int y) {
-        return h * y / Gdx.graphics.getHeight();
-    }
-
-    public float getRelativeX(int x) {
-        return w * x / Gdx.graphics.getWidth();
-    }
-
-    public void touchUp( int screenX, int screenY ) {
-        Rectangle rect = new Rectangle( getRelativeX(screenX), h - getRelativeY(screenY), 20, 20 );
-        if( rect.overlaps(opt1))
-            opt = 1;
-        else if ( rect.overlaps(opt2))
-            opt = 2;
-        else if ( rect.overlaps(opt3))
-            opt = 3;
-        else opt = -1;
     }
 
     @Override

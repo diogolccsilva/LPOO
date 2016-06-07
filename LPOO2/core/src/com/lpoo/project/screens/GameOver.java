@@ -48,7 +48,14 @@ public class GameOver implements Screen{
         music.play();
     }
 
-    public float getRelativeY( int y ) {
+    public boolean touchUp(int screenX, int screenY) {
+        Circle circ = new Circle( getRelativeX(screenX), getRelativeY(screenY), 32);
+        if( circ.overlaps(back))
+            myGame.changeScreen(MyGame.States.MENU);
+        return true;
+    }
+
+    public float getRelativeY(int y ) {
         return menuH * y / Gdx.graphics.getHeight();
     }
 
@@ -84,10 +91,12 @@ public class GameOver implements Screen{
 
     @Override
     public void pause() {
+        music.pause();
     }
 
     @Override
     public void resume() {
+        music.play();
     }
 
     @Override
@@ -98,13 +107,6 @@ public class GameOver implements Screen{
     @Override
     public void dispose() {
         music.stop();
-    }
-
-    public boolean touchUp(int screenX, int screenY) {
-        Circle circ = new Circle( getRelativeX(screenX), getRelativeY(screenY), 32);
-        if( circ.overlaps(back))
-            myGame.changeScreen(MyGame.States.MENU);
-        return true;
     }
 
     public void setVolume(float v) {

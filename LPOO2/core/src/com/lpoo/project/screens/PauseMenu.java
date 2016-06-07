@@ -17,7 +17,6 @@ public class PauseMenu implements Screen{
     private Rectangle mainMenu, back;
     private OrthographicCamera menuCamera;
     private Texture background;
-    private Music music;
     private Map map;
 
     private static final int menuH = 256, menuW = 453;
@@ -39,22 +38,21 @@ public class PauseMenu implements Screen{
 
         background = new Texture("PauseMenu.png");
 
-        Music m = myGame.getCache().getMenuAudio();
-        if( m == null ) {
-            music = Gdx.audio.newMusic(Gdx.files.internal("A Night Of Dizzy Spells.mp3"));
-            myGame.getCache().setMenuAudio(music);
-        } else music = m;
-
-        music.setLooping(true);
-        music.setVolume(myGame.getVolume()/100f);
-        music.play();
-
         Map mp = myGame.getCache().getMap();
         if (mp == null) {
             map = new Map();
             myGame.getCache().setMap(map);
         } else map = mp;
 
+    }
+
+    public boolean touchUp(int screenX, int screenY) {
+        Rectangle rect = new Rectangle( getRelativeX(screenX), getRelativeY(screenY), 5, 5 );
+        if( rect.overlaps(mainMenu))
+            myGame.changeScreen(MyGame.States.MENU);
+        else if ( rect.overlaps(back))
+            myGame.changeScreen(MyGame.States.PLAY);
+        return true;
     }
 
     public float getRelativeY( int y ) {
@@ -101,7 +99,6 @@ public class PauseMenu implements Screen{
 
     @Override
     public void resume() {
-        //myGame.changeScreen(MyGame.States.PLAY);
     }
 
     @Override
@@ -111,20 +108,6 @@ public class PauseMenu implements Screen{
 
     @Override
     public void dispose() {
-        music.stop();
-    }
-
-    public boolean touchUp(int screenX, int screenY) {
-        Rectangle rect = new Rectangle( getRelativeX(screenX), getRelativeY(screenY), 5, 5 );
-        if( rect.overlaps(mainMenu))
-            myGame.changeScreen(MyGame.States.MENU);
-        else if ( rect.overlaps(back))
-            myGame.changeScreen(MyGame.States.PLAY);
-        return true;
-    }
-
-    public void setVolume(float v) {
-        music.setVolume(v);
     }
 }
 

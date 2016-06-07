@@ -58,6 +58,15 @@ public class Menu implements Screen{
         music.play();
     }
 
+    public boolean touchUp(int screenX, int screenY) {
+        Rectangle rect = new Rectangle( getRelativeX(screenX), getRelativeY(screenY), 5, 5 );
+        if( rect.overlaps(play))
+            myGame.changeScreen(MyGame.States.BUILD);
+        else if ( rect.overlaps(exit))
+            myGame.changeScreen(MyGame.States.EXIT);
+        return true;
+    }
+
     public float getRelativeY( int y ) {
         return menuH * y / Gdx.graphics.getHeight();
     }
@@ -91,12 +100,12 @@ public class Menu implements Screen{
 
     @Override
     public void pause() {
-
+        music.pause();
     }
 
     @Override
     public void resume() {
-
+        music.play();
     }
 
     @Override
@@ -107,15 +116,6 @@ public class Menu implements Screen{
     @Override
     public void dispose() {
         music.stop();
-    }
-
-    public boolean touchUp(int screenX, int screenY) {
-        Rectangle rect = new Rectangle( getRelativeX(screenX), getRelativeY(screenY), 5, 5 );
-        if( rect.overlaps(play))
-            myGame.changeScreen(MyGame.States.BUILD);
-        else if ( rect.overlaps(exit))
-            myGame.changeScreen(MyGame.States.EXIT);
-        return true;
     }
 
     public void setVolume(float v) {

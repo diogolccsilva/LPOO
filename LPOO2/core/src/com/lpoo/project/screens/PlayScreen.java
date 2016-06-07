@@ -115,13 +115,12 @@ public class PlayScreen implements Screen {
         return w * x / Gdx.graphics.getWidth();
     }
 
-    public boolean isPaused() {
-        return isPaused;
+    public Game getGame() {
+        return game;
     }
 
-    @Override
-    public void show() {
-
+    public boolean isPaused() {
+        return isPaused;
     }
 
     public void drawLifeBard(float x, float y, TextureRegion[] textures) {
@@ -130,6 +129,31 @@ public class PlayScreen implements Screen {
             myGame.batch.draw(t, x + width, y);
             width += t.getRegionWidth();
         }
+    }
+
+    /**
+     * @param hPos
+     * @return
+     * @brief Calculates the center of the screen according to the hero's position
+     */
+    private Vector2 calMidScreen(Vector2 hPos) {
+        float tmp = hPos.x - w / 2 + 200;
+        return new Vector2((tmp < 700) ? 700 : (tmp > 3400) ? 3400 : tmp, 400);
+    }
+
+    public boolean touchDown(int screenX, int screenY) {
+        game.touchDown(getRelativeX(screenX), getRelativeY(screenY));
+        return true;
+    }
+
+    public boolean touchUp() {
+        game.touchUp();
+        return true;
+    }
+
+    @Override
+    public void show() {
+
     }
 
     @Override
@@ -290,16 +314,6 @@ public class PlayScreen implements Screen {
         myGame.batch.end();
     }
 
-    /**
-     * @param hPos
-     * @return
-     * @brief Calculates the center of the screen according to the hero's position
-     */
-    private Vector2 calMidScreen(Vector2 hPos) {
-        float tmp = hPos.x - w / 2 + 200;
-        return new Vector2((tmp < 700) ? 700 : (tmp > 3400) ? 3400 : tmp, 400);
-    }
-
     @Override
     public void resize(int width, int height) {
 
@@ -308,7 +322,6 @@ public class PlayScreen implements Screen {
     @Override
     public void pause() {
         isPaused = true;
-        music.stop();
     }
 
     @Override
@@ -332,22 +345,7 @@ public class PlayScreen implements Screen {
         music.stop();
     }
 
-    public boolean touchDown(int screenX, int screenY) {
-        game.touchDown(getRelativeX(screenX), getRelativeY(screenY));
-        return true;
-    }
-
-    public boolean touchUp() {
-        game.touchUp();
-        return true;
-    }
-
     public void setVolume(float v) {
         music.setVolume(v);
     }
-
-    public Game getGame() {
-        return game;
-    }
-
 }

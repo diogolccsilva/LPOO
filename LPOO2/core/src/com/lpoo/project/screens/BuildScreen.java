@@ -195,6 +195,15 @@ public class BuildScreen implements Screen {
         select = false;
     }
 
+    public Vector2 getRelativePosition( int x, int y ) {
+        return new Vector2( xPos + (myGame.w * x / screenWidth) - myGame.w / 2,
+                            yPos - (myGame.h * y / screenHeight) + myGame.h / 2 );
+    }
+
+    public Vector2 getRelativePositionScreen( int x, int y ) {
+        return new Vector2( myGame.w * x / screenWidth, myGame.h  - myGame.h * y / screenHeight );
+    }
+
     @Override
     public void show() {
 
@@ -247,16 +256,6 @@ public class BuildScreen implements Screen {
         myGame.batch.end();
     }
 
-    public Vector2 getRelativePosition( int x, int y ) {
-        return new Vector2( xPos + (myGame.w * x / screenWidth) - myGame.w / 2,
-                            yPos - (myGame.h * y / screenHeight) + myGame.h / 2 );
-    }
-
-    public Vector2 getRelativePositionScreen( int x, int y ) {
-        return new Vector2( myGame.w * x / screenWidth, myGame.h  - myGame.h * y / screenHeight );
-    }
-
-
     @Override
     public void resize(int width, int height) {
         screenHeight = height;
@@ -265,12 +264,12 @@ public class BuildScreen implements Screen {
 
     @Override
     public void pause() {
-
+        music.pause();
     }
 
     @Override
     public void resume() {
-
+        music.play();
     }
 
     @Override
