@@ -7,6 +7,7 @@ public class MeleeEnemy extends Enemy {
 
     public MeleeEnemy(Game game, int x, int y, int health, int resistance, int damage) {
         super(game, x, y, width, height, health, resistance, damage);
+        points = 5;
         attack_time = 0.4f;
         stats.setAttSpeed(1.4f);
     }
