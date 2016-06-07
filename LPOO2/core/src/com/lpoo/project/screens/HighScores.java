@@ -3,7 +3,6 @@ package com.lpoo.project.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -62,11 +61,15 @@ public class HighScores implements Screen {
 
     /**
      * Constructor for the class HighScores
-     *
      * @param myGame Main game where the HighScores will be placed
      */
     public HighScores(MyGame myGame){
         this.myGame = myGame;
+
+        highScoresCamera = new OrthographicCamera(highScoresW, highScoresH);
+        highScoresCamera.position.set( highScoresW / 2, highScoresH / 2, 0 );
+        highScoresCamera.update();
+
 
         //Initialize font and store it in cache
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Font\\slkscr.ttf"));
@@ -75,14 +78,6 @@ public class HighScores implements Screen {
         text = generator.generateFont(parameter);
         generator.dispose();
 
-        OrthographicCamera c = myGame.getCache().getMenuCamera();
-        if( c == null ) {
-            highScoresCamera = new OrthographicCamera(highScoresW, highScoresH);
-            myGame.getCache().setMenuCamera(highScoresCamera);
-        } else highScoresCamera = c;
-
-        highScoresCamera.position.set( highScoresW / 2, highScoresH / 2, 0 );
-        highScoresCamera.update();
 
         background = new Texture("HighScores.jpg");
         topScores = GameFiles.loadScore(5);
@@ -114,8 +109,8 @@ public class HighScores implements Screen {
 
         for (int i = 0;i<5;i++){
             int n = i+1;
-            int k = i*241;
-            text.draw(myGame.batch, "#" + n + "    " + topScores.elementAt(i), 670, 600-k);
+            int k = i*30;
+            text.draw(myGame.batch, "#" + n + "    " + topScores.elementAt(i), 220, 150-k);
         }
 
         myGame.batch.end();
