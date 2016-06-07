@@ -170,6 +170,7 @@ public class HeroAnimation extends Animator {
         this.game = game;
         state = HeroStatus.STILL;
         this.attack_speed = attack_speed;
+        animations[ATTACK_INDEX].setFrameDuration(attack_speed);
         currAnimation = animations[STILL_INDEX];
     }
 
