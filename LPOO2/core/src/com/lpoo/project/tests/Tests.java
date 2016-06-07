@@ -9,8 +9,9 @@ import com.lpoo.project.logic.Projectile;
 import com.lpoo.project.logic.ProjectileStats;
 import com.lpoo.project.logic.RangedEnemy;
 import com.lpoo.project.logic.Trap;
-
 import org.junit.Test;
+
+import java.util.Vector;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
@@ -20,13 +21,19 @@ import static org.junit.Assert.assertTrue;
 public class Tests {
 
     private final CharacterStats standardHero = new CharacterStats(300,100,90f,0.7f,10);
+    private final CharacterStats standardMeleeEnemy = new CharacterStats(80,2,60f,1.4f,20);
+    private final CharacterStats standardRangedEnemy = new CharacterStats(50,1,80f,0.6f,10);
 
     @Test
     /**
      * Tests the hero
      */
     public void testHero() {
-        Game game = new Game(standardHero);
+        Vector<CharacterStats> enemyStats = new Vector<>();
+        enemyStats.add(standardMeleeEnemy);
+        enemyStats.add(standardRangedEnemy);
+
+        Game game = new Game(standardHero, enemyStats);
         Hero hero = game.getHero();
 
         assertEquals(Hero.HeroStatus.STILL, hero.getState());
@@ -120,8 +127,12 @@ public class Tests {
      * Tests the enemies
      */
     public void testEnemy() {
-        Game game = new Game(standardHero);
-        Enemy enemy = new MeleeEnemy(game, 0, 144, 100, 50, 75);
+        Vector<CharacterStats> enemyStats = new Vector<>();
+        enemyStats.add(standardMeleeEnemy);
+        enemyStats.add(standardRangedEnemy);
+
+        Game game = new Game(standardHero, enemyStats);
+        Enemy enemy = new MeleeEnemy(game, 0, 144, standardMeleeEnemy);
         game.addEnemy(enemy);
         assertEquals(1, game.getEnemies().size());
 
@@ -156,7 +167,7 @@ public class Tests {
 
         game.eraseEnemy(0);
         assertEquals(0, game.getEnemies().size());
-        enemy = new RangedEnemy(game, (int) game.getHero().getRect().x - 500, 144, 50, 10, 10);
+        enemy = new RangedEnemy(game, (int) game.getHero().getRect().x - 500, 144, standardRangedEnemy);
         game.addEnemy(enemy);
         assertEquals(1, game.getEnemies().size());
 
@@ -175,7 +186,11 @@ public class Tests {
      * Tests the game
      */
     public void TestGame() {
-        Game game = new Game(standardHero);
+        Vector<CharacterStats> enemyStats = new Vector<>();
+        enemyStats.add(standardMeleeEnemy);
+        enemyStats.add(standardRangedEnemy);
+
+        Game game = new Game(standardHero, enemyStats);
 
         assertNotNull(game.getHero());
         assertTrue(game.getEnemies().isEmpty());
@@ -227,7 +242,11 @@ public class Tests {
      * Tests the traps
      */
     public void TestTraps() {
-        Game game = new Game(standardHero);
+        Vector<CharacterStats> enemyStats = new Vector<>();
+        enemyStats.add(standardMeleeEnemy);
+        enemyStats.add(standardRangedEnemy);
+
+        Game game = new Game(standardHero, enemyStats);
 
         //All traps have the same size
         game.setTrap(100, 144, 128, 128, 0);
@@ -258,7 +277,7 @@ public class Tests {
         assertTrue( game.getHero().getRect().overlaps( game.getTraps()[0].getRect() ) );
         assertTrue( game.getTraps()[0].getState() != Trap.TrapStatus.HEATUP );
 
-        Enemy enemy = new MeleeEnemy(game, 105, 144, 100, 50, 75);
+        Enemy enemy = new MeleeEnemy(game, 105, 144, standardMeleeEnemy);
         game.addEnemy(enemy);
         assertEquals(1, game.getEnemies().size());
 
@@ -300,7 +319,12 @@ public class Tests {
      * Tests the projectiles
      */
     public void TestProjectiles() {
-        Game game = new Game(standardHero);
+        Vector<CharacterStats> enemyStats = new Vector<>();
+        enemyStats.add(standardMeleeEnemy);
+        enemyStats.add(standardRangedEnemy);
+
+        Game game = new Game(standardHero, enemyStats);
+
         Projectile projectile = new Projectile(game, game.getHero().getRect().x + 10, 150, 30, 40, 6, 500, false);
         game.addProjectile(projectile, false);
         assertEquals( 1, game.getProjectiles().size());
@@ -323,7 +347,7 @@ public class Tests {
         heroCurrHealth = game.getHero().getStats().getHealth();
         assertTrue( heroCurrHealth == heroHealth );
 
-        Enemy enemy = new MeleeEnemy(game, 0, 144, 50, 10, 10);
+        Enemy enemy = new MeleeEnemy(game, 0, 144, standardMeleeEnemy);
         game.addEnemy(enemy);
         assertEquals( 1, game.getEnemies().size());
 

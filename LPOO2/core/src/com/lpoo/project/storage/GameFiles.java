@@ -72,7 +72,6 @@ public class GameFiles {
             Gson gson = new GsonBuilder().create();
             CharacterStats[] vs = gson.fromJson(reader, CharacterStats[].class);
             stats.addAll(Arrays.asList(vs));
-            System.out.println("leu");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -203,7 +202,6 @@ public class GameFiles {
         } catch (IOException e){
             e.printStackTrace();
         }
-        System.out.println(v);
         return v;
     }
 }
