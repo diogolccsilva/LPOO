@@ -211,7 +211,7 @@ public class Game implements Updatable {
             Random rand = new Random();
             int type = rand.nextInt(2);
             CharacterStats temp = enemiesStats.elementAt(type);
-            CharacterStats stats = new CharacterStats(temp.getAttDamage() + healthPerWave * wave, temp.getResistance() + resistPerWave * wave, temp.getMovSpeed(), temp.getAttSpeed(), temp.getAttDamage() + strengthPerWave * wave);
+            CharacterStats stats = new CharacterStats(temp.getHealth() + healthPerWave * wave, temp.getResistance() + resistPerWave * wave, temp.getMovSpeed(), temp.getAttSpeed(), temp.getAttDamage() + strengthPerWave * wave);
             if (type == 0) {
                 e = new MeleeEnemy(this, 50, 144, stats);
                 frameEvents[ENEMY_MELEE_SPAWN_INDEX] = true;

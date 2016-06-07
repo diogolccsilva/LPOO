@@ -106,10 +106,6 @@ public class Projectile extends Entity implements Updatable, Movable {
             LinkedList<Enemy> enemies = game.getEnemies();
             for (Enemy e : enemies) {
                 if (rect.overlaps(e.getRect())) {
-                 /* Random rand = new Random();
-                    if (rand.nextInt(100)>=stats.getPenetration()) {
-                        state = ProjectileStatus.HIT_TARGET;
-                }*/
                     state = ProjectileStatus.HIT_TARGET;
                     e.hit(stats);
                     return;

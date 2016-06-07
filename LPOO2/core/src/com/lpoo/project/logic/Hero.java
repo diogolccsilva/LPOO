@@ -34,25 +34,6 @@ public class Hero extends Character {
      * @param game       Game where the hero will be placed
      * @param x          Hero's x position
      * @param y          Hero's y position
-     * @param health     Hero's health
-     * @param resistance Hero's resistance
-     * @param damage     Hero's damage
-     */
-    /*public Hero(Game game, int x, int y, int health, int resistance, int damage) {
-        super(game, x, y, 45, 88);
-        state = HeroStatus.STILL;
-        nextState = state;
-        float movSpeed = 80f;
-        float attSpeed = 0.7f;
-        this.stats = new CharacterStats(health, resistance, movSpeed, attSpeed, damage);
-        this.game = game;
-    }*/
-
-    /**
-     * Constructor for the class Hero
-     * @param game       Game where the hero will be placed
-     * @param x          Hero's x position
-     * @param y          Hero's y position
      * @param stats      Hero's properties
      */
     public Hero(Game game, int x, int y, CharacterStats stats){
