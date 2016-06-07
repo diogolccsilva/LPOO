@@ -5,16 +5,12 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.utils.Disposable;
-import com.lpoo.project.animations.EnemyAnimation;
 import com.lpoo.project.animations.HeroAnimation;
 import com.lpoo.project.animations.Map;
-import com.lpoo.project.logic.Enemy;
-import com.lpoo.project.logic.Hero;
-import com.lpoo.project.logic.Projectile;
-import com.lpoo.project.logic.Trap;
 
 /**
- * Created by Vasco on 05/06/2016.
+ * Class that creates the class Cache
+ * This class uses the singleton's design pattern
  */
 public class Cache implements Disposable {
     /**
@@ -58,12 +54,22 @@ public class Cache implements Disposable {
      */
     private OrthographicCamera menuCamera;
 
+    /**
+     * Instantiates the Cache class
+     */
     private static Cache ourInstance = new Cache();
 
+    /**
+     * Getter for the instantiation of the Cache class
+     * @return The Cache class instantiated
+     */
     public static Cache getInstance() {
         return ourInstance;
     }
 
+    /**
+     * Constructor for the Cache class
+     */
     private Cache() { }
 
     /**
@@ -146,6 +152,10 @@ public class Cache implements Disposable {
         this.map = map;
     }
 
+    /**
+     * 
+     * @return
+     */
     public Texture getMenuBackground() {
         return menuBackground;
     }

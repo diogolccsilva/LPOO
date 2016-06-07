@@ -27,26 +27,77 @@ import com.lpoo.project.logic.Trap;
 import java.util.LinkedList;
 
 /**
- * Class that creates the game over's screen
+ * Class that creates the play screen
  * This class implements the interface Screen
  */
 public class PlayScreen implements Screen {
 
-    private static final int h = 765, w = 1360;
+    /**
+     * Screen's height
+     */
+    private static final int h = 765;
+    /**
+     * Screen's wight
+     */
+    private static final int w = 1360;
+    /**
+     * Game where the play screen will be placed
+     */
     public Game game;
+    /**
+     * Principal game where the play screen will be placed
+     */
     private MyGame myGame;
+    /**
+     * Renders bitmap fonts
+     */
     private BitmapFont font;
+    /**
+     * Play screen's music
+     */
     private Music music;
+    /**
+     * Hero's animations
+     */
     private HeroAnimation hero_animations;
+    /**
+     * LinkedList with the enemies
+     */
     private LinkedList<EnemyAnimation> enemies;
+    /**
+     * Array with the trap's animations
+     */
     private Animator[] trapAnimations;
+    /**
+     * LinkedList with the projectile's animations
+     */
     private LinkedList<Animator> projectiles;
+    /**
+     * Screen's map
+     */
     private Map map;
+    /**
+     * Gold's texture
+     */
     private Texture gold;
+    /**
+     * Texture of the robot's icon
+     */
     private Texture robotIcon;
+    /**
+     * Boolean that represents if the game is paused
+     */
     private boolean isPaused = false;
+    /**
+     * Screen's rectangle
+     */
     private Rectangle screenRectangle;
 
+    /**
+     * Constructor for the class PlayScreen
+     * @param myGame Principal game where the play screen's will be placed
+     * @param game Game where the play screen's will be placed
+     */
     public PlayScreen(MyGame myGame, Game game) {
         this.myGame = myGame;
         this.game = game;
@@ -110,22 +161,38 @@ public class PlayScreen implements Screen {
         screenRectangle = new Rectangle(0, 0, w, h);
     }
 
+    /**
+     * Getter for the y's relative position
+     * @param y Y coordinate
+     * @return The y's relative position
+     */
     public float getRelativeY(int y) {
         return h * y / Gdx.graphics.getHeight();
     }
 
+    /**
+     * Getter for the x's relative position
+     * @param x x coordinate
+     * @return The x's relative position
+     */
     public float getRelativeX(int x) {
         return w * x / Gdx.graphics.getWidth();
     }
 
+    /**
+     * Getter for the game
+     * @return The game where the play screen is placed
+     */
     public Game getGame() {
         return game;
     }
 
-    public boolean isPaused() {
-        return isPaused;
-    }
-
+    /**
+     * Function that draws the life's bar
+     * @param x X position
+     * @param y Y position
+     * @param textures Life's bar texture
+     */
     public void drawLifeBard(float x, float y, TextureRegion[] textures) {
         float width = 0;
         for (TextureRegion t : textures) {
@@ -135,31 +202,47 @@ public class PlayScreen implements Screen {
     }
 
     /**
-     * @param hPos
-     * @return
-     * @brief Calculates the center of the screen according to the hero's position
+     * Calculates the center of the screen according to the hero's position
+     * @param hPos hERO'S POSITION
+     * @return The center of the screen
      */
     private Vector2 calMidScreen(Vector2 hPos) {
         float tmp = hPos.x - w / 2 + 200;
         return new Vector2((tmp < 700) ? 700 : (tmp > 3400) ? 3400 : tmp, 400);
     }
 
+    /**
+     * Called when the screen was touched or a mouse button was pressed
+     * @param screenX The x coordinate, origin is in the upper left corner
+     * @param screenY The y coordinate, origin is in the upper left corner
+     */
     public boolean touchDown(int screenX, int screenY) {
         game.touchDown(getRelativeX(screenX), getRelativeY(screenY));
         return true;
     }
 
+    /**
+     * Called when the screen was touched or a mouse button was released
+     * @return True if the input was processed, False if it wasn't
+     */
     public boolean touchUp() {
         game.touchUp();
         return true;
     }
 
     @Override
+    /**
+     * Called when this screen becomes the current screen for a Game
+     */
     public void show() {
 
     }
 
     @Override
+    /**
+     * Called when the screen should render itself
+     * @param delta Difference between the last time of call and the current time
+     */
     public void render(float delta) {
         if (isPaused) {
             resume();
@@ -318,27 +401,44 @@ public class PlayScreen implements Screen {
     }
 
     @Override
+    /**
+     * Called when the screen is resized
+     * @param width Screen's width
+     * @param height Screen's height
+     */
     public void resize(int width, int height) {
 
     }
 
     @Override
+    /**
+     * Called when the screen is paused
+     */
     public void pause() {
         isPaused = true;
     }
 
     @Override
+    /**
+     * Called when the screen is resumed from a paused state
+     */
     public void resume() {
         isPaused = false;
         music.play();
     }
 
     @Override
+    /**
+     * Hide's the screen
+     */
     public void hide() {
 
     }
 
     @Override
+    /**
+     * Called when the screen is destroyed
+     */
     public void dispose() {
         //hero_animations.dispose();
         for (Animator e : enemies)

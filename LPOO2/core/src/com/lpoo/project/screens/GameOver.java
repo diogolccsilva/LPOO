@@ -80,6 +80,7 @@ public class GameOver implements Screen{
      * Called when the screen was touched or a mouse button was released
      * @param screenX The x coordinate, origin is in the upper left corner
      * @param screenY The y coordinate, origin is in the upper left corner
+     * @return True if the input was processed, False if it wasn't
      */
     public boolean touchUp(int screenX, int screenY) {
         Circle circ = new Circle( getRelativeX(screenX), getRelativeY(screenY), 32);
