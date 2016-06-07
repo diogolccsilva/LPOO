@@ -155,7 +155,7 @@ public class CharacterStats extends Stats {
      * @param stats Character's properties
      */
     public void applyDamage(Stats stats) {
-        this.health -= stats.getAttDamage() * (1-this.resistance/10);
+        this.health -= stats.getAttDamage() * (1-this.resistance/20);
     }
 
 }

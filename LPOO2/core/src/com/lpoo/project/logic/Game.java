@@ -104,7 +104,7 @@ public class Game implements Updatable {
     /**
      * Enemies' resistance per wave
      */
-    private final int resistPerWave = 5;
+    private final int resistPerWave = 1;
     /**
      * Enemies' health per wave
      */
