@@ -116,14 +116,6 @@ public class Inputs implements InputProcessor {
      */
     public boolean keyUp(int keycode) {
         switch (game.getState()){
-            /*case MENU:
-                switch(keycode){
-                    case Keys.BACK:
-                        return true;
-                    default:
-                        break;
-                }
-                break;*/
             case PLAY:
                 switch(keycode){
                     case Keys.BACK:
@@ -179,17 +171,11 @@ public class Inputs implements InputProcessor {
      */
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         switch (game.getState()){
-            case MENU:
-                game.getMenu().touchDown(screenX, screenY, pointer, button);
-                break;
             case PLAY:
-                game.getPlayScreen().touchDown(screenX, screenY, pointer, button);
+                game.getPlayScreen().touchDown(screenX, screenY);
                 break;
             case BUILD:
                 game.getBuildScreen().touchDown(screenX,screenY);
-                break;
-            case PAUSE:
-                game.getPauseMenu().touchDown(screenX, screenY, pointer, button);
                 break;
             default:
                 break;
@@ -209,18 +195,22 @@ public class Inputs implements InputProcessor {
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         switch (game.getState()){
             case MENU:
-                game.getMenu().touchUp(screenX,screenY,pointer, button);
+                game.getMenu().touchUp(screenX,screenY);
                 break;
             case PLAY:
-                game.getPlayScreen().touchUp(screenX,screenY,pointer, button);
+                game.getPlayScreen().touchUp();
                 break;
             case BUILD:
                 game.getBuildScreen().touchUp(screenX,screenY);
                 break;
             case PAUSE:
-                game.getPauseMenu().touchUp(screenX, screenY, pointer, button);
+                game.getPauseMenu().touchUp(screenX, screenY);
+                break;
             case GAMEOVER:
                 game.getGameOver().touchUp(screenX, screenY);
+                break;
+            case HERO:
+                game.getHeroMenu().touchUp(screenX, screenY);
             default:
                 break;
         }

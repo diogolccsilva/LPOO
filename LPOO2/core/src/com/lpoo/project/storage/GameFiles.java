@@ -13,16 +13,16 @@ import com.badlogic.gdx.files.FileHandle;
 import com.google.gson.*;
 import com.lpoo.project.MyGame;
 import com.lpoo.project.logic.Character;
+import com.google.gson.*;
 import com.lpoo.project.logic.CharacterStats;
-import com.lpoo.project.logic.Enemy;
-import com.lpoo.project.logic.Hero;
 import com.lpoo.project.logic.TrapStats;
 
 public class GameFiles {
 
-    static String heroesPath = "heroes.json";
-    static String enemiesPath = "enemies.json";
-    static String trapsPath = "traps.json";
+    private static String localPath = Gdx.files.getLocalStoragePath();
+    private static String heroesPath = localPath + "heroes.json";
+    private static String enemiesPath = localPath + "enemies.json";
+    private static String trapsPath = localPath + "traps.json";
     static String scoresPath = "Data/highscores.txt";
 
     public static void saveHeroes(Vector<CharacterStats> stats) {
@@ -64,6 +64,7 @@ public class GameFiles {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         try (Writer writer = new OutputStreamWriter(new FileOutputStream(enemiesPath), "UTF-8")) {
             Gson gson = new GsonBuilder().create();
             CharacterStats[] vs = new CharacterStats[stats.size()];
