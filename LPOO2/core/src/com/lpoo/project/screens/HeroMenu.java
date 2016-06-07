@@ -41,13 +41,9 @@ public class HeroMenu implements Screen {
     private BitmapFont text;
 
     /**
-     * Texture of the selection button
-     */
-    private Texture selected;
-    /**
      * Texture of the "not selected" button
      */
-    private Texture notSelected;
+    private Texture rectangle;
 
     /**
      * Array of rectangles with the hero's options
@@ -99,8 +95,18 @@ public class HeroMenu implements Screen {
         text = generator.generateFont(parameter);
         generator.dispose();
 
-        selected = new Texture("Selected.png");
-        notSelected = new Texture("NotSelected.png");
+        Music m = myGame.getCache().getBuildAudio();
+        if( m == null ) {
+            music = Gdx.audio.newMusic(Gdx.files.internal("Come and Find Me.mp3"));
+            myGame.getCache().setBuildAudio(music);
+        }
+        else music = m;
+
+        music.setLooping(true);
+        music.setVolume(myGame.getVolume()/100f);
+        music.play();
+
+        rectangle = new Texture("NotSelected.png");
 
         opt = -1;
         nOpts = myGame.getHeroes().size();
@@ -189,7 +195,7 @@ public class HeroMenu implements Screen {
             text.draw(myGame.batch, "MOVEMENT SPEED: " + stats.elementAt(i).getMovSpeed(), 670, 630-k);
             text.draw(myGame.batch, "ATTACK SPEED: " + stats.elementAt(i).getAttSpeed(), 670, 595-k);
             text.draw(myGame.batch, "ATTACK DAMAGE: " + stats.elementAt(i).getAttDamage(), 670, 560-k);
-            myGame.batch.draw(notSelected,opts[i].getX(),opts[i].getY(),opts[i].getWidth(),opts[i].getHeight());
+            myGame.batch.draw(rectangle,opts[i].getX(),opts[i].getY(),opts[i].getWidth(),opts[i].getHeight());
         }
 
         myGame.batch.end();
@@ -214,17 +220,13 @@ public class HeroMenu implements Screen {
     /**
      * Called when the screen is paused
      */
-    public void pause() {
-        //music.pause();
-    }
+    public void pause() { }
 
     @Override
     /**
      * Called when the screen is resumed from a paused state
      */
-    public void resume() {
-        //music.play();
-    }
+    public void resume() { music.play(); }
 
     @Override
     /**
@@ -239,7 +241,7 @@ public class HeroMenu implements Screen {
      * Called when the screen is destroyed
      */
     public void dispose() {
-
+        music.stop();
     }
 
     public Vector2 getRelativePosition(int x, int y) {

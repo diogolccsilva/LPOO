@@ -351,9 +351,7 @@ public class BuildScreen implements Screen {
     /**
      * Called when the screen is paused
      */
-    public void pause() {
-        music.pause();
-    }
+    public void pause() { }
 
     @Override
     /**

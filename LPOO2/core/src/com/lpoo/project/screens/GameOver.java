@@ -148,9 +148,7 @@ public class GameOver implements Screen{
     /**
      * Called when the screen is paused
     */
-    public void pause() {
-        music.pause();
-    }
+    public void pause() { }
 
     @Override
     /**
@@ -173,7 +171,7 @@ public class GameOver implements Screen{
      * Called when the screen is destroyed
      */
     public void dispose() {
-        music.stop();
+        music.pause();
     }
 
     /**

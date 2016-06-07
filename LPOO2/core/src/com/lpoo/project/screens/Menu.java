@@ -167,9 +167,7 @@ public class Menu implements Screen{
     /**
      * Called when the screen is paused
      */
-    public void pause() {
-        music.pause();
-    }
+    public void pause() { }
 
     @Override
     /**
@@ -183,9 +181,7 @@ public class Menu implements Screen{
     /**
      * Hide's the screen
      */
-    public void hide() {
-        dispose();
-    }
+    public void hide() { }
 
     @Override
     /**

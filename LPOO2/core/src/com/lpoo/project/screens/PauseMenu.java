@@ -158,15 +158,13 @@ public class PauseMenu implements Screen{
     /**
      * Called when the screen is paused
      */
-    public void pause() {
-    }
+    public void pause() { }
 
     @Override
     /**
      * Called when the screen is resumed from a paused state
      */
-    public void resume() {
-    }
+    public void resume() { }
 
     @Override
     /**
