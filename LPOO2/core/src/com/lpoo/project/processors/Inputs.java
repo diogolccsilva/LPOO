@@ -45,22 +45,8 @@ public class Inputs implements InputProcessor {
                 return true;
         }
         switch (game.getState()) {
-            case MENU:
-                switch (keycode) {
-                    case Keys.BACK:
-                    case Keys.ESCAPE:
-                        game.changeScreen(MyGame.States.EXIT);
-                        return true;
-                    default:
-                        break;
-                }
-                break;
             case PLAY:
                 switch (keycode) {
-                    case Keys.BACK:
-                    case Keys.ESCAPE:
-                        //game.changeScreen(MyGame.States.PAUSE);
-                        break;
                     case Keys.LEFT:
                         game.getPlayScreen().getGame().heroMove(-1);
                         break;
@@ -83,6 +69,40 @@ public class Inputs implements InputProcessor {
                         break;
                 }
                 break;
+            default:
+                break;
+        }
+        return false;
+    }
+
+    @Override
+    /**
+     * Called when a key was released
+     * @param keycode Code of the key released
+     * @return True if the input was processed, False if it wasn't
+     */
+    public boolean keyUp(int keycode) {
+        switch (game.getState()) {
+            case MENU:
+            switch (keycode) {
+                case Keys.BACK:
+                case Keys.ESCAPE:
+                    game.changeScreen(MyGame.States.EXIT);
+                    return true;
+                default:
+                    break;
+            }
+            break;
+            case PLAY:
+                switch (keycode) {
+                    case Keys.BACK:
+                    case Keys.ESCAPE:
+                        game.changeScreen(MyGame.States.PAUSE);
+                        break;
+                    default:
+                        game.getPlayScreen().getGame().stopHero();
+                }
+                return true;
             case BUILD:
                 switch (keycode) {
                     case Keys.BACK:
@@ -119,53 +139,11 @@ public class Inputs implements InputProcessor {
 
     @Override
     /**
-     * Called when a key was released
-     * @param keycode Code of the key released
-     * @return True if the input was processed, False if it wasn't
-     */
-    public boolean keyUp(int keycode) {
-        switch (game.getState()) {
-            case PLAY:
-                switch (keycode) {
-                    case Keys.BACK:
-                    case Keys.ESCAPE:
-                        game.changeScreen(MyGame.States.PAUSE);
-                        break;
-                    default:
-                        game.getPlayScreen().getGame().stopHero();
-                }
-                return true;
-            case PAUSE:
-                switch (keycode) {
-                    case Keys.BACK:
-                    case Keys.ESCAPE:
-                        game.changeScreen(MyGame.States.PLAY);
-                        return true;
-                    default:
-                        break;
-                }
-                break;
-            default:
-                break;
-        }
-        return false;
-    }
-
-    @Override
-    /**
      * Called when a key was typed
      * @param character Character typed
      * @return True if the input was processed, False if it wasn't
      */
     public boolean keyTyped(char character) {
-        switch (game.getState()) {
-            case MENU:
-                break;
-            case PLAY:
-                break;
-            default:
-                break;
-        }
         return false;
     }
 

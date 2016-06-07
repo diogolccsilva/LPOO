@@ -218,9 +218,9 @@ public class PlayScreen implements Screen {
      */
     public boolean touchDown(int screenX, int screenY) {
         float x = getRelativeX(screenX);
-        if( x < 50 )
+        if( x < 100 )
             game.heroMove( -1 );
-        else if( x > w - 50)
+        else if( x > w - 100 )
             game.heroMove( 1 );
         else
             game.heroAttack();

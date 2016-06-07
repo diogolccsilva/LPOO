@@ -115,8 +115,7 @@ public class Trap extends Entity implements Updatable {
             case WAIT:
                 stateTime = tmp;
                 collision();
-
-                break;
+                return ;
             case HEATUP:
                 if (stateTime <= stats.getHeatUpSpeed() && tmp >= stats.getHeatUpSpeed()) {
                     currStatus = TrapStatus.ATTACK;
