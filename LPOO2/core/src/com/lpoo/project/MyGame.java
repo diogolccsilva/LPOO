@@ -124,6 +124,11 @@ public class MyGame extends com.badlogic.gdx.Game {
     private Vector<CharacterStats> enemies;
 
     /**
+     * Score of the last game played
+     */
+    private int lastScore;
+
+    /**
      * Enumeration for the main game's status
      */
     public enum States {
@@ -180,6 +185,8 @@ public class MyGame extends com.badlogic.gdx.Game {
         loadGame();
 
         state = States.MENU;
+
+        lastScore = 0;
     }
 
     /**
@@ -256,7 +263,8 @@ public class MyGame extends com.badlogic.gdx.Game {
                 }
                 break;
             case GAMEOVER:
-                GameFiles.saveScore(game.getScore());
+                lastScore = game.getScore();
+                GameFiles.saveScore(lastScore);
                 disposeState();
                 state = stat;
                 gameOver = new GameOver(this);
@@ -416,6 +424,10 @@ public class MyGame extends com.badlogic.gdx.Game {
      */
     public int getVolume() {
         return volume;
+    }
+
+    public int getLastScore() {
+        return lastScore;
     }
 
     /**

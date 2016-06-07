@@ -6,6 +6,8 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Circle;
 import com.lpoo.project.MyGame;
 
@@ -37,6 +39,11 @@ public class GameOver implements Screen{
     private Music music;
 
     /**
+     * Text's renders bitmap fonts
+     */
+    private BitmapFont text;
+
+    /**
      * Game over's height
      */
     private static final int menuH = 256;
@@ -53,6 +60,13 @@ public class GameOver implements Screen{
         this.myGame = myGame;
 
         back = new Circle(107, 127, 32);
+
+        //Initialize font and store it in cache
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Font\\slkscr.ttf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        parameter.size = 30;
+        text = generator.generateFont(parameter);
+        generator.dispose();
 
         OrthographicCamera c = myGame.getCache().getMenuCamera();
         if( c == null ) {
@@ -130,6 +144,8 @@ public class GameOver implements Screen{
         myGame.batch.begin();
 
         myGame.batch.draw(background, 0, 0);
+
+        text.draw(myGame.batch, "Score:   " + myGame.getLastScore() , 220, 100);
 
         myGame.batch.end();
     }

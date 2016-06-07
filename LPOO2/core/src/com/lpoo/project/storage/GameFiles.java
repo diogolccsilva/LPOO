@@ -186,7 +186,7 @@ public class GameFiles {
      * @return A vector with the scores
      */
     public static Vector<Integer> loadScore(int top){
-        FileHandle file = Gdx.files.local(scoresPath);
+        FileHandle file = Gdx.files.internal(scoresPath);
         if (!file.exists()){
             file.write(false);
         }

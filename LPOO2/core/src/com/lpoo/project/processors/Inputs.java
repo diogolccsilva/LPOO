@@ -107,7 +107,7 @@ public class Inputs implements InputProcessor {
                 switch (keycode) {
                     case Keys.BACK:
                     case Keys.ESCAPE:
-                        game.changeScreen(MyGame.States.HERO);
+                        game.changeScreen(MyGame.States.MENU);
                         return true;
                 }
                 break;
