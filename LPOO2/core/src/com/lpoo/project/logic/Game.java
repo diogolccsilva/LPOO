@@ -240,6 +240,10 @@ public class Game implements Updatable {
         }
     }
 
+    public void setMoney(int money) {
+        this.money = money;
+    }
+
     public void lose() {
         state = GameStatus.LOST;
     }
