@@ -10,12 +10,14 @@ public class Hero extends Character {
      * Hero's time to be dead
      */
     private static final float deadTime = 3f;
+
     /**
      * Enumeration for the heros status
      */
     public enum HeroStatus {
         STILL, ATTACK, MOVE_LEFT, MOVE_RIGHT, DEAD
     }
+
     /**
      * Hero's current status
      */
@@ -50,13 +52,14 @@ public class Hero extends Character {
 
     /**
      * Constructor for the class Hero
-     * @param game       Game where the hero will be placed
-     * @param x          Hero's x position
-     * @param y          Hero's y position
-     * @param stats      Hero's properties
+     *
+     * @param game  Game where the hero will be placed
+     * @param x     Hero's x position
+     * @param y     Hero's y position
+     * @param stats Hero's properties
      */
-    public Hero(Game game, int x, int y, CharacterStats stats){
-        super(game,x,y,45,88);
+    public Hero(Game game, int x, int y, CharacterStats stats) {
+        super(game, x, y, 45, 88);
 
         this.stats = new CharacterStats(stats.getHealth(), stats.getResistance(), stats.getMovSpeed(), stats.getAttSpeed(), stats.getAttDamage());
 
@@ -66,6 +69,7 @@ public class Hero extends Character {
 
     /**
      * Getter for the hero's current status
+     *
      * @return the hero's current status
      */
     public HeroStatus getState() {
@@ -74,6 +78,7 @@ public class Hero extends Character {
 
     /**
      * Getter for the hero's next status
+     *
      * @return the hero's next status
      */
     public HeroStatus getNextState() {
@@ -82,11 +87,12 @@ public class Hero extends Character {
 
     /**
      * Function which allows the hero to move
+     *
      * @param dir the direction in which the hero will be moving (negative - Moves left, positive - Moves right)
      */
     public void move(int dir) {
-        if( this.state != HeroStatus.DEAD ) {
-            if( dir < 0 )
+        if (this.state != HeroStatus.DEAD) {
+            if (dir < 0)
                 nextState = HeroStatus.MOVE_LEFT;
             else
                 nextState = HeroStatus.MOVE_RIGHT;
@@ -111,6 +117,7 @@ public class Hero extends Character {
 
     /**
      * Function which represents the hero's status' animation
+     *
      * @param stat hero's status
      */
     public void animationStatus(HeroStatus stat) {
@@ -122,6 +129,7 @@ public class Hero extends Character {
 
     /**
      * Updates the hero and current status
+     *
      * @param delta Difference between the last time of call and the current time
      */
     public void update(float delta) {
@@ -142,7 +150,7 @@ public class Hero extends Character {
                 move(1, delta);
                 break;
             case DEAD:
-                if( currTime >= deadTime ) {
+                if (currTime >= deadTime) {
                     stateTime = 0;
                     rect.x = 3700;
                     state = HeroStatus.STILL;
@@ -157,6 +165,7 @@ public class Hero extends Character {
 
     /**
      * Verifies if the hero was hit by a enemy and if its life is 0 or less the enemy dies
+     *
      * @param stats Hero's properties
      */
     public void hit(Stats stats) {
@@ -171,6 +180,7 @@ public class Hero extends Character {
 
     /**
      * Allows the hero to move
+     *
      * @param dir   Movement's direction
      * @param delta Difference between the last time of call and the current time
      */
