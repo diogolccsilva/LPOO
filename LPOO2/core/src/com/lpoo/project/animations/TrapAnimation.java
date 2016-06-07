@@ -87,7 +87,7 @@ public class TrapAnimation extends Animator {
 
     /**
      * Getter for the current texture of the animation
-     * @param delta Increasing value
+     * @param delta Difference between the last time of call and the current time
      * @return TextureRegion to be drawn on the screen
      */
     public TextureRegion getTexture( float delta ) {

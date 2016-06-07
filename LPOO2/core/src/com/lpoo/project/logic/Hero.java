@@ -25,12 +25,14 @@ public class Hero extends Character {
      */
     private float stateTime;
 
+    /**
+     * Hero's time to be dead
+     */
     private float deadTime = 3f;
 
     /**
      * Constructor for the class Hero
-     *
-     * @param game       Game where will be placed the hero
+     * @param game       Game where the hero will be placed
      * @param x          Hero's x position
      * @param y          Hero's y position
      * @param health     Hero's health
@@ -48,11 +50,11 @@ public class Hero extends Character {
     }
 
     /**
-     *
-     * @param game
-     * @param x
-     * @param y
-     * @param stats
+     * Constructor for the class Hero
+     * @param game       Game where the hero will be placed
+     * @param x          Hero's x position
+     * @param y          Hero's y position
+     * @param stats      Hero's properties
      */
     public Hero(Game game, int x, int y, CharacterStats stats){
         super(game,x,y,45,88);
@@ -65,7 +67,6 @@ public class Hero extends Character {
 
     /**
      * Getter for the hero's current status
-     *
      * @return the hero's current status
      */
     public HeroStatus getState() {
@@ -74,7 +75,6 @@ public class Hero extends Character {
 
     /**
      * Getter for the hero's next status
-     *
      * @return the hero's next status
      */
     public HeroStatus getNextState() {
@@ -83,7 +83,6 @@ public class Hero extends Character {
 
     /**
      * Function which allows the hero to move
-     *
      * @param state New status to be saved in the nextState variable
      */
     public void move(HeroStatus state) {
@@ -100,7 +99,8 @@ public class Hero extends Character {
     }
 
     /**
-     * @param screenX
+     * Called when a finger was lifted or a mouse button was pressed
+     * @param screenX The x coordinate, origin is in the upper left corner
      */
     public void touchDown(float screenX) {
         if (state == HeroStatus.DEAD)
@@ -114,7 +114,7 @@ public class Hero extends Character {
     }
 
     /**
-     *
+     * Called when a finger was lifted or a mouse button was released
      */
     public void touchUp() {
         if (state != HeroStatus.DEAD)
@@ -123,12 +123,10 @@ public class Hero extends Character {
 
     /**
      * Function which represents the hero's status' animation
-     *
      * @param stat hero's status
      */
     public void animationStatus(HeroStatus stat) {
         if (state != HeroStatus.DEAD && stat != state) {
-            //nextState = stat;
             state = stat;
             stateTime = 0;
         }
@@ -137,6 +135,7 @@ public class Hero extends Character {
     @Override
     /**
      * Updates the hero and current status
+     * @param delta Difference between the last time of call and the current time
      */
     public void update(float delta) {
         float currTime = stateTime + delta;
@@ -171,7 +170,6 @@ public class Hero extends Character {
 
     /**
      * Verifies if the hero was hit by a enemy and if its life is 0 or less the enemy dies
-     *
      * @param stats Hero's properties
      */
     public void hit(Stats stats) {
@@ -186,9 +184,8 @@ public class Hero extends Character {
 
     /**
      * Allows the hero to move
-     *
      * @param dir   Movement's direction
-     * @param delta Increasing value
+     * @param delta Difference between the last time of call and the current time
      */
     public void move(int dir, float delta) {
         float x = rect.x + getVelocity() * delta * dir;

@@ -8,7 +8,7 @@ import com.lpoo.project.logic.Game;
 
 /**
  * Class that creates the animations
- * This class implements the interface Disposable
+ * This class implements the interface Disposable and Cloneable
  */
 public abstract class Animator implements Disposable, Cloneable {
 
@@ -52,17 +52,18 @@ public abstract class Animator implements Disposable, Cloneable {
         this.index = index;
     }
 
-    public TextureAtlas[] getTextures() {
-        return textures;
-    }
 
+    /**
+     * Getter for the animations
+     * @return The array with the animations
+     */
     public Animation[] getAnimations() {
         return animations;
     }
 
     /**
      * Getter for the animation's texture
-     * @param delta Increasing value
+     * @param delta Difference between the last time of call and the current time
      * @return TextureRegion to be drawn on the screen
      */
     public TextureRegion getTexture( float delta ) {
@@ -95,6 +96,11 @@ public abstract class Animator implements Disposable, Cloneable {
             textures[i].dispose();
     }
 
+    /**
+     * Resets the animations
+     * @param game Game where the animations will be placed
+     * @param index Animation's index
+     */
     public void reset( Game game, int index ) {
         stateTime = 0;
         this.game = game;
@@ -102,6 +108,10 @@ public abstract class Animator implements Disposable, Cloneable {
     }
 
     @Override
+
+    /**
+     * Clones the animation
+     */
     protected Object clone() throws CloneNotSupportedException {
         return super.clone();
     }

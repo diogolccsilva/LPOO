@@ -1,11 +1,21 @@
 package com.lpoo.project.tests;
 
-import static org.junit.Assert.*;
+import com.lpoo.project.logic.CharacterStats;
+import com.lpoo.project.logic.Enemy;
+import com.lpoo.project.logic.Game;
+import com.lpoo.project.logic.Hero;
+import com.lpoo.project.logic.MeleeEnemy;
+import com.lpoo.project.logic.Projectile;
+import com.lpoo.project.logic.ProjectileStats;
+import com.lpoo.project.logic.RangedEnemy;
+import com.lpoo.project.logic.Trap;
 
 import org.junit.Test;
 
-import com.lpoo.project.logic.*;
-import com.lpoo.project.logic.Character;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class Tests {
 
