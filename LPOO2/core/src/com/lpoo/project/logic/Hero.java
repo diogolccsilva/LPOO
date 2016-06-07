@@ -7,6 +7,10 @@ package com.lpoo.project.logic;
 public class Hero extends Character {
 
     /**
+     * Hero's time to be dead
+     */
+    private static final float deadTime = 3f;
+    /**
      * Enumeration for the heros status
      */
     public enum HeroStatus {
@@ -24,10 +28,6 @@ public class Hero extends Character {
      * Status "time of life"
      */
     private float stateTime;
-    /**
-     * Hero's time to be dead
-     */
-    private float deadTime = 3f;
 
     /**
      * Constructor for the class Hero
@@ -82,11 +82,15 @@ public class Hero extends Character {
 
     /**
      * Function which allows the hero to move
-     * @param state New status to be saved in the nextState variable
+     * @param dir the direction in which the hero will be moving (negative - Moves left, positive - Moves right)
      */
-    public void move(HeroStatus state) {
-        if( this.state != HeroStatus.DEAD )
-            nextState = state;
+    public void move(int dir) {
+        if( this.state != HeroStatus.DEAD ) {
+            if( dir < 0 )
+                nextState = HeroStatus.MOVE_LEFT;
+            else
+                nextState = HeroStatus.MOVE_RIGHT;
+        }
     }
 
     /**
@@ -98,24 +102,9 @@ public class Hero extends Character {
     }
 
     /**
-     * Called when a finger was lifted or a mouse button was pressed
-     * @param screenX The x coordinate, origin is in the upper left corner
+     * Function that signals that the next state will be STILL
      */
-    public void touchDown(float screenX) {
-        if (state == HeroStatus.DEAD)
-            return;
-        if (screenX < 50)
-            nextState = HeroStatus.MOVE_LEFT;
-        else if (screenX > 840)
-            nextState = HeroStatus.MOVE_RIGHT;
-        else
-            nextState = HeroStatus.ATTACK;
-    }
-
-    /**
-     * Called when a finger was lifted or a mouse button was released
-     */
-    public void touchUp() {
+    public void stop() {
         if (state != HeroStatus.DEAD)
             nextState = HeroStatus.STILL;
     }

@@ -217,7 +217,13 @@ public class PlayScreen implements Screen {
      * @param screenY The y coordinate, origin is in the upper left corner
      */
     public boolean touchDown(int screenX, int screenY) {
-        game.touchDown(getRelativeX(screenX), getRelativeY(screenY));
+        float x = getRelativeX(screenX);
+        if( x < 50 )
+            game.heroMove( -1 );
+        else if( x > w - 50)
+            game.heroMove( 1 );
+        else
+            game.heroAttack();
         return true;
     }
 
@@ -226,7 +232,7 @@ public class PlayScreen implements Screen {
      * @return True if the input was processed, False if it wasn't
      */
     public boolean touchUp() {
-        game.touchUp();
+        game.stopHero();
         return true;
     }
 

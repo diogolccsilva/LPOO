@@ -64,13 +64,13 @@ public class Inputs implements InputProcessor {
                         //game.changeScreen(MyGame.States.PAUSE);
                         break;
                     case Keys.LEFT:
-                        game.getPlayScreen().getGame().getHero().move(Hero.HeroStatus.MOVE_LEFT);
+                        game.getPlayScreen().getGame().heroMove(-1);
                         break;
                     case Keys.RIGHT:
-                        game.getPlayScreen().getGame().getHero().move(Hero.HeroStatus.MOVE_RIGHT);
+                        game.getPlayScreen().getGame().heroMove(1);
                         break;
                     case Keys.SPACE:
-                        game.getPlayScreen().getGame().getHero().attack();
+                        game.getPlayScreen().getGame().heroAttack();
                         break;
                     case Keys.S:
                         game.saveGame();
@@ -123,7 +123,7 @@ public class Inputs implements InputProcessor {
                         game.changeScreen(MyGame.States.PAUSE);
                         break;
                     default:
-                        game.getPlayScreen().getGame().getHero().move(Hero.HeroStatus.STILL);
+                        game.getPlayScreen().getGame().stopHero();
                 }
                 return true;
             case PAUSE:

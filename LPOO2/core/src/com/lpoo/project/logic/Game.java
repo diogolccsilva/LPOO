@@ -217,12 +217,16 @@ public class Game implements Updatable {
         projectiles.remove(index);
     }
 
-    public void touchDown(float screenX, float screenY) {
-        hero.touchDown(screenX);
+    public void heroMove( int dir ) {
+        hero.move(dir);
     }
 
-    public void touchUp() {
-        hero.touchUp();
+    public void heroAttack() {
+        hero.attack();
+    }
+
+    public void stopHero() {
+        hero.stop();
     }
 
     public void setTrap(int x, int y, int width, int height, int index) {
