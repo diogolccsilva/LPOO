@@ -12,28 +12,70 @@ import com.badlogic.gdx.math.Rectangle;
 import com.lpoo.project.MyGame;
 
 /**
- * Created by Vasco on 06/06/2016.
+ * Class that creates the screen where the user can choose the hero
+ * This class implements the interface Screen
  */
 public class HeroMenu implements Screen {
 
+    /**
+     * Principal game where the screen will be placed
+     */
     private MyGame myGame;
 
+    /**
+     * Music used in this menu
+     */
     private Music music;
 
+    /**
+     * Title's renders bitmap fonts
+     */
     private BitmapFont title;
+    /**
+     * Text's renders bitmap fonts
+     */
     private BitmapFont text;
 
+    /**
+     * Texture of the selection button
+     */
     private Texture selected;
+    /**
+     * Texture of the "not selected" button
+     */
     private Texture notSelected;
 
+    /**
+     * First choice's rectangle
+     */
     private Rectangle opt1;
+    /**
+     * Second choice's rectangle
+     */
     private Rectangle opt2;
+    /**
+     * Third choice's rectangle
+     */
     private Rectangle opt3;
 
+    /**
+     * Hero's option
+     */
     private int opt;
 
-    private static final int h = 765, w = 1360;
+    /**
+     * Menu's height
+     */
+    private static final int h = 765;
+    /**
+     * Menu's width
+     */
+    private static final int w = 1360;
 
+    /**
+     * Constructor for the class HeroMenu
+     * @param myGame Principal game where the menu will be placed
+     */
     public HeroMenu ( MyGame myGame ) {
         this.myGame = myGame;
 
@@ -60,14 +102,29 @@ public class HeroMenu implements Screen {
         opt3 = new Rectangle(619, 41, 700, 200);
     }
 
+    /**
+     * Getter for the y's relative position
+     * @param y Y coordinate
+     * @return The y's relative position
+     */
     public float getRelativeY(int y) {
         return h * y / Gdx.graphics.getHeight();
     }
 
+    /**
+     * Getter for the x's relative position
+     * @param x x coordinate
+     * @return The x's relative position
+     */
     public float getRelativeX(int x) {
         return w * x / Gdx.graphics.getWidth();
     }
 
+    /**
+     * Called when the screen was touched or a mouse button was released
+     * @param screenX The x coordinate, origin is in the upper left corner
+     * @param screenY The y coordinate, origin is in the upper left corner
+     */
     public void touchUp( int screenX, int screenY ) {
         Rectangle rect = new Rectangle( getRelativeX(screenX), h - getRelativeY(screenY), 20, 20 );
         if( rect.overlaps(opt1))
@@ -79,11 +136,18 @@ public class HeroMenu implements Screen {
     }
 
     @Override
+    /**
+     * Called when this screen becomes the current screen for a Game
+     */
     public void show() {
 
     }
 
     @Override
+    /**
+     * Called when the screen should render itself
+     * @param delta Difference between the last time of call and the current time
+     */
     public void render(float delta) {
         Gdx.gl.glClearColor(0.516f, 0.516f, 0.516f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -127,26 +191,43 @@ public class HeroMenu implements Screen {
     }
 
     @Override
+    /**
+     * Called when the screen is resized
+     * @param width Screen's width
+     * @param height Screen's height
+     */
     public void resize(int width, int height) {
 
     }
 
     @Override
+    /**
+     * Called when the screen is paused
+     */
     public void pause() {
         music.pause();
     }
 
     @Override
+    /**
+     * Called when the screen is resumed from a paused state
+     */
     public void resume() {
         music.play();
     }
 
     @Override
+    /**
+     * Hide's the screen
+     */
     public void hide() {
 
     }
 
     @Override
+    /**
+     * Called when the screen is destroyed
+     */
     public void dispose() {
 
     }

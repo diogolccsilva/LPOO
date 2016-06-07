@@ -27,7 +27,8 @@ import com.lpoo.project.logic.Trap;
 import java.util.LinkedList;
 
 /**
- * Created by Vasco on 13/05/2016.
+ * Class that creates the game over's screen
+ * This class implements the interface Screen
  */
 public class PlayScreen implements Screen {
 

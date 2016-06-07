@@ -1,10 +1,29 @@
 package com.lpoo.project.logic;
 
+/**
+ * Class that creates the enemy of type melee
+ * This class extends the superclass Enemy
+ */
 public class MeleeEnemy extends Enemy {
 
+    /**
+     * Melee's width
+     */
     public static final int width = 80;
+    /**
+     * Melee's height
+     */
     public static final int height = 124;
 
+    /**
+     * Constructor for the enemy of type melee
+     * @param game Game where the melee will be placed
+     * @param x Melee's x coordinate
+     * @param y Melee's y coordinate
+     * @param health Melee's health
+     * @param resistance Melee's resistance
+     * @param damage Melee's damage
+     */
     public MeleeEnemy(Game game, int x, int y, int health, int resistance, int damage) {
         super(game, x, y, width, height, health, resistance, damage);
         points = 5;
@@ -12,6 +31,10 @@ public class MeleeEnemy extends Enemy {
         stats.setAttSpeed(1.4f);
     }
 
+    /**
+     * Updates the enemy of type melee and current status
+     * @param delta Difference between the last time of call and the current time
+     */
     public void update(float delta) {
         stateTime += delta;
 

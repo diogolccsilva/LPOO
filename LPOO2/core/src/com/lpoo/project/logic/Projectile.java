@@ -1,13 +1,11 @@
 package com.lpoo.project.logic;
 
 import com.badlogic.gdx.math.Vector2;
-
 import java.util.LinkedList;
-import java.util.Random;
 
 /**
  * Class that creates the game's projectiles
- * This class extends the superclass Entity and implements the interfaces Updatable, Movable
+ * This class extends the superclass Entity and it implements the Updatable and Movable interfaces
  */
 public class Projectile extends Entity implements Updatable, Movable {
 
@@ -26,22 +24,30 @@ public class Projectile extends Entity implements Updatable, Movable {
      */
     private ProjectileStats stats;
 
+    /**
+     * Boolean that represents the hero's side
+     */
     private boolean heroSide;
 
+    /**
+     * Projectile's initial position
+     */
     private Vector2 initPosition;
 
+    /**
+     * Projectile's max range
+     */
     private final int maxRange;
 
     /**
      * Constructor for the class Projectile
-     *
-     * @param game   Game where will be placed the projectile
+     * @param game   Game where the projectile will be placed
      * @param x      Projectile's x position
      * @param y      Projectile's y position
      * @param width  Projectile's width
      * @param height Projectile's height
      * @param damage Projectile's damage
-     * @param side   which side the projectile's on (true if it on the hero's side)
+     * @param side   Which side the projectile's on (true if it on the hero's side)
      */
     public Projectile(Game game, float x, float y, int width, int height, int damage, int maxRange, boolean side) {
         super(game, x, y, width, height);
@@ -54,7 +60,6 @@ public class Projectile extends Entity implements Updatable, Movable {
 
     /**
      * Getter for the projectile's status
-     *
      * @return the projectile's status
      */
     public ProjectileStatus getState() {
@@ -70,9 +75,7 @@ public class Projectile extends Entity implements Updatable, Movable {
     }
 
     /**
-     *
      * Setter for the projectile's heroSide
-     *
      * @param heroSide new value for heroSide
      */
     public void setHeroSide(boolean heroSide) {
@@ -81,8 +84,7 @@ public class Projectile extends Entity implements Updatable, Movable {
 
     /**
      * Updates the projectile (movement and collisions)
-     *
-     * @param delta Increasing values
+     * @param delta Difference between the last time of call and the current time
      */
     public void update(float delta) {
         //The projectiles move horizontally so the only difference will only be in x
@@ -123,9 +125,8 @@ public class Projectile extends Entity implements Updatable, Movable {
 
     /**
      * Function that moves the projectile
-     *
      * @param dir   Direction to move
-     * @param delta Increasing value
+     * @param delta Difference between the last time of call and the current time
      */
     public void move(int dir, float delta) {
         rect.x += dir * stats.getMovSpeed() * delta;

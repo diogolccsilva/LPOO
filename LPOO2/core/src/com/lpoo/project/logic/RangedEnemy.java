@@ -3,16 +3,38 @@ package com.lpoo.project.logic;
 import com.badlogic.gdx.math.Rectangle;
 
 /**
- * Created by Vasco on 05/06/2016.
+ * Class that creates the enemy of type ranged
+ * This class extends the superclass Enemy
  */
 public class RangedEnemy extends Enemy {
 
+    /**
+     * Ranged's width
+     */
     public static final int width = 33;
+    /**
+     * Ranged's height
+     */
     public static final int height = 124;
 
+    /**
+     * Ranged's range
+     */
     private static final int range = 500;
+    /**
+     * Rectangle that represents the shot range
+     */
     private Rectangle shotRange;
 
+    /**
+     * Constructor for the enemy of type ranged
+     * @param game Game where the melee will be placed
+     * @param x Ranged's x coordinate
+     * @param y Ranged's y coordinate
+     * @param health Ranged's health
+     * @param resistance Ranged's resistance
+     * @param damage Ranged's damage
+     */
     public RangedEnemy(Game game, int x, int y, int health, int resistance, int damage) {
         super(game, x, y, width, height, health, resistance, damage);
         shotRange = new Rectangle( rect.x + width, rect.y, range, rect.height);
@@ -21,6 +43,10 @@ public class RangedEnemy extends Enemy {
         stats.setAttSpeed(0.6f);
     }
 
+    /**
+     * Updates the enemy of type ranged and current status
+     * @param delta Difference between the last time of call and the current time
+     */
     public void update(float delta) {
         stateTime += delta;
 
@@ -55,7 +81,7 @@ public class RangedEnemy extends Enemy {
     /**
      * Represents the way the enemy moves
      * @param dir Movement's direction
-     * @param delta Increasing value
+     * @param delta Difference between the last time of call and the current time
      */
     public void move(int dir, float delta) {
         float dist = stats.getMovSpeed() * dir * delta;
