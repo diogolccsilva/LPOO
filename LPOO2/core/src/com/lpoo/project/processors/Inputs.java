@@ -19,9 +19,10 @@ public class Inputs implements InputProcessor {
 
     /**
      * Constructor for the class Inputs
+     *
      * @param game Game where the inputs will be treated
      */
-    public Inputs(MyGame game){
+    public Inputs(MyGame game) {
         this.game = game;
 
         Gdx.input.setInputProcessor(this);
@@ -35,21 +36,18 @@ public class Inputs implements InputProcessor {
      * @return True if the input was processed, False if it wasn't
      */
     public boolean keyDown(int keycode) {
-        switch(keycode){
+        switch (keycode) {
             case Keys.PLUS:
                 game.volumeUp();
-                break;
+                return true;
             case Keys.MINUS:
                 game.volumeDown();
-                break;
+                return true;
         }
-
-        switch (game.getState()){
+        switch (game.getState()) {
             case MENU:
-                switch(keycode){
+                switch (keycode) {
                     case Keys.BACK:
-                        game.changeScreen(MyGame.States.EXIT);
-                        return true;
                     case Keys.ESCAPE:
                         game.changeScreen(MyGame.States.EXIT);
                         return true;
@@ -58,7 +56,7 @@ public class Inputs implements InputProcessor {
                 }
                 break;
             case PLAY:
-                switch(keycode){
+                switch (keycode) {
                     case Keys.BACK:
                     case Keys.ESCAPE:
                         //game.changeScreen(MyGame.States.PAUSE);
@@ -74,12 +72,13 @@ public class Inputs implements InputProcessor {
                         break;
                     case Keys.S:
                         game.saveGame();
-                        break;
+                        return true;
                     case Keys.N:
                         game.newHero();
-                        break;
+                        return true;
                     case Keys.L:
                         game.getPlayScreen().getGame().lose();
+                        return true;
                     default:
                         break;
                 }
@@ -88,7 +87,7 @@ public class Inputs implements InputProcessor {
                 switch (keycode) {
                     case Keys.BACK:
                     case Keys.ESCAPE:
-                        game.changeScreen(MyGame.States.MENU);
+                        game.changeScreen(MyGame.States.HERO);
                         return true;
                 }
                 break;
@@ -97,6 +96,16 @@ public class Inputs implements InputProcessor {
                     case Keys.BACK:
                     case Keys.ESCAPE:
                         game.changeScreen(MyGame.States.PLAY);
+                        return true;
+                    default:
+                        break;
+                }
+                break;
+            case HERO:
+                switch (keycode) {
+                    case Keys.BACK:
+                    case Keys.ESCAPE:
+                        game.changeScreen(MyGame.States.MENU);
                         return true;
                     default:
                         break;
@@ -115,9 +124,9 @@ public class Inputs implements InputProcessor {
      * @return True if the input was processed, False if it wasn't
      */
     public boolean keyUp(int keycode) {
-        switch (game.getState()){
+        switch (game.getState()) {
             case PLAY:
-                switch(keycode){
+                switch (keycode) {
                     case Keys.BACK:
                     case Keys.ESCAPE:
                         game.changeScreen(MyGame.States.PAUSE);
@@ -127,7 +136,7 @@ public class Inputs implements InputProcessor {
                 }
                 return true;
             case PAUSE:
-                switch(keycode){
+                switch (keycode) {
                     case Keys.BACK:
                     case Keys.ESCAPE:
                         game.changeScreen(MyGame.States.PLAY);
@@ -149,7 +158,7 @@ public class Inputs implements InputProcessor {
      * @return True if the input was processed, False if it wasn't
      */
     public boolean keyTyped(char character) {
-        switch (game.getState()){
+        switch (game.getState()) {
             case MENU:
                 break;
             case PLAY:
@@ -170,17 +179,20 @@ public class Inputs implements InputProcessor {
      * @return True if the input was processed, False if it wasn't
      */
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        switch (game.getState()){
+        switch (game.getState()) {
             case PLAY:
                 game.getPlayScreen().touchDown(screenX, screenY);
-                break;
+                return true;
             case BUILD:
-                game.getBuildScreen().touchDown(screenX,screenY);
-                break;
+                game.getBuildScreen().touchDown(screenX, screenY);
+                return true;
+            case HERO:
+                game.getHeroMenu().touchDown(screenX,screenY);
+                return true;
             default:
                 break;
         }
-        return true;
+        return false;
     }
 
     @Override
@@ -193,15 +205,15 @@ public class Inputs implements InputProcessor {
      * @return True if the input was processed, False if it wasn't
      */
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        switch (game.getState()){
+        switch (game.getState()) {
             case MENU:
-                game.getMenu().touchUp(screenX,screenY);
+                game.getMenu().touchUp(screenX, screenY);
                 break;
             case PLAY:
                 game.getPlayScreen().touchUp();
                 break;
             case BUILD:
-                game.getBuildScreen().touchUp(screenX,screenY);
+                game.getBuildScreen().touchUp(screenX, screenY);
                 break;
             case PAUSE:
                 game.getPauseMenu().touchUp(screenX, screenY);
@@ -226,17 +238,13 @@ public class Inputs implements InputProcessor {
      * @return True if the input was processed, False if it wasn't
      */
     public boolean touchDragged(int screenX, int screenY, int pointer) {
-
-        switch (game.getState()){
-            case MENU:
-                //game.getMenu().touchUp(screenX,screenY,pointer, button);
-                break;
-            case PLAY:
-                //game.getPlayScreen().touchUp(screenX,screenY,pointer, button);
-                break;
+        switch (game.getState()) {
             case BUILD:
                 game.getBuildScreen().touchDragged(screenX, screenY);
-                break;
+                return true;
+            case HERO:
+                game.getHeroMenu().touchDragged(screenX,screenY);
+                return true;
             default:
                 break;
         }

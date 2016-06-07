@@ -5,14 +5,25 @@ package com.lpoo.project.logic;
  */
 public abstract class Stats {
 
+    /**
+     * Constructor for the class Stats
+     */
     public Stats() {
 
     }
 
+    /**
+     * Getter for the damage
+     * @return The damage
+     */
     public int getAttDamage() {
         return 0;
     }
 
+    /**
+     * Getter for the movement speed
+     * @return The movement speed
+     */
     public float getMovSpeed() {
         return 0;
     }

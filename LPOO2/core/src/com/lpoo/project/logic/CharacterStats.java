@@ -1,7 +1,8 @@
 package com.lpoo.project.logic;
 
 /**
- * Created by Diogo on 6/5/2016.
+ * Class that creates the character's properties
+ * This class extends the class Stats
  */
 public class CharacterStats extends Stats {
 
@@ -35,6 +36,14 @@ public class CharacterStats extends Stats {
      */
     private int attDamage;
 
+    /**
+     * Constructor for the CharacterStats class
+     * @param health Character's health
+     * @param resistance Character's resistance
+     * @param movSpeed Character's movement's velocity
+     * @param attSpeed Character's attack's speed
+     * @param attDamage Character's attack's damage
+     */
     public CharacterStats(int health, int resistance, float movSpeed, float attSpeed, int attDamage) {
         super();
         this.health = health;
@@ -47,7 +56,6 @@ public class CharacterStats extends Stats {
 
     /**
      * Getter for the character's current health
-     *
      * @return Character's current health
      */
     public int getHealth() {
@@ -56,7 +64,6 @@ public class CharacterStats extends Stats {
 
     /**
      * Getter for the character's max health
-     *
      * @return Character's max health
      */
     public int getMaxHealth() {
@@ -65,7 +72,6 @@ public class CharacterStats extends Stats {
 
     /**
      * Getter for the character's attack's speed
-     *
      * @return Character's attack's speed
      */
     public float getAttSpeed() {
@@ -74,7 +80,6 @@ public class CharacterStats extends Stats {
 
     /**
      * Getter for the character's movement's speed
-     *
      * @return Character's movement's speed
      */
     public float getMovSpeed() {
@@ -83,7 +88,6 @@ public class CharacterStats extends Stats {
 
     /**
      * Getter for the character's attack's damage
-     *
      * @return Character's attack's damage
      */
     public int getAttDamage() {
@@ -92,7 +96,6 @@ public class CharacterStats extends Stats {
 
     /**
      * Getter for the character's resistance
-     *
      * @return Character's resistance
      */
     public int getResistance() {
@@ -101,7 +104,6 @@ public class CharacterStats extends Stats {
 
     /**
      * Setter for the character's health
-     *
      * @param health Character's new health
      */
     public void setHealth(int health) {
@@ -110,8 +112,7 @@ public class CharacterStats extends Stats {
 
     /**
      * Setter for the character's attack speed
-     *
-     * @param attSpeed
+     * @param attSpeed New Character's attack's speed to change the old one
      */
     public void setAttSpeed(float attSpeed) {
         this.attSpeed = attSpeed;
@@ -119,8 +120,7 @@ public class CharacterStats extends Stats {
 
     /**
      * Setter for the character's movement speed
-     *
-     * @param movSpeed
+     * @param movSpeed New Character's movement speed to change the old one
      */
     public void setMovSpeed(float movSpeed) {
 
@@ -128,8 +128,7 @@ public class CharacterStats extends Stats {
     }
     /**
      * Setter for the character's resistance
-     *
-     * @param resistance
+     * @param resistance New Character's resistance to change the old one
      */
     public void setResistance(int resistance) {
         this.resistance = resistance;
@@ -137,8 +136,7 @@ public class CharacterStats extends Stats {
 
     /**
      * Setter for the character's maximum health
-     *
-     * @param maxHealth
+     * @param maxHealth New Character's maximum health to change the old one
      */
     public void setMaxHealth(int maxHealth) {
         this.maxHealth = maxHealth;
@@ -146,8 +144,7 @@ public class CharacterStats extends Stats {
 
     /**
      * Setter for the character's attack damage
-     *
-     * @param attDamage
+     * @param attDamage New Character's attack's damage to change the old one
      */
     public void setAttDamage(int attDamage) {
         this.attDamage = attDamage;
@@ -155,7 +152,6 @@ public class CharacterStats extends Stats {
 
     /**
      * Function that applies the damage to the character
-     *
      * @param stats Character's properties
      */
     public void applyDamage(Stats stats) {

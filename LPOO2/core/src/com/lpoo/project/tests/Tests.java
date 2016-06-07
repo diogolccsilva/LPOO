@@ -27,29 +27,35 @@ public class Tests {
      */
     public void testHero() {
         Game game = new Game(standardHero);
-        Hero hero = new Hero(game, 0, 0, 100, 50, 75);
+        Hero hero = game.getHero();
 
         assertEquals(Hero.HeroStatus.STILL, hero.getState());
 
-        // < 50 state = Move Left
-        hero.touchDown(25);
+        hero.move(-1);
         assertEquals(Hero.HeroStatus.MOVE_LEFT, hero.getNextState());
 
-        // > 840 state = Move Right
-        hero.touchDown(860);
+        game.heroMove(1);
         assertEquals(Hero.HeroStatus.MOVE_RIGHT, hero.getNextState());
 
-        // else state = Attack
-        hero.touchDown(68);
+        game.heroMove(-1);
+        assertEquals(Hero.HeroStatus.MOVE_LEFT, hero.getNextState());
+
+        game.heroAttack();
         assertEquals(Hero.HeroStatus.ATTACK, hero.getNextState());
 
-        // state != dead -> nextState = still
-        hero.touchUp();
+        hero.move(1);
+        assertEquals(Hero.HeroStatus.MOVE_RIGHT, hero.getNextState());
+
+        hero.stop();
         assertEquals(Hero.HeroStatus.STILL, hero.getNextState());
 
-        // state != dead ->nextState = attack
         hero.attack();
         assertEquals(Hero.HeroStatus.ATTACK, hero.getNextState());
+
+        game.stopHero();
+        assertEquals(Hero.HeroStatus.STILL, hero.getNextState());
+
+
     }
 
     @Test

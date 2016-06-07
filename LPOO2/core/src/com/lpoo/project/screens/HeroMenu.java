@@ -9,7 +9,11 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.lpoo.project.MyGame;
+import com.lpoo.project.logic.CharacterStats;
+
+import java.util.Vector;
 
 /**
  * Class that creates the screen where the user can choose the hero
@@ -46,20 +50,22 @@ public class HeroMenu implements Screen {
     private Texture notSelected;
 
     /**
-     * First choice's rectangle
+     * Array of rectangles with the hero's options
      */
-    private Rectangle opt1;
-    /**
-     * Second choice's rectangle
-     */
-    private Rectangle opt2;
-    /**
-     * Third choice's rectangle
-     */
-    private Rectangle opt3;
+    private Rectangle[] opts;
 
     /**
-     * Hero's option
+     * Number of hero options
+     */
+    private int nOpts;
+
+    private int xTouch,yTouch;
+    private int yPos,xPos;
+    private int yi;
+    private int dy;
+
+    /**
+     * Hero's current selected option
      */
     private int opt;
 
@@ -79,7 +85,7 @@ public class HeroMenu implements Screen {
     public HeroMenu ( MyGame myGame ) {
         this.myGame = myGame;
 
-        myGame.camera.position.set( myGame.w / 2, myGame.h / 2, 0 );
+        myGame.camera.position.set(myGame.w / 2, myGame.h / 2, 0);
         myGame.camera.update();
 
         //Initialize font and store it in cache
@@ -95,11 +101,21 @@ public class HeroMenu implements Screen {
 
         selected = new Texture("Selected.png");
         notSelected = new Texture("NotSelected.png");
-        opt = -1;
 
-        opt1 = new Rectangle(619, 523, 700, 200);
-        opt2 = new Rectangle(619, 282, 700, 200);
-        opt3 = new Rectangle(619, 41, 700, 200);
+        opt = -1;
+        nOpts = myGame.getHeroes().size();
+        opts = new Rectangle[nOpts];
+
+        xPos = 619;
+        yPos = 523;
+        yi = yPos;
+        dy = 0;
+
+        for (int i = 0; i < nOpts; i++) {
+            opts[i] = new Rectangle(xPos,yPos-i*241,700,200);
+        }
+        xTouch = 0;
+        yTouch = 0;
     }
 
     /**
@@ -120,19 +136,23 @@ public class HeroMenu implements Screen {
         return w * x / Gdx.graphics.getWidth();
     }
 
-    /**
-     * Called when the screen was touched or a mouse button was released
-     * @param screenX The x coordinate, origin is in the upper left corner
-     * @param screenY The y coordinate, origin is in the upper left corner
-     */
-    public void touchUp( int screenX, int screenY ) {
-        Rectangle rect = new Rectangle( getRelativeX(screenX), h - getRelativeY(screenY), 20, 20 );
-        if( rect.overlaps(opt1))
-            opt = 0;
-        else if ( rect.overlaps(opt2))
-            opt = 1;
-        else if ( rect.overlaps(opt3))
-            opt = 2;
+    public void touchUp(int screenX, int screenY) {
+        Vector2 pos = getRelativePosition( screenX, screenY );
+        xTouch = (int) pos.x;
+        yTouch = (int) pos.y;
+        Rectangle rect = new Rectangle(xTouch, h-yTouch, 20, 20);
+        for (int i = 0; i< nOpts; i++){
+            if (rect.overlaps(opts[i])){
+                opt = i;
+                break;
+            }
+        }
+    }
+
+    public void touchDown(int screenX,int screenY){
+        Vector2 pos = getRelativePosition( screenX, screenY );
+        xTouch = (int) pos.x;
+        yTouch = (int) pos.y;
     }
 
     @Override
@@ -153,38 +173,28 @@ public class HeroMenu implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         //Set batch to only draw what the camera sees
-        myGame.batch.setProjectionMatrix( myGame.camera.combined );
+        myGame.batch.setProjectionMatrix(myGame.camera.combined);
         myGame.batch.begin();
 
         title.draw(myGame.batch, "CHOOSE", 41, 550);
         title.draw(myGame.batch, "YOUR", 41, 425);
         title.draw(myGame.batch, "HERO", 41, 300);
 
-        text.draw(myGame.batch, "HEALTH: " + 300, 670, 700);
-        text.draw(myGame.batch, "RESISTANCE: " + 10, 670, 665);
-        text.draw(myGame.batch, "MOVEMENT SPEED: " + 80, 670, 630);
-        text.draw(myGame.batch, "ATTACK SPEED: " + 1, 670, 595);
-        text.draw(myGame.batch, "ATTACK DAMAGE: " + 10, 670, 560);
+        Vector<CharacterStats> stats = myGame.getHeroes();
 
-        text.draw(myGame.batch, "HEALTH: " + 150, 670, 459);
-        text.draw(myGame.batch, "RESISTANCE: " + 5, 670, 424);
-        text.draw(myGame.batch, "MOVEMENT SPEED: " + 100, 670, 389);
-        text.draw(myGame.batch, "ATTACK SPEED: " + 0.7, 670, 354);
-        text.draw(myGame.batch, "ATTACK DAMAGE: " + 20, 670, 319);
-
-        text.draw(myGame.batch, "HEALTH: " + 100, 670, 218);
-        text.draw(myGame.batch, "RESISTANCE: " + 3, 670, 183);
-        text.draw(myGame.batch, "MOVEMENT SPEED: " + 200, 670, 148);
-        text.draw(myGame.batch, "ATTACK SPEED: " + 0.4, 670, 113);
-        text.draw(myGame.batch, "ATTACK DAMAGE: " + 12, 670, 78);
-
-        myGame.batch.draw( opt == 2 ? selected: notSelected, 619, 41, 700, 200 );
-        myGame.batch.draw( opt == 1 ? selected: notSelected, 619, 282, 700, 200 );
-        myGame.batch.draw( opt == 0 ? selected: notSelected, 619, 523, 700, 200 );
+        for (int i = 0; i< nOpts; i++){
+            int k = i*241-dy;
+            text.draw(myGame.batch, "HEALTH: " + stats.elementAt(i).getHealth(), 670, 700-k);
+            text.draw(myGame.batch, "RESISTANCE: " + stats.elementAt(i).getResistance(), 670, 665-k);
+            text.draw(myGame.batch, "MOVEMENT SPEED: " + stats.elementAt(i).getMovSpeed(), 670, 630-k);
+            text.draw(myGame.batch, "ATTACK SPEED: " + stats.elementAt(i).getAttSpeed(), 670, 595-k);
+            text.draw(myGame.batch, "ATTACK DAMAGE: " + stats.elementAt(i).getAttDamage(), 670, 560-k);
+            myGame.batch.draw(notSelected,opts[i].getX(),opts[i].getY(),opts[i].getWidth(),opts[i].getHeight());
+        }
 
         myGame.batch.end();
 
-        if( opt != -1 ) {
+        if (opt != -1) {
             myGame.setSelectedHeroIndex(opt);
             myGame.changeScreen(MyGame.States.BUILD);
         }
@@ -205,7 +215,7 @@ public class HeroMenu implements Screen {
      * Called when the screen is paused
      */
     public void pause() {
-        music.pause();
+        //music.pause();
     }
 
     @Override
@@ -213,7 +223,7 @@ public class HeroMenu implements Screen {
      * Called when the screen is resumed from a paused state
      */
     public void resume() {
-        music.play();
+        //music.play();
     }
 
     @Override
@@ -230,5 +240,32 @@ public class HeroMenu implements Screen {
      */
     public void dispose() {
 
+    }
+
+    public Vector2 getRelativePosition(int x, int y) {
+        return new Vector2(getRelativeX(x),getRelativeY(y));
+    }
+
+    public void touchDragged(int screenX, int screenY) {
+        Vector2 pos = getRelativePosition( screenX, screenY );
+        int deltaY = yTouch - (int)pos.y;
+
+        if( deltaY < 5 && deltaY > -5 )
+            deltaY = 0;
+        else if( deltaY > 20 )
+            deltaY = 20;
+        else if( deltaY < -20 )
+            deltaY = -20;
+
+        int tmp = yPos + deltaY;
+        System.out.println(tmp);
+        if( tmp >= 523 && (tmp - (nOpts -1)*241) <= 41 ){
+            yPos += deltaY;
+            dy = yPos-yi;
+        }
+
+        for (int i = 0; i< nOpts; i++){
+            opts[i].setPosition(xPos,yPos-i*241);
+        }
     }
 }
