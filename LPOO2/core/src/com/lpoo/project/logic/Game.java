@@ -164,6 +164,14 @@ public class Game implements Updatable {
     }
 
     /**
+     * Getter for the wave variable
+     * @return the current wave being played
+     */
+    public int getWave() {
+        return wave;
+    }
+
+    /**
      * Updates the game  playing
      * @param delta Difference between the last time of call and the current time
      */
@@ -219,18 +227,11 @@ public class Game implements Updatable {
      * @param delta Difference between the last time of call and the current time
      */
     public void update(float delta) {
-        switch (state) {
-            case PLAYING:
-                if (enemiesSpawned == nEnemies * wave && enemies.size() == 0) {
-                    stateTime = 0;
-                    state = GameStatus.BUILDING;
-                } else updatePlaying(delta);
-                break;
-            case BUILDING:
-                break;
-            case LOST:
-                break;
-        }
+        if (state == GameStatus.PLAYING)
+            if (enemiesSpawned == nEnemies * wave && enemies.size() == 0) {
+                stateTime = 0;
+                state = GameStatus.BUILDING;
+            } else updatePlaying(delta);
     }
 
     /**
@@ -256,7 +257,7 @@ public class Game implements Updatable {
     }
 
     /**
-     * Setter for the frame's events
+     * Sets all the frameEvents to false
      */
     public void setFrameEvents() {
         for (int i = 0; i < frameEvents.length; i++)
@@ -305,6 +306,14 @@ public class Game implements Updatable {
     }
 
     /**
+     * Setter for the number of enemies the have survived
+     * @param nEnemiesWon value to replace nEnemiesWon
+     */
+    public void setnEnemiesWon(int nEnemiesWon) {
+        this.nEnemiesWon = nEnemiesWon;
+    }
+
+    /**
      * Getter for the maximum number of enemies that is needed to the enemies won the game
      * @return The maximum number of enemies that is needed to the enemies won the game
      */
@@ -342,6 +351,22 @@ public class Game implements Updatable {
      */
     public final Trap[] getTraps() {
         return traps;
+    }
+
+    /**
+     * Getter for the number of enemies that spawned in a certain wave
+     * @return the number of enemies spawned
+     */
+    public int getEnemiesSpawned() {
+        return enemiesSpawned;
+    }
+
+    /**
+     * Setter for the number of enemies spawned
+     * @param enemiesSpawned value to be replaced as the number of enemies spawned
+     */
+    public void setEnemiesSpawned(int enemiesSpawned) {
+        this.enemiesSpawned = enemiesSpawned;
     }
 
     /**

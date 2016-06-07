@@ -55,7 +55,64 @@ public class Tests {
         game.stopHero();
         assertEquals(Hero.HeroStatus.STILL, hero.getNextState());
 
+        float xPos = hero.getRect().x;
 
+        hero.animationStatus(Hero.HeroStatus.MOVE_RIGHT);
+        hero.update(0.1f);
+
+        assertTrue( hero.getRect().x > xPos );
+
+        hero.animationStatus(Hero.HeroStatus.MOVE_LEFT);
+        hero.update(0.2f);
+
+        assertTrue( hero.getRect().x < xPos );
+
+        xPos = 200;
+        hero.getRect().x = 200;
+        hero.animationStatus(Hero.HeroStatus.MOVE_LEFT);
+        hero.update(0.2f);
+        assertTrue( hero.getRect().x == xPos );
+        hero.animationStatus(Hero.HeroStatus.MOVE_RIGHT);
+        hero.update(0f);
+        assertTrue( hero.getRect().x == xPos );
+        hero.update(0.2f);
+        assertTrue( hero.getRect().x > xPos );
+
+        xPos = 3800;
+        hero.getRect().x = 3800;
+        hero.animationStatus(Hero.HeroStatus.MOVE_RIGHT);
+        hero.update(0.2f);
+        assertTrue( hero.getRect().x == xPos );
+        hero.animationStatus(Hero.HeroStatus.MOVE_LEFT);
+        hero.update(0f);
+        assertTrue( hero.getRect().x == xPos );
+        hero.update(0.2f);
+        assertTrue( hero.getRect().x < xPos );
+
+        assertEquals(0, game.getProjectiles().size());
+
+        hero.animationStatus(Hero.HeroStatus.ATTACK);
+        hero.update(0f);
+
+        assertEquals(0, game.getProjectiles().size());
+
+        hero.update(hero.getStats().getAttSpeed());
+        assertEquals(1, game.getProjectiles().size());
+
+        ProjectileStats stats = new ProjectileStats(0, 0);
+        hero.hit(stats);
+        assertEquals(hero.getStats().getHealth(), hero.getStats().getMaxHealth());
+        stats.setAttDamage(hero.getStats().getHealth());
+
+        hero.hit(stats);
+        assertEquals(0, hero.getStats().getHealth());
+        assertEquals( hero.getState(), Hero.HeroStatus.DEAD );
+        assertEquals( hero.getNextState(), Hero.HeroStatus.DEAD );
+
+        hero.update(3f);
+        assertEquals( hero.getState(), Hero.HeroStatus.STILL );
+        assertEquals( hero.getNextState(), Hero.HeroStatus.STILL );
+        assertEquals( hero.getStats().getHealth(), hero.getStats().getMaxHealth() );
     }
 
     @Test
@@ -126,6 +183,43 @@ public class Tests {
         assertTrue(game.getProjectiles().isEmpty());
 
         assertEquals(Game.GameStatus.BUILDING, game.getState());
+        assertEquals(0, game.getWave());
+
+        game.update(10);
+
+        assertEquals(Game.GameStatus.BUILDING, game.getState());
+        assertEquals(0, game.getWave());
+
+        game.changeState(Game.GameStatus.PLAYING);
+        assertEquals(Game.GameStatus.PLAYING, game.getState());
+        assertEquals(1, game.getWave());
+
+        game.update( 4.9f );
+        assertEquals(0, game.getEnemies().size());
+        game.update( 0.1f );
+        assertEquals(1, game.getEnemies().size());
+        assertEquals(1, game.getEnemiesSpawned());
+
+        Enemy e = game.getEnemies().get(0);
+        e.getRect().x = 3999;
+        game.update( 0 );
+        assertEquals( 0, game.getnEnemiesWon() );
+        e.getRect().x = 4000;
+        game.update( 0 );
+        assertEquals( 1, game.getnEnemiesWon() );
+
+        game.setEnemiesSpawned(10);
+        game.getEnemies().clear();
+
+        game.update(0);
+        assertEquals(Game.GameStatus.BUILDING, game.getState());
+        game.changeState(Game.GameStatus.PLAYING);
+        assertEquals(Game.GameStatus.PLAYING, game.getState());
+        assertEquals(2, game.getWave());
+
+        game.setnEnemiesWon(3);
+        game.update(0);
+        assertEquals(Game.GameStatus.LOST, game.getState());
     }
 
     @Test
@@ -196,6 +290,9 @@ public class Tests {
 
         game.getTraps()[0].update( 0.1f );
         assertTrue( game.getTraps()[0].getState() == Trap.TrapStatus.WAIT );
+
+        game.setTrap(0, 0, 0, 0, 0);
+        assertTrue( game.getTraps()[0] == null );
     }
 
     @Test

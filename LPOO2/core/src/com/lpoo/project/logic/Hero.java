@@ -38,7 +38,7 @@ public class Hero extends Character {
      * @param resistance Hero's resistance
      * @param damage     Hero's damage
      */
-    public Hero(Game game, int x, int y, int health, int resistance, int damage) {
+    /*public Hero(Game game, int x, int y, int health, int resistance, int damage) {
         super(game, x, y, 45, 88);
         state = HeroStatus.STILL;
         nextState = state;
@@ -46,7 +46,7 @@ public class Hero extends Character {
         float attSpeed = 0.7f;
         this.stats = new CharacterStats(health, resistance, movSpeed, attSpeed, damage);
         this.game = game;
-    }
+    }*/
 
     /**
      * Constructor for the class Hero
@@ -176,7 +176,7 @@ public class Hero extends Character {
      */
     public void move(int dir, float delta) {
         float x = rect.x + getVelocity() * delta * dir;
-        if (x >= 200 && x <= 3700)
+        if (x >= 200 && x <= 3800)
             rect.x += getVelocity() * delta * dir;
     }
 

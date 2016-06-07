@@ -44,4 +44,12 @@ public class ProjectileStats extends Stats {
     public float getMovSpeed() {
         return movSpeed;
     }
+
+    /**
+     * Setter for the projectile's damage
+     * @param attDamage Value of attack damage to be replaced
+     */
+    public void setAttDamage(int attDamage) {
+        this.attDamage = attDamage;
+    }
 }
