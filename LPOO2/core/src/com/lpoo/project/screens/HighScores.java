@@ -115,11 +115,14 @@ public class HighScores implements Screen {
 
         myGame.batch.draw(background,0,0);
 
-        for (int i = 0;i<5;i++){
+        /*for (int i = 0;i<5;i++){
             int n = i+1;
             int k = i*30;
+            if( topScores.size() <= i )
+                break;
+
             text.draw(myGame.batch, "#" + n + "    " + topScores.elementAt(i), 220, 150-k);
-        }
+        }*/
 
         myGame.batch.end();
 

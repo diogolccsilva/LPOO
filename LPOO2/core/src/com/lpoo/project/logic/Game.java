@@ -112,7 +112,7 @@ public class Game implements Updatable {
     /**
      * Enemies' strength per wave
      */
-    private final int strengthPerWave = 2;
+    private final int strengthPerWave = 1;
 
     /**
      * Hero's initial money
@@ -203,19 +203,25 @@ public class Game implements Updatable {
             t.update(delta);
         }
 
-        int nextEnemy = wave >= 5 ? 1 : diffNextEnemy / wave;
-        if (enemiesSpawned < nEnemies * wave &&
+        int nextEnemy = wave >= diffNextEnemy ? 1 : diffNextEnemy / wave;
+        if (enemiesSpawned < nEnemies + 4 * wave &&
                 Math.floor(stateTime / (float) nextEnemy) != Math.floor(currTime / (float) nextEnemy)) {
             enemiesSpawned++;
             Enemy e;
             Random rand = new Random();
             int type = rand.nextInt(2);
+
             CharacterStats temp = enemiesStats.elementAt(type);
-            CharacterStats stats = new CharacterStats(temp.getHealth() + healthPerWave * wave, temp.getResistance() + resistPerWave * wave, temp.getMovSpeed(), temp.getAttSpeed(), temp.getAttDamage() + strengthPerWave * wave);
+            CharacterStats stats = new CharacterStats(
+                    temp.getHealth() + healthPerWave * wave,
+                    temp.getResistance() + resistPerWave * wave,
+                    temp.getMovSpeed(),
+                    temp.getAttSpeed(),
+                    temp.getAttDamage() + strengthPerWave * wave);
+
             if (type == 0) {
                 e = new MeleeEnemy(this, 50, 144, stats);
                 frameEvents[ENEMY_MELEE_SPAWN_INDEX] = true;
-
             } else {
                 e = new RangedEnemy(this, 50, 144, stats);
                 frameEvents[ENEMY_RANGED_SPAWN_INDEX] = true;
@@ -233,7 +239,7 @@ public class Game implements Updatable {
      */
     public void update(float delta) {
         if (state == GameStatus.PLAYING)
-            if (enemiesSpawned == nEnemies * wave && enemies.size() == 0) {
+            if (enemiesSpawned == nEnemies + 4 * wave && enemies.size() == 0) {
                 stateTime = 0;
                 state = GameStatus.BUILDING;
             } else updatePlaying(delta);
@@ -462,10 +468,10 @@ public class Game implements Updatable {
 
         if (traps[index] == null && money >= trapCost) {
             money -= trapCost;
-            trapCost += 40;
+            trapCost += 10;
             traps[index] = new Trap(this, x, y, width, height, 5);
         } else if (traps[index] != null) {
-            trapCost -= 40;
+            trapCost -= 10;
             money += trapCost;
             traps[index] = null;
         }

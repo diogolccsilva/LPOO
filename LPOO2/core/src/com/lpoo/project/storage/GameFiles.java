@@ -160,6 +160,10 @@ public class GameFiles {
      */
     public static void saveScore(int score){
         FileHandle file = Gdx.files.local(scoresPath);
+        if(!file.exists()) {
+            file.write(false);
+        }
+
         Vector<Integer> v = new Vector<>();
         try {
             BufferedReader reader = file.reader(Integer.SIZE);
@@ -185,7 +189,7 @@ public class GameFiles {
      * @return A vector with the scores
      */
     public static Vector<Integer> loadScore(int top){
-        FileHandle file = Gdx.files.internal(scoresPath);
+        FileHandle file = Gdx.files.local(scoresPath);
         if (!file.exists()){
             file.write(false);
         }
